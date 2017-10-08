@@ -1,0 +1,32 @@
+---
+title: "Мёд"
+author: "Винни-Пух"
+date: "10/3/2017"
+output:
+  pdf_document: default
+  html_document: default
+lang: ru-RU
+---
+
+А теперь посчитаем косинус
+```{r}
+cos(8)
+```
+
+По последним данным косинус 8 равен `r cos(8)` и это отрадно!
+
+
+```{python, echo=TRUE}
+import numpy as np
+x = 8
+print(np.cos(x))
+```
+
+
+```{julia}
+f(x) = 3x^2 + 6x - 7
+print(f(5))
+```
+
+
+
