@@ -68,6 +68,7 @@ lang: ru-RU
 
 Мы ввели дифференциальные формы неформально. Для желающих подробностей:
 
+* [Пара примеров](https://github.com/bdemeshev/epsilon/raw/master/e_003/diff_forms/diff_forms.pdf) с дифференциальной формой
 * [David Bachman](https://arxiv.org/abs/math/0306194v1) Geometric approach to differential forms
 * [Jonathan Gratus](https://arxiv.org/abs/1709.08492) A pictorial introduction to differential geometry
 * [Lorenzo Sadun](https://arxiv.org/abs/1604.07862) Lecture Notes on Differential Forms
