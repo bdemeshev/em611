@@ -1,0 +1,181 @@
+---
+title: "Ура!"
+author: "Винни-Пух :)"
+date: "10/9/2017"
+output:
+  pdf_document:
+    keep_tex: yes
+    latex_engine: xelatex
+  html_document: default
+  word_document: default
+mainfont: Arial
+lang: ru-RU
+header-includes:
+- \newfontfamily{\cyrillicfonttt}{Arial}
+- \newfontfamily{\cyrillicfont}{Arial}
+- \newfontfamily{\cyrillicfontsf}{Arial}
+---
+
+# О мёде
+
+Установка пакетов (делаем 1 раз)
+```{r, eval=FALSE}
+install.packages("tidyverse") # обработка + графика
+install.packages("devtools") # разработка пакетов
+install.packages("rio") # импорт данных
+install.packages("rmarkdown") # комбинация кода и текста
+
+devtools::install_github("bdemeshev/azbuka") # русские шаблоны
+```
+
+
+Подключение пакетов
+```{r, message=FALSE, warning=FALSE}
+library(rio)
+library(tidyverse)
+library(forcats) 
+library(reshape2) # перевод длинная - широкая
+```
+
+Теперь сделаем вид, что загрузим данные :)
+```{r, eval=FALSE}
+korobochka <- import("...")
+```
+
+
+Будем для удобства работать со встроенными данными
+```{r}
+help(diamonds)
+glimpse(diamonds)
+```
+
+## Простенькие графики
+
+Начнём с гистограммы!
+```{r}
+qplot(data = diamonds, x = price)
+```
+
+По слоям (занудно, но полезно для понимания сложных графиков)
+```{r}
+ggplot(data = diamonds) + geom_histogram(aes(x = price))
+```
+
+Диаграмма рассеяния. По быстрому! До прихода гостей осталось 5 минут:
+```{r}
+qplot(data = diamonds, x = carat, y = price)
+```
+
+Занудно и подробно:
+```{r}
+ggplot(data = diamonds) + 
+  geom_point(aes(x = carat, y = price), alpha = 0.1) + 
+  xlab("Масса (карат)") + ylab("Количество бриллиантов") +
+  ggtitle("Картина достойная Лувра")
+```
+
+```{r}
+cos(sin(pi))
+pi %>% sin %>% cos
+```
+
+## Базовые манипуляции с табличками
+
+Беру табличку, изменяю её и получаю табличку.
+
+
+* создание новой переменной
+```{r}
+diamonds_2 <- diamonds %>% mutate(ln_carat = log(carat),
+                                  ln_price = log(price),
+                                  price2 = price^2)
+```
+
+* отбор наблюдений (строк)
+```{r}
+diamonds_3 <- diamonds_2 %>% filter(carat > mean(carat),
+                                    price < mean(price))
+glimpse(diamonds_3)
+```
+
+* сортировка
+```{r}
+diamonds_4 <- diamonds_3 %>% arrange(price)
+```
+
+* отбор столбцов
+```{r}
+diamonds_5 <- diamonds_4 %>% select(price, cut)
+```
+
+* комбинируем несколько подряд
+```{r}
+diamonds_6 <- diamonds %>% mutate(price2 = price^2) %>%
+  arrange(price) %>% select(price, cut) %>% head(10)
+```
+
+в синтаксисе Эйлера-Клеро:
+```{r}
+diamonds_6 <- head(select(arrange(mutate(diamonds, price2 = price^2)), price, cut), 10)
+```
+
+
+* группировка: влияет на то, как считаются mean/max/min/sd/...
+
+```{r}
+diamonds_7 <- diamonds %>% group_by(cut) %>%
+  filter(price > mean(price))  
+```
+
+хорошо погуглить про window functions (dplyr)
+
+* извлекаем из таблички столбец
+```{r, eval=FALSE}
+diamonds %>% .$color
+diamonds$color
+diamonds[, "color"]
+```
+
+* мини ликбез по категориальным переменным
+
+```{r}
+diamonds_9 <- diamonds %>% 
+  mutate(male = factor("Yes", levels = c("Yes", "No")))
+unique(diamonds_9$male)
+levels(diamonds_9$male)
+```
+
+
+* слияние двух табличек (join)
+
+```{r}
+col_like <- tibble(color = levels(diamonds$color),
+                   like = 1:7)
+col_like
+big_table <- left_join(diamonds, col_like,
+                       by = c("color" = "color"))
+```
+
+* обобщение групп
+
+```{r}
+diamonds_10 <- diamonds %>% group_by(cut, color) %>%
+  summarise(average = mean(price))
+```
+
+* перевод длинная — широкая таблица
+```{r}
+diamonds_11 <- dcast(diamonds_10, cut ~ color)
+```
+
+### Регрессия :)
+```{r}
+model <- lm(data = diamonds, price ~ carat + x + y + z)
+model_2 <- lm(data = diamonds, log(price) ~ log(carat))
+```
+
+отчет по модели
+```{r}
+summary(model)
+```
+

@@ -18,22 +18,40 @@ lang: ru-RU
 
 ### Ссылки:
 
+* [github-репозиторий](https://github.com/bdemeshev/em611) курса EM611: свалка файлов
 * [Курс EM301](http://bdemeshev.github.io/em301/): бакалавриат факультета экономики вшэ
 * [Шаблон](https://github.com/bdemeshev/em611/blob/master/note_template.tex) для конспектирования лекций
+* [Задачи для разминки](https://github.com/bdemeshev/metrics_pro/raw/master/metrics_pro.pdf)
+* [Задачи с кр бакалавриата эконома](https://github.com/bdemeshev/metrics_hse_exams/raw/master/metrics_hse_exams.pdf)
 
+
+Если нужна одна книжка:
+
+1. Метрика. Stachursky, Primer in econometric theory. [Слайды и часть глав](http://johnstachurski.net/emet.html).
+1. R. Grolemund, Wickham, [R for data science](http://r4ds.had.co.nz).
+
+Если нужно больше книжек:
+
+1. Про графики. [ggplot2 reference](http://ggplot2.tidyverse.org/reference/).
+
+...
 
 
 ## Лог встреч
 
-#### 10.10.2017 (план)
+#### 17.10.2017 (план) Залатывание пробоин:
+
+* Закон распределения $R^2$ при независимых одинаково распределенных $y_i$;
+* Доверительные интервалы своими ручками
+* Смысл P-значений
+
+
+#### 10.10.2017 
 
 * R
 * базовые операции с данными
-* регрессия и что можно из неё извлечь
-
-* (???) Закон распределения $R^2$ при независимых одинаково распределенных $y_i$;
-
-
+* регрессия и смысл таблички с коэффициентами
+* [seminar_02.Rmd](https://github.com/bdemeshev/em611/blob/master/seminar_02/seminar_2.Rmd)
 
 #### 03.10.2017
 
@@ -41,7 +59,7 @@ lang: ru-RU
 * Доверительный интервал для $\beta_j$, $\sigma^2$;
 * Тестирование гипотезы о равенстве нулю сразу нескольких бет;
 * F-тест и арктангенс на картинке
-
+* [seminar_01.Rmd](https://github.com/bdemeshev/em611/blob/master/seminar_01/seminar_1.Rmd)
 
 #### 26.09.2017
 
