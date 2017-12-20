@@ -23,6 +23,7 @@ lang: ru-RU
 * [Шаблон](https://github.com/bdemeshev/em611/blob/master/2017/note_template/note_template.tex) для конспектирования лекций
 * [Задачи для разминки](https://github.com/bdemeshev/metrics_pro/raw/master/metrics_pro.pdf)
 * [Задачи с кр бакалавриата эконома](https://github.com/bdemeshev/metrics_hse_exams/raw/master/metrics_hse_exams.pdf)
+* [Конспект by Андрей Коломиец](https://github.com/bdemeshev/em611/raw/master/2017/metrics_ak.docx)
 
 
 Если нужна одна книжка:
@@ -50,7 +51,7 @@ lang: ru-RU
 * Смысл P-значений
 
 
-#### 10.10.2017 
+#### 10.10.2017
 
 * R
 * базовые операции с данными
