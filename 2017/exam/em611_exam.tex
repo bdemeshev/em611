@@ -1,0 +1,197 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage[top=1.5cm, left=2cm, right=2cm, bottom=1.5cm]{geometry} % размер текста на странице
+
+\usepackage{tikz} % картинки в tikz
+\usepackage{microtype} % свешивание пунктуации
+
+\usepackage{array} % для столбцов фиксированной ширины
+
+\usepackage{indentfirst} % отступ в первом параграфе
+
+\usepackage{sectsty} % для центрирования названий частей
+\allsectionsfont{\centering}
+
+\usepackage{amsmath} % куча стандартных математических плюшек
+\usepackage{amssymb} % и символов
+\usepackage{bbm}
+
+\usepackage{multicol} % текст в несколько колонок
+
+\usepackage{lastpage} % чтобы узнать номер последней страницы
+
+\usepackage{enumitem} % дополнительные плюшки для списков
+%  например \begin{enumerate}[resume] позволяет продолжить нумерацию в новом списке
+
+
+
+
+\usepackage{fontspec} % хз
+\usepackage{polyglossia} % для выбора языка в xelatex
+
+\setmainlanguage{russian}
+\setotherlanguages{english}
+
+% download "Linux Libertine" fonts:
+% http://www.linuxlibertine.org/index.php?id=91&L=1
+\setmainfont{Linux Libertine O} % or Helvetica, Arial, Cambria
+% why do we need \newfontfamily:
+% http://tex.stackexchange.com/questions/91507/
+\newfontfamily{\cyrillicfonttt}{Linux Libertine O}
+
+\AddEnumerateCounter{\asbuk}{\russian@alph}{щ} % для списков с русскими буквами
+\setlist[enumerate, 2]{label=\asbuk*),ref=\asbuk*} % списки уровня 2 будут буквами а) б) ...
+
+\usepackage{todonotes} % для вставки в документ заметок о том, что осталось сделать
+% \todo[inline]{Здесь надо коэффициенты исправить}
+% \missingfigure{Здесь будет картина Последний день Помпеи}
+% команда \listoftodos — печатает все поставленные \todo'шки
+
+\usepackage{booktabs} % красивые таблицы
+% заповеди из документации:
+% 1. Не используйте вертикальные линии
+% 2. Не используйте двойные линии
+% 3. Единицы измерения помещайте в шапку таблицы
+% 4. Не сокращайте .1 вместо 0.1
+% 5. Повторяющееся значение повторяйте, а не говорите "то же"
+
+
+% \usepackage[left=1cm,right=1cm,top=1cm,bottom=1cm]{geometry}
+
+\usepackage{fancyhdr} % весёлые колонтитулы
+\pagestyle{fancy}
+\lhead{Эконометрика, финтех}
+\chead{Паниковать запрещается!}
+\rhead{22.12.2017}
+\lfoot{}
+\cfoot{}
+\rfoot{\thepage/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\DeclareMathOperator{\E}{\mathbb{E}}
+\let\P\relax
+\DeclareMathOperator{\P}{\mathbb{P}}
+\DeclareMathOperator{\Var}{\mathbb{V}ar}
+\DeclareMathOperator{\Cov}{\mathbb{C}ov}
+
+
+
+%% эконометрические сокращения
+\def \hb{\hat{\beta}}
+\DeclareMathOperator{\sVar}{sVar}
+\DeclareMathOperator{\sCov}{sCov}
+\DeclareMathOperator{\sCorr}{sCorr}
+
+\def \1{\mathbbm{1}}
+
+\def \hs{\hat{s}}
+\def \hy{\hat{y}}
+\def \hY{\hat{Y}}
+\def \he{\hat{\varepsilon}}
+\def \v1{\vec{1}}
+\def \cN{\mathcal{N}}
+\def \e{\varepsilon}
+\def \z{z}
+
+\def \hVar{\widehat{\Var}}
+\def \hCorr{\widehat{\Corr}}
+\def \hCov{\widehat{\Cov}}
+
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator*{\plim}{plim}
+
+%% лаг
+\renewcommand{\L}{\mathrm{L}}
+
+
+\begin{document}
+
+
+\begin{enumerate}
+
+\item Исследователь Вениамин наблюдает стационарный процесс $y_t$ с $\Cov(y_t, u_{t+h})=0$ при $h>0$ и уравнением
+\[
+y_t = \alpha u_{t-1} + u_t,
+\]
+где $u_t$ — ненаблюдаемый белый шум с $\E(u_t)=0$, $\Var(u_t)=\sigma^2$ и $\Cov(u_t, u_{t+h})=0$ при $h>0$.
+
+У Вениамина есть три наблюдения, $y_1$, $y_2$, $y_3$.
+
+\begin{enumerate}
+  \item Найдите ковариационную матрицу вектора $y=(y_1, y_2, y_3)$;
+  \item Предполагая совместную нормальность $u_t$, выпишите логарифмическую функцию правдоподобия для оценки данной модели.
+  \item Для $\alpha=1$ постройте автокорреляционную и частную автокорреляционную функцию.
+\end{enumerate}
+
+\item Рассмотрим центрированные вектора $y$ и $x_1$, $x_2$, \ldots, $x_k$. Существует разложение $R^2$ в регрессии $y$ на все $(x_j)$:
+\[
+\hb_{1} \hat\gamma_1 + \hb_2\hat\gamma_2 + \ldots + \hb_k \hat\gamma_k = R^2,
+\]
+где $\hb_j$ — это коэффициент перед $x_j$ в регрессии $y$ на все $(x_j)$, и $\hat\gamma_j$ — коэффициент в регрессии $x_j$ на $y$.
+
+Некоторые авторы склонны интепретировать это как вклад каждого фактора в $R^2$. Осознавая спорность этой интерпретации, докажите данное разложение.
+
+Хинт-вопрос: что получится если $j$-ую строку обратной матрицы помножить на $j$-ый столбец исходной? Осталось только вспомнить, что там, в этих матрицах :)
+
+\item Во многих учебниках пишут, что процесс $y_t = 2y_{t-1}+u_t$ нестационарный. Давайте разберёмся и аккуратнее рассмотрим уравнение
+\[
+y_t = 2y_{t-1} + u_t,
+\]
+где $u_t$ — ненаблюдаемый белый шум с $\E(u_t)=0$, $\Var(u_t)=\sigma^2$ и $\Cov(u_t, u_{t+h})=0$ при $h>0$.
+
+\begin{enumerate}
+  \item Приведите пример $y_0$ такого, что получающийся процесс $y_t$ будет нестационарным.
+  \item Постройте явно стационарный $y_t$, удовлетворяющий данному уравнению. То есть выразите $y_t$ через белый шум $(u_t)$.
+  \item Выполнено ли для построенного примера условие $\Cov(y_t, u_{t+h})=0$ при $h>0$?
+  \item Чему в построенном примере равно $y_0$?
+\end{enumerate}
+
+
+\item Рассмотрим задачу логистической регрессии
+\[
+\begin{cases}
+y_i^* = \beta_1 + \beta_2 x_i + \beta_3 z_i + u_i; \\
+y_i = \begin{cases}
+1, \text{ если } y_i^* \geq 0; \\
+0, \text{ иначе.}
+\end{cases}
+\end{cases}
+\]
+
+\begin{enumerate}
+  \item Выпишите функцию правдоподобия для данной модели;
+  \item Найдите квадратичную аппроксимацию функции правдоподобия в окрестности $\beta_1=\beta_2=\beta_3 =0$;
+  \item Какие оценки $\hb$ получатся, если максимизировать квадратичную аппроксимацию функции правдоподобия?
+\end{enumerate}
+
+\item Величины $X_1$, $X_2$, \ldots независимы и нормальны $\cN(0;\sigma^2)$. Известно, что по 1000 наблюдений оказалось, что $\sum X_i^2 = 1100$.
+
+\begin{enumerate}
+  \item Постройте оценку $\hat\sigma^2$ методом максимального правдоподобия;
+  \item Проведите LM, LR и тест Вальда для гипотезы $H_0$: $\sigma^2 = 1$ на уровне значимости $\alpha=0.05$.
+\end{enumerate}
+
+
+\item Рассмотрим классическую задачу линейной регрессии $y=X\beta + u$ с нормальными ошибками $u_i\sim \cN(0;\sigma^2)$. Для удобства будем считать, что единичный столбец отсутствует, а все регрессоры предварительно центрированы.
+
+\begin{enumerate}
+  \item Выведите формулу для LM, LR и теста Вальда для гипотезы $H_0$: $\beta=0$.
+  \item Какая статистика скрывается за формулой $nR^2$?
+  \item На какую из полученных формул больше всего похожа $F$-статистика для проверки данной гипотезы? В чём состоит отличие?
+\end{enumerate}
+
+\item Заброшенный в глубокий тыл противника майор Пронин в целях конспирации строит только простейшие регрессии вида $\hy_i=\hb x_i$.
+
+\begin{enumerate}
+\item Сколько конспиративных регрессий ему придётся построить чтобы оценить все коэффициенты модели $y_i = \beta_1 x_i + \beta_2 z_i + \beta_3 w_i$.
+\item Сформулируйте и докажите теорему Фриша-Во-Ловела алгебраически в общем виде.
+\end{enumerate}
+
+\end{enumerate}
+
+
+
+
+
+\end{document}
