@@ -1,0 +1,104 @@
+---
+title: "EM611"
+author: "Boris Demeshev"
+date: "9/21/2017"
+output: html_document
+lang: ru-RU
+---
+
+## EM611
+
+Курс эконометрики для программы финтех. Продолжительность — один семестр.
+
+## Система оценивания
+
+* Домашнее задание — 20%
+* Письменная контрольная — 30%
+* Письменный экзамен — 50%
+
+### Ссылки:
+
+* [github-репозиторий](https://github.com/bdemeshev/em611) курса EM611: свалка файлов
+* [Курс EM301](http://bdemeshev.github.io/em301/): бакалавриат факультета экономики вшэ
+* [Шаблон](https://github.com/bdemeshev/em611/blob/master/2017/note_template/note_template.tex) для конспектирования лекций
+* [Задачи для разминки](https://github.com/bdemeshev/metrics_pro/raw/master/metrics_pro.pdf)
+* [Задачи с кр бакалавриата эконома](https://github.com/bdemeshev/metrics_hse_exams/raw/master/metrics_hse_exams.pdf)
+* [Конспект by Андрей Коломиец](https://github.com/bdemeshev/em611/raw/master/2017/metrics_ak.docx)
+
+
+Если нужна одна книжка:
+
+1. Метрика. Stachursky, Primer in econometric theory. [Слайды и часть глав](http://johnstachurski.net/emet.html).
+1. R. Grolemund, Wickham, [R for data science](http://r4ds.had.co.nz).
+
+Если нужно больше книжек:
+
+1. Про графики. [ggplot2 reference](http://ggplot2.tidyverse.org/reference/).
+
+...
+
+
+## Лог встреч
+
+#### 31.10.2017 Празднуем Хэллоуин на контрольной работе
+
+#### 24.10.2017 Отдых
+
+#### 17.10.2017 Залатывание пробоин:
+
+* Закон распределения $R^2$ при независимых одинаково распределенных $y_i$;
+* Доверительные интервалы своими ручками
+* Смысл P-значений
+
+
+#### 10.10.2017
+
+* R
+* базовые операции с данными
+* регрессия и смысл таблички с коэффициентами
+* [seminar_02.Rmd](https://github.com/bdemeshev/em611/blob/master/2017/seminar_02/seminar_2.Rmd)
+
+#### 03.10.2017
+
+* t, F распределения;
+* Доверительный интервал для $\beta_j$, $\sigma^2$;
+* Тестирование гипотезы о равенстве нулю сразу нескольких бет;
+* F-тест и арктангенс на картинке
+* [seminar_01.Rmd](https://github.com/bdemeshev/em611/blob/master/2017/seminar_01/seminar_1.Rmd)
+
+#### 26.09.2017
+
+* Определение экспоненциального, пуассоновского, гамма, бета распределений через время ожидания успеха, а не через явное выписывание плотностей.
+* Техника получения плотностей с помощью дифференциальных форм.
+
+Мы ввели дифференциальные формы неформально. Для желающих подробностей:
+
+* [Пара примеров](https://github.com/bdemeshev/epsilon/raw/master/e_003/diff_forms/diff_forms.pdf) с дифференциальной формой
+* [David Bachman](https://arxiv.org/abs/math/0306194v1) Geometric approach to differential forms
+* [Jonathan Gratus](https://arxiv.org/abs/1709.08492) A pictorial introduction to differential geometry
+* [Lorenzo Sadun](https://arxiv.org/abs/1604.07862) Lecture Notes on Differential Forms
+
+Вдохновлена эта вакханалия ответом на форуме, [whuber, there's better way](https://stats.stackexchange.com/questions/36093).
+
+
+#### 19.09.2017
+
+* Интуитивный смысл $Cov(\hat{y}, \hat{u}) = 0$;
+* Матрица-шляпница. Проектор и ковариационная матрица;
+* Закон распределения $\hat{\beta}$;
+* Закон распределения $RSS/\sigma^2$;
+
+#### 12.09.2017
+
+* Свойства $E$, $Var$, $Cov$ в матричном виде;
+* Несмещённость $\hat{\beta}$;
+* Ковариационная матрица $\hat{\beta}$;
+
+
+#### 05.09.2017
+
+* Суть МНК;
+* Формула МНК для регрессии с одной переменной;
+* Формула МНК в матричном виде;
+* Геометрический смысл МНК;
+* RSS, ESS, TSS;
