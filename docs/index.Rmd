@@ -77,7 +77,13 @@ Stachursky, Primer in econometric theory. [Слайды и часть глав](
 
 * Встреча 1. МНК без вероятностей. Зато с матрицами :)
 
-Конспект by Сева 
+    - Конспект Севы Овечкина: [pdf](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_01/seminar_01.pdf), [tex](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_01/seminar_01.tex)
 
-Вольное домашнее задание: из [задач к семинарам](https://github.com/bdemeshev/metrics_pro/raw/master/metrics_pro.pdf): 1.1 (2), 1.8, 1.10, 1.12-1.15, 2.1, 2.2, 3.2, 3.3.
+    - Вольное домашнее задание: из [задач к семинарам](https://github.com/bdemeshev/metrics_pro/raw/master/metrics_pro.pdf): 1.1 (2), 1.8, 1.10, 1.12-1.15, 2.1, 2.2, 3.2, 3.3.
+
+* Встреча 2. Обсуждение домашки, SVD, постановка задачи PCA.
+
+    - Конспект Марины: pdf, tex
+
+    - Вольное домашнее задание: из [задачника по машинке](https://github.com/bdemeshev/mlearn_pro/raw/master/mlearn_pro.pdf)  5.3, 5.14, 5.8, 5.9, 5.10, 5.13.
 
