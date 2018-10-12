@@ -1,0 +1,470 @@
+\documentclass[12pt]{article} % размер шрифта
+
+\usepackage{tikz} % картинки в tikz
+\usepackage{microtype} % свешивание пунктуации
+
+\usepackage{array} % для столбцов фиксированной ширины
+
+\usepackage{url} % для вставки ссылок \url{...}
+
+\usepackage{indentfirst} % отступ в первом параграфе
+
+\usepackage{sectsty} % для центрирования названий частей
+\allsectionsfont{\centering} % приказываем центрировать все sections
+
+\usepackage{amsthm} % теоремы и доказательства
+
+\theoremstyle{definition} % прямой шрифт в условии теорем
+\newtheorem{theorem}{Теорема}[section]
+
+
+\usepackage{amsmath} % куча стандартных математических плюшек
+
+\usepackage[top=2cm, left=1.5cm, right=1.5cm, bottom=2cm]{geometry} % размер текста на странице
+
+\usepackage{lastpage} % чтобы узнать номер последней страницы
+
+\usepackage{enumitem} % дополнительные плюшки для списков
+%  например \begin{enumerate}[resume] позволяет продолжить нумерацию в новом списке
+\usepackage{caption} % подписи к картинкам без плавающего окружения figure
+
+
+\usepackage{fancyhdr} % весёлые колонтитулы
+\pagestyle{fancy}
+\lhead{Эконометрика, финтех}
+\chead{}
+\rhead{2017-10-06, встреча 3}
+\lfoot{}
+\cfoot{}
+\rfoot{\thepage/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+
+
+\usepackage{todonotes} % для вставки в документ заметок о том, что осталось сделать
+% \todo{Здесь надо коэффициенты исправить}
+% \missingfigure{Здесь будет картина Последний день Помпеи}
+% команда \listoftodos — печатает все поставленные \todo'шки
+
+\usepackage{booktabs} % красивые таблицы
+% заповеди из документации:
+% 1. Не используйте вертикальные линии
+% 2. Не используйте двойные линии
+% 3. Единицы измерения помещайте в шапку таблицы
+% 4. Не сокращайте .1 вместо 0.1
+% 5. Повторяющееся значение повторяйте, а не говорите "то же"
+
+\usepackage{fontspec} % поддержка разных шрифтов
+\usepackage{polyglossia} % поддержка разных языков
+
+\setmainlanguage{russian}
+\setotherlanguages{english}
+
+\setmainfont{Linux Libertine O} % выбираем шрифт
+% если Linux Libertine не установлен, то
+% можно также попробовать Helvetica, Arial, Cambria и т.Д.
+
+% чтобы использовать шрифт Linux Libertine на личном компе,
+% его надо предварительно скачать по ссылке
+% http://www.linuxlibertine.org/index.php?id=91&L=1
+
+% на сервисах типа sharelatex.com этот шрифт есть :)
+
+\newfontfamily{\cyrillicfonttt}{Linux Libertine O}
+% пояснение зачем нужно шаманство с \newfontfamily
+% http://tex.stackexchange.com/questions/91507/
+
+\AddEnumerateCounter{\asbuk}{\russian@alph}{щ} % для списков с русскими буквами
+\setlist[enumerate, 2]{label=\asbuk*),ref=\asbuk*} % списки уровня 2 будут буквами а) б) ...
+
+%% эконометрические и вероятностные сокращения
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Corr}{Corr}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\E}{E}
+\def \hb{\hat{\beta}}
+\def \hs{\hat{\sigma}}
+\def \htheta{\hat{\theta}}
+\def \s{\sigma}
+\def \hy{\hat{y}}
+\def \hY{\hat{Y}}
+\def \v1{\vec{1}}
+\def \e{\varepsilon}
+\def \he{\hat{\e}}
+\def \z{z}
+\def \hVar{\widehat{\Var}}
+\def \hCorr{\widehat{\Corr}}
+\def \hCov{\widehat{\Cov}}
+\def \cN{\mathcal{N}}
+
+
+\begin{document}
+
+Конспектировала: Лиза Вахрамева.
+
+\section{О следе матрицы}
+Для квадратной матрицы $A \in \mathbb{R}^{n \times n}$ вводится понятие следа
+матрицы:
+$$\text{tr}(A) = \sum_{i=1}^n A_{ii},$$
+то есть след матрицы - это сумма её диагональных элементов. След матрицы обладает следующими основными свойствами, мотивирующими его введение и дальнейшее использование:
+\begin{enumerate}
+    \item $\text{tr}(AB) = \text{tr}(BA)$,
+    \item след матрицы равен сумме корней характеристического уравнения,\\
+    \item след матрицы является скаляром: $\text{tr}(\cdot) \in \mathbb{R}$.
+\end{enumerate}
+Покажем, что если у матрицы $A$ есть $n$ действительных собственных чисел
+$\lambda_1 \dots \lambda_n$, то $\text{tr}(A) = \sum_{i=1}^n \lambda_i$:
+$$A = PDP^{-1},$$
+где $P$ - матрица, составленная из собственных векторов $v_1 \dots v_n$, соответсвующих собственным числам $\lambda_1 \dots \lambda_n$, а матрица
+$D$ - диагональная из собственных чисел:
+$$\text{tr}(A) = \text{tr}(PDP^{-1}) = \text{tr}(D PP^{-1})
+= \text{tr}(D) = \sum_{i=1}^n \lambda_i.$$
+
+\textbf{Упражнение:} дана регрессия $\hat{y} = X\hat{\beta}$, построенная методом МНК по $n$ - наблюдениям, $k$ - регрессорам. Вектор наблюдений $y$ можно спроецировать на пространство наблюдений $\mathbb{R}^n$, в в котором строится предсказание, с помощью матрицы-шляпницы $H$:
+$$\hat{y} = Hy.$$
+Нужно найти $\text{tr}(H)$. Рассмотрим два возможных решения:
+\begin{enumerate}
+    \item Содержательное. \\
+    Известно, что след $H$ равен сумме собственных значений $H$. Также известно, что  $H$ проецирует вектора на линейную оболочку векторов-столбцов матрицы $X$, обозначим их $c_1 \dots c_k \in \mathbb{R}^n$. Так как всеобъемлющее пространство имеет размерность $n$, то набор $c_1 \dots c_k$ векторов можно дополнить ортогональным набором $p_1 \dots p_{n-k}$ до базиса. Все вектора $c_1 \dots c_k$ переходят сами в себя при проекции, поэтому являются собственными с собственными числами 1. Все вектора $p_1 \dots p_{n-k}$
+    являются ортогональными оболочке, на которую строится проекция, и при проекции переходят в ноль, поэтому они являются собственными векторами с собственными числами 0. Получилось $\lambda_1 \dots \lambda_k = 1$ и $\lambda_{k+1} \dots \lambda_n = 0$.
+    
+    $$\text{tr}(H) = \sum_i \lambda_i = k$$
+    
+    \item По определению.
+    $$ \text{tr}(H) = \text{tr} (X(X^TX)^{-1}X^T) =
+      \text{tr} ((X^TX)^{-1} X^TX) = \text{tr} (I_{k \times k}) = k.$$
+\end{enumerate}
+
+\section{Ковариация и ковариационная матрица}
+$y_1, y_2 \in \mathbb{R}$ - скалярные случайные величины, 
+$\{y_{1i}\}_{i=1}^n$, $\{y_{2i}\}_{i=1}^n$ - реализации случайных величин.
+
+Дисперсия СВ:
+$$\text{Var}(y_1) = \mathbb{E}(y_1^2) - \big( \mathbb{E}(y_1) \big)^2.$$
+
+Выборочная дисперсия СВ:
+$$\text{sVar}(y_1) = \frac{\sum_{i}^n (y_{1i} - \bar{y}_1)^2}{n-1}$$
+квадрат длины центрированного вектора, деленный на размерность подпространства, в котором лежит вектор. 
+
+Ковариация двух СВ:
+$$\text{Cov}(y_1, y_2) = \mathbb{E}y_1 y_2 - \mathbb{E}y_1 \mathbb{E}y_2= \mathbb{E} \bigg( (y_1 - \mathbb{E}y_1) (y_2 - \mathbb{E}y_2) \bigg).$$
+
+Выборочная ковариация:
+$$\text{sCov}(y_1, y_2) = \frac{\sum_i (y_{1i} - \bar{y}_{1i}) (y_{2i} - \bar{y}_{2i})}{n-1}$$
+скалярное произведение центрированных векторов, деленное на размерность пространства, в котором они лежат.
+
+Корреляция двух СВ:
+$$\text{Corr}(y_1, y_2) = \frac{\text{Cov}(y_1, y_2)}
+{\sqrt{\text{Var}(y_1)} \sqrt{\text{Var}(y_2)} }. $$
+
+Выборочная корреляция двух СВ:
+$$\text{sCorr}(y_1, y_2) = \frac{\text{sCov}(y_1, y_2)}
+{\sqrt{\text{sVar}(y_1)} \sqrt{\text{sVar}(y_2)} } = 
+\text{cos} (y_1 - \bar{y_1}, y_2 - \bar{y_2}). $$
+
+\textbf{Упражнение:}
+Записать выборочную ковариационную матрицу для $X$ в предположении, что переменные уже центрированы. Запишем матрицу $X$ по строкам и по столбцам:
+$$
+X = \begin{bmatrix} 
+    \vdots &  & \vdots & \\
+    c_1 & \dots & c_k \\
+    \vdots &  & \vdots & \\
+    \end{bmatrix}
+    = 
+    \begin{bmatrix} 
+    \dots & r_{1}^T & \dots \\
+    & \vdots & \\
+    \dots & r_{n}^T & \dots \\
+    \end{bmatrix}.
+$$
+Поймем, как выглядит $\text{sVar}(X)$:
+$$
+\text{sVar}(X) = \begin{bmatrix}
+\text{sVar}(c_1) & \text{sCov}(c_1, c_2) & \dots & \text{sCov}(c_1, c_k) \\
+\text{sCov}(c_2, c_1) & \text{sVar}(c_2) & \dots & \text{sCov}(c_2, c_k) \\
+\vdots & & \ddots & \vdots\\
+\text{sCov}(c_k, c_1) & \text{sCov}(c_k, c_2) & \dots & \text{sVar}(c_k, c_k).
+\end{bmatrix}
+$$
+С учетом того что $c_1 \dots c_k$ центрированы, ковариационную матрицу можно найти следующими способами:
+$$\text{sVar}(X) = \frac{X^TX}{n-1} = \frac{\sum_i^n r_i r_i^T}{n-1}.$$
+Чтобы удостовериться в правильности ответов, рассмотрим одну из ячеек ковариационной матрицы:
+$$\text{sVar}(X)_{21} = \frac{c_2^Tc_1}{n-1} = \frac{\sum_i^n r_{i2} r_{i1} }{n-1}. $$
+
+\section{Метод главных компонент}
+В методе главных компонент рассматривается способ понижения размерности при минимальной потерях в разбросе данных.
+%\textbf{Постановка задачи: снизить размерность пространства.}
+$$\min_{\mu, V: V^TV=I, \lambda_i} \sum_{i}^n \left\|r_i - \mu - V\lambda_i \right\|, $$
+$r_i \in \mathbb{R}^k$ - $i$-ая строка матрицы $X$, записанная в столбец,
+$\mu \in \mathbb{R}^k$ - вектор средних, $V \in \mathbb{R}^{k \times p}$ - матрица, столбцы которой ортонормальны: $V^TV=I$, $\lambda_i \in \mathbb{R}^p$, $k$ - исходная размерность, $p$ - желаемая.
+
+Предположим, что $\mu$ и $V$ найдены, выразим $\lambda_i$. Заметим, что для фиксированного $i$ задача превращается в аналогичную задаче поиска коэффициентов линейной регрессии , поэтому можно сразу выписать ответ:
+$$\lambda_i = (V^TV)^{-1}V^T(r_i-\mu) = V^T(r_i-\mu).$$
+Далее будем считать, что переменные заранее центрированы, поэтому положим $\mu=0$.
+Подставим выражение для $\lambda_i$ в исходную задачу:
+$$Q = \left\| r_i - VV^T r_i \right\| \to \min_{V: V^TV=I} .$$
+Распишем:
+$$Q = \sum_i^n (r_i - VV^Tr_i)^T (r_i - VV^Tr_i) = 
+\sum_i r_i^T (I-VV^T)(I-VV^T)r_i.$$
+Заметим, что $VV^T$ - это матрица-шляпница, проецирующая $r_i$ на линейную оболочку из $v_1 \dots v_p$ столбцов матрицы $V$:
+$$H = V (V^TV)^{-1} V^T = VV^T.$$
+Тогда матрица $I-VV^T$ является матрицей, проецирующей вектора $r_i$ на ортогональное дополнение к пространству, натянутому на оболочку $v_1 \dots v_p$.
+Проекция на подространство $L$ вектора $x \in L$ уже лежащего в этом подпространстве, равна $x$, поэтому  $(I-VV^T)(I-VV^T)x=(I-VV^T)x \quad \forall x$.
+$$Q = \sum_i^n r_i^T(I - VV^T)r_i,$$
+так как $Q \in \mathbb{R}$ - скаляр, то можно записать:
+$$Q = \text{tr} \bigg( \sum_i^n r_i^T(I - VV^T)r_i \bigg) =
+\sum_i^n \text{tr} \bigg( r_i^T(I - VV^T)r_i \bigg) $$
+$$=\sum_i^n \text{tr} \bigg( (I - VV^T)r_i^T r_i \bigg) =
+\text{tr}   \bigg( (I - VV^T) \sum_i^n r_i^T r_i \bigg)$$
+$$=\text{tr}   \bigg( (I - VV^T)(n-1) \text{sVar}(X) \bigg)
+=(n-1) \bigg( \text{tr} \big(\text{Svar}(X)\big) -
+\text{tr}\big(VV^T \text{Svar}(X)\big) \bigg)$$
+Перейдем к эквивалентной задаче:
+$$Q' = \text{tr} \big( VV^T \text{sVar}(X) \big) =
+\text{tr} \big( V \text{sVar}(X) V^T \big) = \sum_{j}^p v_j^T S v_j \to \max,$$
+где $S = \text{sVar}(X)$. $Q'$ интерпретируется как выборочная дисперсия линейной комбинации столбцов матрицы $X$, взятых с весами вектора $v_j$.
+
+\textbf{Упражнение}. Рассмотрим матрицу $X \in \mathbb{R}^{n \times 2}$ и ее ковариационную матрицу:
+$$
+X = \begin{bmatrix} 
+    \vdots & \vdots & \\
+    c_1 &  c_k \\
+    \vdots &   \vdots & \\
+    \end{bmatrix},
+$$
+$$
+\text{sVar}(X) = 
+\begin{bmatrix}
+5 & -1 \\
+-1 & 16
+\end{bmatrix}.
+$$
+Будем искать выборочную дисперсию $z = 3c_1 + 6c_2$.
+$$\text{Var}(3c_1+6c_2)=9\text{Var}(c_1) + 36 \text{Var}(c_2) + 18 \text{Cov}(c_1, c_2) = 9 * 5 + 36 * 16 + 18 * (-1) = 603.$$
+$$
+\begin{bmatrix}
+3 & -6 \\
+\end{bmatrix}
+\begin{bmatrix}
+5 & -1 \\
+-1 & 16
+\end{bmatrix}.
+\begin{bmatrix}
+3\\
+6
+\end{bmatrix}=9 * 5 + 36 * 16 + 18 * (-1) = 603.
+$$
+Получилось, что выборочную дисперсию можно искать по формуле для дисперсии суммы, а можно через построение квадратичной формы.
+
+Можно снова переписать оптимизируемый функционал:
+$$
+V = \begin{bmatrix} 
+    \vdots & & \vdots & \\
+    v_1 & \dots &v_p \\
+    \vdots & & \vdots & \\
+    \end{bmatrix},
+$$
+$$\sum_{j}^p \text{sVar}(Xv_j) \to \max_{V: V^TV=I}.$$
+
+\textbf{Упражнение:} Найти главную компоненту $X$.
+$$
+X = 
+\begin{bmatrix}
+3 & 5\\
+2 & 1\\
+1 & 3\\
+\end{bmatrix}
+$$
+Сначала нужно центрировать и нормировать данные:
+$$
+\begin{bmatrix}
+3 & 5\\
+2 & 1\\
+1 & 3\\
+\end{bmatrix}
+\to
+\begin{bmatrix}
+1 & 2\\
+0 & -2\\
+-1 & 0\\
+\end{bmatrix}
+\to
+\begin{bmatrix}
+1 & 1\\
+0 & -1\\
+-1 & 0\\
+\end{bmatrix}
+=X'
+$$
+С помощью метода главных компонент будем искать вектор $v_1 \in \mathbb{R}^2$ - веса, с которыми нужно взять линейную комбинацию столбцов матрицы $X$, чтобы получить первую главную компоненту. Введем обозначение:
+$$v_1
+= \begin{bmatrix}
+\alpha\\
+\beta
+\end{bmatrix},
+$$
+тогда требования на ортонормированность базиса из векторов $v$ (в случае с одной главной компонентой - только нормированность) можно записать так:
+$$\left\| v_1 \right\| = 1 \to \alpha^2 + \beta^2 = 1.$$
+Запишем оптимизируемый функционал:
+$$
+Q = \text{sVar} \bigg(
+\alpha \begin{bmatrix}
+1\\
+0\\
+-1\\
+\end{bmatrix}
++
+\beta \begin{bmatrix}
+1\\
+-1\\
+0\\
+\end{bmatrix}
+\bigg)
+\to \max_{\alpha, \beta : \alpha^2+\beta^2=1}
+$$
+Чтобы посчитать значение этого функционала, нужно посчитать ковариационную матрицу $X'$:
+$$
+\text{sVar}(X')=
+\begin{bmatrix}
+1&\frac{1}{2}\\
+\frac{1}{2}&1
+\end{bmatrix}.
+$$
+Тогда
+$$Q = \alpha^2 + \beta^2 + 2\alpha \beta \frac{1}{2} = 1+\alpha \beta.$$
+Решением задачи:
+$$
+\begin{cases}
+\alpha \beta \to \max \\
+\alpha^2 + \beta^2 = 1
+\end{cases}
+$$
+являются точки $\alpha=\beta=\frac{1}{\sqrt{2}}$ и $\alpha=\beta=-\frac{1}{\sqrt{2}}$. Знак здесь задает только ориентацию вектора, поэтому можно рассматривать любую из точек.
+
+Теперь можно записать главную компоненту:
+$$pc_1 =
+\frac{1}{\sqrt{2}} \begin{bmatrix}
+1\\
+0\\
+-1\\
+\end{bmatrix}
++
+\frac{1}{\sqrt{2}} \begin{bmatrix}
+1\\
+-1\\
+0\\
+\end{bmatrix}
+=
+\begin{bmatrix}
+\frac{2}{\sqrt{2}}\\~\\
+\frac{-1}{\sqrt{2}}\\~\\
+\frac{-1}{\sqrt{2}}\\
+\end{bmatrix}
+$$
+Поиск нескольких главных компонент можно осуществлять, последовательно решая задачи:
+$$
+\begin{cases}
+\text{sVar}(Xv_1) \to \max \\
+\left\| v_1 \right\| = 1
+\end{cases}
+$$
+
+$$
+\begin{cases}
+\text{sVar}(Xv_2) \to \max \\
+\left\| v_2 \right\| = 1 \\
+v_2^Tv_1 = 0
+\end{cases}
+$$
+
+$$
+\begin{cases}
+\text{sVar}(Xv_3) \to \max \\
+\left\| v_3 \right\| = 1 \\
+v_3^Tv_1 = 0\\
+v_2^Tv_1 = 0
+\end{cases}
+$$
+
+\textbf{Упражнение:} Если $V^TV=I$, то $V$ сохраняет длины.
+$$\left\| Va \right\| = a^TV^TVa = \left\| a \right\|.$$
+
+\textbf{Упражнение:} Если $\left\| a \right\| = 1$,
+то
+$$\max_a a^T 
+\begin{bmatrix}
+1 & 0 & 0 \\
+0 & 3 & 0 \\
+0 & 0 & 1 \\
+\end{bmatrix} 
+a = 
+\begin{bmatrix}
+0\\
+1\\
+0
+\end{bmatrix}.
+$$
+\section{Связь с SVD-разложением}
+Рассмотрим поиск первой главной компоненты:
+$$\max_{v_1: \left\| v_1 \right\| = 1} \text{sVar}(Xv_1)
+= \max_{v_1: \left\| v_1 \right\| = 1} v_1^T \frac{X^TX}{n-1} v_1 =
+\max_{v_1: \left\| v_1 \right\| = 1} v_1^T X^TX v_1 $$
+
+SVD-разложение:
+$$X = U\Sigma V^T$$
+$$X^TX = V \Sigma^T \Sigma V^T$$
+Подставим в оптимизируемый функционал:
+$$ \max_{v_1: \left\| v_1 \right\| = 1} v_1^T V \Sigma^T \Sigma V v_1.$$
+Так как $V^TV=I$, то $V$ сохраняет длины, поэтому
+$\left\| Vv_1 \right\| = \left\| v_1^T V \right\| = 1 \iff \left\| v_1 \right\|=1$, а значит можно переписать задачу:
+$$ \max_{v_1': \left\| v_1' \right\| = 1} v_1'^T \Sigma^T \Sigma V v_1'
+=
+\max_{v_1': \left\| v_1' \right\| = 1}
+v_1'
+\begin{bmatrix}
+\lambda_1 & \dots & 0\\
+& \ddots &\\
+0 & \dots & \lambda_n
+\end{bmatrix} v_1' = 
+\begin{bmatrix}
+1\\
+0\\
+\vdots\\
+0
+\end{bmatrix}$$
+здесь $\lambda_1 \dots \lambda_n$ - собственные числа матрицы $\Sigma^T\Sigma$,
+отсортированные по убыванию. 
+
+Сейчас мы нашли $v_1'$, но нужно найти $v_1$.
+$$V^Tv_1 = 
+\begin{bmatrix}
+1\\
+0\\
+\vdots\\
+0
+\end{bmatrix}$$
+$$VV^Tv_1 = v_1 = V
+\begin{bmatrix}
+1\\
+0\\
+\vdots\\
+0
+\end{bmatrix}$$
+Получилось, что искомый столбец $v_1$ для PCA - это столбец матрицы $V$ из SVD разложения $X$, соответсвующий первому по величине значению в матрице $\Sigma$ ($\Sigma_{ii}$ = \sqrt{\lambda_i}).
+
+$$pc_1 = Xv_1 = (U\Sigma V^T)v_1 = 
+U \Sigma
+\begin{bmatrix}
+1\\
+0\\
+\vdots\\
+0
+\end{bmatrix}=
+\sqrt{\lambda_1}u_1.
+$$
+Это верно для всех рассматриваемых главных компонент:
+$$pc_j = \sqrt{\lambda_j} u_j.$$
+
+\end{document}
+
