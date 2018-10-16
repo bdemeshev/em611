@@ -83,12 +83,15 @@ Stachursky, Primer in econometric theory. [Слайды и часть глав](
 
 * Встреча 2. Обсуждение домашки, SVD, постановка задачи PCA.
 
-    - Конспект Марины: pdf, tex
+    - Конспект Марины (бета-версия): [pdf](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_02.pdf), [tex](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_02.tex) 
 
     - Вольное домашнее задание: из [задачника по машинке](https://github.com/bdemeshev/mlearn_pro/raw/master/mlearn_pro.pdf)  5.3, 5.14, 5.8, 5.9, 5.10, 5.13.
 
 * Встреча 3. Эквивалентность PCA и SVD.
 
-    - Конспект Лизы: [pdf](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_03.pdf), [tex](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_03.tex)
+    - Конспект Лизы (бета-версия): [pdf](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_03.pdf), [tex](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_03.tex)
 
+* Встреча 4. Работа с ковариационными матрицами, геометрическое доказательство теоремы Гаусса-Маркова, проверка гипотез о коэффициенте и сравнение двух моделей
+
+    - Конспект (бета-версия): pdf, tex
 

@@ -1,0 +1,526 @@
+\documentclass[12pt]{article} % размер шрифта
+
+\usepackage{tikz} % картинки в tikz
+\usepackage{microtype} % свешивание пунктуации
+
+\usepackage{array} % для столбцов фиксированной ширины
+
+\usepackage{url} % для вставки ссылок \url{...}
+
+\usepackage{indentfirst} % отступ в первом параграфе
+
+\usepackage{sectsty} % для центрирования названий частей
+\allsectionsfont{\centering} % приказываем центрировать все sections
+
+\usepackage{amsthm} % теоремы и доказательства
+\usepackage{amssymb}
+\theoremstyle{definition} % прямой шрифт в условии теорем
+\newtheorem{theorem}{Теорема}[section]
+
+\usepackage{hyperref}
+\usepackage{amsmath} % куча стандартных математических плюшек
+
+\usepackage[top=2cm, left=1.5cm, right=1.5cm, bottom=2cm]{geometry} % размер текста на странице
+
+\usepackage{lastpage} % чтобы узнать номер последней страницы
+
+\usepackage{enumitem} % дополнительные плюшки для списков
+%  например \begin{enumerate}[resume] позволяет продолжить нумерацию в новом списке
+\usepackage{caption} % подписи к картинкам без плавающего окружения figure
+
+
+\usepackage{fancyhdr} % весёлые колонтитулы
+\pagestyle{fancy}
+\lhead{Эконометрика, финтех}
+\chead{}
+\rhead{2018-09-29, встреча 2}
+\lfoot{}
+\cfoot{}
+\rfoot{\thepage/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+
+
+\usepackage{todonotes} % для вставки в документ заметок о том, что осталось сделать
+% \todo{Здесь надо коэффициенты исправить}
+% \missingfigure{Здесь будет картина Последний день Помпеи}
+% команда \listoftodos — печатает все поставленные \todo'шки
+
+\usepackage{booktabs} % красивые таблицы
+% заповеди из документации:
+% 1. Не используйте вертикальные линии
+% 2. Не используйте двойные линии
+% 3. Единицы измерения помещайте в шапку таблицы
+% 4. Не сокращайте .1 вместо 0.1
+% 5. Повторяющееся значение повторяйте, а не говорите "то же"
+
+\usepackage{fontspec} % поддержка разных шрифтов
+\usepackage{polyglossia} % поддержка разных языков
+
+\setmainlanguage{russian}
+\setotherlanguages{english}
+
+\setmainfont{Linux Libertine O} % выбираем шрифт
+% если Linux Libertine не установлен, то
+% можно также попробовать Helvetica, Arial, Cambria и т.Д.
+
+% чтобы использовать шрифт Linux Libertine на личном компе,
+% его надо предварительно скачать по ссылке
+% http://www.linuxlibertine.org/index.php?id=91&L=1
+
+% на сервисах типа sharelatex.com этот шрифт есть :)
+
+\newfontfamily{\cyrillicfonttt}{Linux Libertine O}
+% пояснение зачем нужно шаманство с \newfontfamily
+% http://tex.stackexchange.com/questions/91507/
+
+\AddEnumerateCounter{\asbuk}{\russian@alph}{щ} % для списков с русскими буквами
+\setlist[enumerate, 2]{label=\asbuk*),ref=\asbuk*} % списки уровня 2 будут буквами а) б) ...
+
+%% эконометрические и вероятностные сокращения
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Corr}{Corr}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\E}{E}
+\def \hb{\hat{\beta}}
+\def \hs{\hat{\sigma}}
+\def \htheta{\hat{\theta}}
+\def \s{\sigma}
+\def \hy{\hat{y}}
+\def \hY{\hat{Y}}
+\def \v1{\vec{1}}
+\def \e{\varepsilon}
+\def \he{\hat{\e}}
+\def \z{z}
+\def \hVar{\widehat{\Var}}
+\def \hCorr{\widehat{\Corr}}
+\def \hCov{\widehat{\Cov}}
+\def \cN{\mathcal{N}}
+
+
+\begin{document}
+
+Конспектировала: Ермолова Марина.
+
+\section{Задачи из домашнего задания}
+
+\subsection{Задача \href{https://github.com/bdemeshev/metrics_pro/raw/master/metrics_pro.pdf}{$1.13$}}
+Вспомним определения:
+\[
+TSS = \sum_i (y_i - \overline{y})^2
+\]
+\[
+RSS = \sum_i (y_i - \hy_i)^2
+\]
+\[
+ESS = \sum_i (\hy_i - \overline{y})^2
+\]
+\begin{enumerate}
+\item
+Преположим, что после добавления точки к регрессии $RSS$ уменьшится. Тогда получается, что \[\sum_{i=1}^n (y_i - \hy_i^*)^2 \leq \sum_{i=1}^{n+1} (y_i - \hy_i^*)^2 < \sum_{i=1}^{n} (y_i - \hy_i)^2\] Из этого следует, что новая регрессия обеспечивает меньшую сумму квадратов, а значит исходная регрессия не была оптимальной. Противоречие.
+\[
+RSS \leq RSS^*
+\]
+\item
+Проведем рассуждения, аналогичные прошлому пункту:
+Допустим, $TSS \leq TSS^*$
+\[\sum_{i=1}^n (y_i - \overline{y}^*)^2 \leq \sum_{i=1}^{n+1} (y_i - \overline{y}_i^*)^2 < \sum_{i=1}^{n} (y_i - \overline{y}_i)^2 
+\]
+Известно, что если проецировать любой вектор на $\vec{1}$, то получается $\overline{y}\vec{1}$. Но мы знаем, что при решении задачи минимизации
+\\
+\[\min_{a} \sum(y_i-a)^2\]
+\[a_{opt}=\overline{y}\]
+А по нашему предположению $\overline{y}^*$ дает минимум меньше, чем мы получаем, оптимизируя.
+Возникает противоречие.
+\item
+$ESS$ может меняться как угодно.
+Попробуем решить по аналогии с предыдущими пунктами:
+\[\sum_{i=1}^n (\hat{y_i}^* - \overline{y}^*)^2 \leq \sum_{i=1}^{n+1} (\hat{y_i}^* - \overline{y}_i^*)^2 < \sum_{i=1}^{n} (\hat{y_i} - \overline{y})^2 
+\]
+Видим, что провести аналогичные рассуждения мы не можем.
+\begin{enumerate}
+\item $ESS$ может падать. Например,
+Например, можно разместить точку настолько низко, чтобы прямая стала горизонтальной. Тогда все $\hat{y_i} = \overline{y}^*$ и $ESS=0$.
+\item $ESS$ может возрастать.
+Расположим $\hat{y_i}$ на прямую, тогда $\overline{y}^$ не меняются, $\overline{y}$ вырос, появилось новое слагаемое, из-за которого $ESS$ возрастает.
+\end{enumerate}
+\end{enumerate}
+
+\section{Сингулярное разложение матрицы SVD}
+Сингулярное разложение матрицы используется при снижении размерности и не только.
+\subsection{Смысл условия $U^T U= I$}
+ Вспомним смысл условия $U^T U= I$, где $I$ -- единичная матрица.\\
+\begin{enumerate}
+\item  \[U^T U= I \Leftrightarrow U^{-1}=U^T \Leftrightarrow UU^T=I \]
+\item  $u_1, \ldots, u_n$ -- вектор-столбцы матрицы $U$.
+
+\[ \begin{bmatrix}
+\dots & u_1^T & \dots  \\
+\dots & u_2^T & \dots  \\
+\hdotsfor{3} \\
+\dots & u_n^T & \dots  
+\end{bmatrix}
+ \begin{bmatrix}
+\vdots & \vdots &   & \vdots \\
+u_1 & u_2 &  & u_n \\
+\vdots & \vdots & & \vdots 
+\end{bmatrix} =
+\begin{bmatrix}
+1 & 0 & \hdots & 0 \\
+0 & 1 & \hdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \hdots & 1 \\
+\end{bmatrix}
+\]
+\[
+u_2^T \cdot u_2 = 1
+\]
+\[
+u_2^T \cdot u_7 = 0
+\]
+Следовательно, столбцы $u$ имеют единичную длину и ортогональны друг другу.\\
+\end{enumerate}
+\subsection{Свойства ортогональной матрицы}
+\[ U \cdot x=\Tilde{x} \]
+\begin{enumerate}
+\item Матрица $U$ сохраняет длину вектора.\\
+$\Tilde{x}^T \Tilde{x}= (Ux)^T (Ux)= x^T U^T U x = x^T I x=x^T x$
+\item Матрица $U$ сохраняет угол.\\
+$U \cdot x=\Tilde{x}$\\
+$U \cdot y=\Tilde{y}$\\
+$\cos(\Tilde{x},\Tilde{y})= \dfrac{\Tilde{x}^T\Tilde{y}}{\|\Tilde{x}\|\|\Tilde{y}\|}=
+\dfrac{x^T U^T Uy}{\|x\|\|y\|}= \dfrac{x^Ty}{\|x\|\|y\|}=\cos(x,y)$\\
+\end{enumerate}
+
+$U$ может быть, например, поворотом или отражением.
+
+\subsection{Идея SVD геометрически}
+$X$ - матрица переменных $n \times k$, $k$ -- количество переменных, $n$ -- количество наблюдений.
+$X \cdot a = b$\\
+$X$ превращает $k$ - мерные вектора в $n$-мерные.\\
+Любое действие $X$ при выборе удачного базиса в $\mathbb{R}^k$ и при выборе удачного базиса в $\mathbb{R}^n$ очень просто действует. \\
+Допустим, в пространестве $R^k$ мы выбрали базис $v_1, v_2, \ldots, v_k$. А в $R^n$ мы выбрали базис $u_1, u_2, \ldots, v_k$.\\
+Оказывается, можно так подобрать базисы, что:
+\begin{equation*}
+ \begin{cases}
+   Xv_1=\lambda_1u_1
+   \\
+ Xv_2=\lambda_2u_2
+ \\
+ \ldots
+ \end{cases}
+\end{equation*}
+
+Так как в общем случае $n \neq k$, то, либо в некоторые $u$ не переходят $v$, либо
+если $k>n$, $Xv_j=0, j>n$.
+
+\textbf{Пример}. Проецирование $X:\mathbb{R} ^3 \rightarrow  \mathbb{R} ^2$\\
+С помощью сингулярного разложения независимо от действия можно выбрать хороший базис в $\mathbb{R} ^2$ и $\mathbb{R} ^3$, что действие будет очень просто. Выберем базис:
+\begin{equation*}
+ \begin{cases}
+   Xv_1=u_1
+   \\
+ Xv_2=u_2
+ \\
+ Xv_3=0
+ \end{cases}
+\end{equation*}
+
+\textbf{Пример}: Поворот на плоскости по часовой стрелке на $45$ градусов $X:\mathbb{R} ^2 \rightarrow  \mathbb{R} ^2$\\
+Выберем базис:
+\begin{equation*}
+ \begin{cases}
+   Xv_1=u_1
+   \\
+Xv_2=u_2
+ \end{cases}
+\end{equation*} 
+\subsection{Представление матрицы в виде произведения}
+Любую матрицу $X$ $n \times k$ можно представить в виде $X = U \cdot \Sigma \cdot V^T,$ где:
+
+$U^T\cdot U = I_{n \times n}$
+
+$V^T\cdot V = I_{k \times k}$,  т.е. $V$ не меняет углы и расстояния. а просто меняет базис.
+
+$\Sigma$ - диагональная матрица, необязательно квадратная. Например, \[\Sigma= \begin{pmatrix}
+5 & 0 & 0  \\
+0 & 6 & 0 
+\end{pmatrix}
+\]
+\[\Sigma= \begin{pmatrix}
+1 & 0  \\
+0 & 2  \\
+0 & 0  \\
+0 & 0  
+\end{pmatrix}
+\]
+
+Пусть $x_V$ - столбец координат в базисе $V$, а $x$ - столбец координат в исходном базисе, тогда
+\[Vx_V=x
+\]
+\[x_V=V^T x
+\]
+
+\subsection{Задача \href{https://github.com/bdemeshev/metrics_pro/raw/master/metrics_pro.pdf}{$5.14$}}
+$X= U\begin{pmatrix}
+7 & 0 & 0 \\
+0 & 3 & 0
+\end{pmatrix} V^T$.
+Найти сингулярное разложение матриц:
+
+\begin{enumerate}
+\item $X^T$
+\item $10X$
+\item $X^TX$
+\item $XX^T$
+\end{enumerate}
+
+\textbf{Решение:}
+
+\begin{enumerate}
+\item $X^T = \Big( U\begin{pmatrix}
+7 & 0 & 0 \\
+0 & 3 & 0
+\end{pmatrix} V^T\Big)^T=V\begin{pmatrix}
+7 & 0 & 0 \\
+0 & 3 & 0
+\end{pmatrix}^T U^T = 
+V\begin{pmatrix}
+7 & 0  \\
+0 & 3  \\
+0 & 0
+\end{pmatrix} U^T$
+\item $U$, $V$ -- матрицы, сохраняющие длину, поэтому
+$\Sigma = \begin{pmatrix}
+70 & 0 & 0 \\
+0 & 30 & 0
+\end{pmatrix}$
+
+В итоге:
+\[10X= U\begin{pmatrix}
+70 & 0 & 0 \\
+0 & 30 & 0
+\end{pmatrix} V^T
+\]
+
+\item 
+\[X^TX= V \Sigma^T U^T U \Sigma V^T= V \Sigma^T \Sigma V^T
+\]
+\[X^TX  = V\begin{pmatrix}
+7 & 0  \\
+0 & 3  \\
+0 & 0
+\end{pmatrix} \begin{pmatrix}
+70 & 0 & 0 \\
+0 & 30 & 0
+\end{pmatrix} V^T=
+V\begin{pmatrix}
+49 & 0  \\
+0 & 9  
+\end{pmatrix}  V^T
+\]
+
+
+\item \[XX^T= U \Sigma V^T V \Sigma^T U^T = U \Sigma \Sigma^T U^T
+\]
+
+\[ X^TX =U\begin{pmatrix}
+70 & 0 & 0 \\
+0 & 30 & 0
+\end{pmatrix} \begin{pmatrix}
+7 & 0  \\
+0 & 3  \\
+0 & 0
+\end{pmatrix} U^T =
+U\begin{pmatrix}
+49 & 0 & 0 \\
+0 & 9 & 0 \\
+0 & 0 & 0 
+\end{pmatrix} U^T 
+\]
+\end{enumerate}
+
+\subsection{Алгоритм SVD разложения компьютером}
+\begin{enumerate}
+\item $X=UBV^T$, где $U$,$V$ -- отражение, а $B$ - бидиогональная матрица.
+\[B = \begin{pmatrix}
+a_{1,1} & a_{1,2} & 0 & \hdots & 0 \\
+0 & a_{1,1} & a_{1,2} & \hdots & 0 \\
+\vdots & \vdots & \ddots & \vdots & \vdots \\
+0 & 0 & \hdots & a_{n-1,n-1} & 0 \\
+0 & \hdots & 0 & a_{n,n-1} & a_{n,n} & 
+\end{pmatrix}
+\]
+На первом этапе побираются такие отражения, чтобы получить бидиагональную матрицу. Этот этап условно точный, можем его выписать численно.
+\item Этот этап численный. С помощью вращений  $X = U \Sigma V^T$ достигаем конечного результата с какой-то точностью.
+\end{enumerate}
+Важно, что на компьютере при сингулярном разложении $X$ никогда не считается $X^T$.
+\subsection{SVD разложение руками}
+\[
+X = \begin{pmatrix}
+1 & 1  \\
+0 & 1 \\
+-1 & 0 
+\end{pmatrix} = U \Sigma V^T
+\]
+\[X^TX = V \Sigma^T \Sigma V^T= = \begin{pmatrix}
+2 & 1 \\
+1 & 2
+\end{pmatrix}\]
+\[XX^T= U \Sigma \Sigma^T U^T= \begin{pmatrix}
+2 & 1 & -1 \\
+1& 1 & 0 \\
+-1 & 0 & 1 \\
+\end{pmatrix}\]
+\[
+\det \begin{pmatrix}
+2-\lambda & 1 \\
+1 & 2-\lambda
+\end{pmatrix}=0 \rightarrow \lambda = 3,1
+\]
+
+Собственные вектора: $\begin{pmatrix}
+1 \\
+1
+\end{pmatrix}$, $\begin{pmatrix}
+1 \\
+-1
+\end{pmatrix}$
+
+Нормированная матрица:
+$V = \begin{pmatrix}
+\dfrac{1}{\sqrt{2}} & \dfrac{1}{\sqrt{2}} \\
+\dfrac{1}{\sqrt{2}} & -\dfrac{1}{\sqrt{2}} 
+\end{pmatrix} $
+
+Тогда 
+\[
+X^TX = \begin{pmatrix}
+\dfrac{1}{\sqrt{2}} & \dfrac{1}{\sqrt{2}} \\
+\dfrac{1}{\sqrt{2}} & -\dfrac{1}{\sqrt{2}} 
+\end{pmatrix}
+\begin{pmatrix}
+3 & 0 \\
+0 & 1
+\end{pmatrix}
+\begin{pmatrix}
+\dfrac{1}{\sqrt{2}} & \dfrac{1}{\sqrt{2}} \\
+\dfrac{1}{\sqrt{2}} & -\dfrac{1}{\sqrt{2}} 
+\end{pmatrix}^T
+\]
+
+Собственные числа для $XX^T$ 
+\[
+\det \begin{pmatrix}
+2-\lambda & 1 & -1 \\
+1& 1-\lambda & 0 \\
+-1 & 0 & 1-\lambda \\
+\end{pmatrix}=0 \rightarrow \lambda = 0,1,3
+\]
+
+Собственные вектора: $\begin{pmatrix}
+1 \\
+-1 \\
+1
+\end{pmatrix}$, $\begin{pmatrix}
+0 \\
+1\\
+1\\
+\end{pmatrix}$,
+$\begin{pmatrix}
+2 \\
+1\\
+-1\\
+\end{pmatrix}$
+
+Нормированная матрица $U$
+\[
+\begin{pmatrix}
+\dfrac{1}{\sqrt{3}} & 0 & \dfrac{2}{\sqrt{6}} \\
+-\dfrac{1}{\sqrt{3}} & \dfrac{1}{\sqrt{2}} & \dfrac{1}{\sqrt{6}} \\
+\dfrac{1}{\sqrt{3}} & \dfrac{1}{\sqrt{2}} & -\dfrac{1}{\sqrt{6}} 
+\end{pmatrix}
+\]
+
+\[
+\Sigma = \begin{pmatrix}
+\sqrt{3} & 0 \\
+0 & 1 \\
+0 & 0 \\
+\end{pmatrix}
+\]
+ 
+В итоге получаем разложение:
+
+\[
+X= \begin{pmatrix}
+\dfrac{1}{\sqrt{3}} & 0 & \dfrac{2}{\sqrt{6}} \\
+-\dfrac{1}{\sqrt{3}} & \dfrac{1}{\sqrt{2}} & \dfrac{1}{\sqrt{6}} \\
+\dfrac{1}{\sqrt{3}} & \dfrac{1}{\sqrt{2}} & -\dfrac{1}{\sqrt{6}} 
+\end{pmatrix}  \begin{pmatrix}
+\sqrt{3} & 0 \\
+0 & 1 \\
+0 & 0 \\
+\end{pmatrix}
+\begin{pmatrix}
+\dfrac{1}{\sqrt{2}} & \dfrac{1}{\sqrt{2}} \\
+\dfrac{1}{\sqrt{2}} & -\dfrac{1}{\sqrt{2}} 
+\end{pmatrix}
+\]
+
+\section{Метод главных компонент PCA}
+\subsection{Задача}
+Наша задача снизить размерность матрицы $Х$ так, чтобы несильно двигать точки.
+Идея: есть две координаты. Возьмем двумерное облако точек. Хотим несильно двигая точки сделать так, чтобы точки лежали на одной прямой. 
+
+Пусть $x$ -- $i$-ая строка-столбец в матрице $X$ или столбец в матрице $X^T$.
+Тогда наша задача сводится к
+\[\min_{\mu, V, \lambda_i} \sum ||x_i-\mu-V \lambda_i||^2 \]
+$x_i$ размера $k \times 1$, $\mu$ размера $k \times 1$, $V$ размера $k \times p$, $\lambda_i$ размера $p \times 1$.
+В столбцах $V$ находятся $k-$мерные ортогональные вектора, единичной длины. $\lambda_i$ показывает веса, с которыми надо взять эти вектора, пытаясь заменить каждый $x_i$. $k$-- исходная размерность.
+$\mu$ -- середина облака.  $p$ -- размерность, до которой хотим снизить. Для визуализации обычно берут $p=2$.
+
+Предположим, что $V$ уже найдено. Оказывается, неважно, до какой размерности мы снижали, $\mu=\dfrac{\sum x_i}{n}$, а $\lambda_i$ находится легко.
+Допустим $\mu$, $V$ найдены. Тогда 
+\[ \lambda_1: \min_\lambda_1 ||x_1-\mu-V \lambda_1||^2 \]
+
+Это есть аналог МНК \[ \beta:  \min_\beta ||y-X\beta||^2 \]
+
+\[\hat{\beta}=(X^TX)^{-1}X^Ty \]
+
+В нашем случае: 
+
+\[\lambda_i=(V^TV)^{-1}V^T(x_i-\mu)=V^T(x_i-\mu)\]
+
+На самом деле метод главных компонент - это выбор плоскости, а дальше МНК.
+
+\textbf{Почему $V^TV = I$?}
+
+$x_1, x_2, x_3, \ldots$ - вектора наблюдений. $x_i$ - i-ое наблюдение, в отличие от МНК, где $x_1, x_2, x_3, \ldots$ - регрессоры. Ищем подпространство, чтобы при проецировании на него получались $\hat{x_1}, \hat{x_2}, \ldots$. Это подпространство будем задавать базисом $v_1, \ldots, v_p$. Для удобства задаем подпространство ортонормальным базисом.
+\[
+\begin{bmatrix}
+v_1^T \\
+v_2^T
+\end{bmatrix}
+\begin{bmatrix}
+v_1 & v_2
+\end{bmatrix}=
+\begin{bmatrix}
+1 & 0 \\
+0 & 1 
+\end{bmatrix}
+\]
+
+$\lambda_i$ мы уже нашли с помощью МНК, теперь осталось проминизировать по $\mu, V$.
+
+\[\min_{\mu, V}||(x_i-\mu)-VV^T(x_i-\mu)||^2=\min_{\mu, V} Q_\mu\]
+$VV^T$ - проектор, матрица-шляпница.
+
+Выпишем условие первого порядка:
+\[dQ_\mu = \sum_i ||(I-VV^T)(x_i-\mu)||^2 = \sum_i d((x_i - \mu)^T(I-VV^T)^T(I-VV^T)(x_i - \mu)) = \sum_i d (x_i - \mu)^T (I-VV^T)(x_i - \mu)= \]
+\[= \sum_i -2 (x_i - \mu)^T (I-VV^T)d\mu = 0\]
+
+В итоге
+$\hat{\mu} = \dfrac{\sum x_i}{n}$ зануляет $dQ$. Но оно нединственно, можно придумать другие.
+\end{document}
