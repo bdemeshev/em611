@@ -63,7 +63,7 @@ lang: ru-RU
 * [Курс EM301](http://bdemeshev.github.io/em301/): бакалавриат факультета экономики вшэ
 * [Задачи с кр EM301](https://github.com/bdemeshev/metrics_hse_exams/raw/master/metrics_hse_exams.pdf)
 * [Задачи к семинарам](https://github.com/bdemeshev/metrics_pro/raw/master/metrics_pro.pdf) EM301
-* Частичный [Конспект-2017 by Андрей Коломиец](https://github.com/bdemeshev/em611/raw/master/2017/metrics_ak.docx). Есть немного ошибок, будьте бдительны! Частичный [лог курса-2017](bdemeshev.github.io/em611/index_2017_2018.html)
+* Частичный [Конспект-2017 by Андрей Коломиец](https://github.com/bdemeshev/em611/raw/master/2017/metrics_ak.docx). Есть немного ошибок, будьте бдительны! Частичный [лог курса-2017](https://bdemeshev.github.io/em611/index_2017_2018.html)
 
 
 Если нужна одна книжка:
