@@ -93,5 +93,4 @@ Stachursky, Primer in econometric theory. [Слайды и часть глав](
 
 * Встреча 4. Работа с ковариационными матрицами, геометрическое доказательство теоремы Гаусса-Маркова, проверка гипотез о коэффициенте и сравнение двух моделей
 
-    - Конспект (бета-версия): pdf, tex
-
+    - Конспект Ефим Лубошников (бета-версия): [pdf](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_04.pdf), [tex](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_04.tex)

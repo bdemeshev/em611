@@ -33,7 +33,7 @@
 \pagestyle{fancy}
 \lhead{Эконометрика, финтех}
 \chead{}
-\rhead{2018-10-06, встреча 3}
+\rhead{2017-10-06, встреча 3}
 \lfoot{}
 \cfoot{}
 \rfoot{\thepage/\pageref{LastPage}}
@@ -118,7 +118,7 @@ $\lambda_1 \dots \lambda_n$, то $\text{tr}(A) = \sum_{i=1}^n \lambda_i$:
 $$A = PDP^{-1},$$
 где $P$ — матрица, составленная из собственных векторов $v_1 \dots v_n$, соответсвующих собственным числам $\lambda_1 \dots \lambda_n$, а матрица
 $D$ — диагональная из собственных чисел:
-$$\text{tr}(A) = \text{tr}(PDP^{-1}) = \text{tr}(D PP^{-1})
+$$\text{tr}(A) = \text{tr}(PDP^{-1}) = \text{tr}(D P^{-1} P)
 = \text{tr}(D) = \sum_{i=1}^n \lambda_i.$$
 
 \textbf{Упражнение:} дана регрессия $\hat{y} = X\hat{\beta}$, построенная методом МНК по $n$ - наблюдениям, $k$ - регрессорам. Вектор наблюдений $y$ можно спроецировать на пространство наблюдений $\mathbb{R}^n$, в в котором строится предсказание, с помощью матрицы-шляпницы $H$:
@@ -220,11 +220,11 @@ $$Q = \sum_i^n r_i^T r_i - r_i^T VV^T r_i \to \min_{V: V^TV=I}.$$
 $$Q=r_i^T VV^T r_i \to \max_{V: V^TV=I}.$$
 Tак как $Q \in \mathbb{R}$ - скаляр, то можно записать:
 $$Q = \text{tr} (\sum_i^n r_i^T VV^T r_i ) =
- \text{tr} (VV^T \sum_i^n r_i^T r_i) $$
+ \text{tr} (VV^T \sum_i^n r_i r_i^T) $$
  $$
  = \text{tr} (VV^T (n-1)\text{sVar}(X))=
  (n-1)\text{tr} (V \text{sVar}(X) V^T )
- = (n-1) V \text{sVar}(X) V^T$$
+ = (n-1) \sum_{j}^p v_j^T \text{sVar}(X) v_j $$
 
 Перейдем к эквивалентной задаче:
 $$Q' = \sum_{j}^p v_j^T S v_j \to \max,$$
@@ -456,10 +456,10 @@ $$VV^Tv_1 = v_1 = V
 \vdots\\
 0
 \end{bmatrix}$$
-Получилось, что искомый столбец $v_1$ для PCA  —  это столбец матрицы $V$ из SVD разложения $X$,
-соответсвующий первому по величине значению в матрице $\Sigma$ ($\Sigma_{ii} = \sqrt{\lambda_i}$).
+Получилось, что искомый столбец $v_1$ для PCA  —  это столбец матрицы $V$ из SVD разложения $X$, соответсвующий первому по величине значению в матрице $\Sigma$ ($\Sigma_{ii} = \sqrt{\lambda_i}$).
 
-$$pc_1 = Xv_1 = (U\Sigma V^T)v_1 =
+$$
+pc_1 = Xv_1 = (U\Sigma V^T)v_1 =
 U \Sigma
 \begin{bmatrix}
 1\\
