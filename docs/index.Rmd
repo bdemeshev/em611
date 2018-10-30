@@ -20,13 +20,13 @@ lang: ru-RU
   SVD применительно к МНК. SVD применительно к методу главных компонент.
 
 3. МНК с предпосылками на ожидание и дисперсию.
-  
+
   ожидание и ковариационная матрица от векторов, ожидание от квадратичной формы,
   теорема Гаусса-Маркова, геометрическое доказательство теоремы Гаусса-Маркова
 
-4. Зоопарк распределений 
+4. Зоопарк распределений
 
-  вероятностная дифференциальная форма, экспоненциальное, гамма, бета — через время ожидания, 
+  вероятностная дифференциальная форма, экспоненциальное, гамма, бета — через время ожидания,
   t, F, $\chi^2$ — через проекции
 
 5. МНК с нормальными ошибками
@@ -73,7 +73,7 @@ Stachursky, Primer in econometric theory. [Слайды и часть глав](
 
 ### Конспекты:
 
-* [Шаблон](https://github.com/bdemeshev/em611/blob/master/2017/note_template/note_template.tex) для конспектирования лекций, [картинки для МНК](https://github.com/olyagnilova/gauss-markov-pythagoras) из работы Оли Гниловой, их можно свободно использовать.
+* Шаблон, [tex](https://github.com/bdemeshev/em611/blob/master/2017/note_template/note_template.tex) и [pdf](https://github.com/bdemeshev/em611/raw/master/2017/note_template/note_template.pdf) для конспектирования лекций, [картинки для МНК](https://github.com/olyagnilova/gauss-markov-pythagoras) из работы Оли Гниловой, их можно свободно использовать.
 
 * Встреча 1. МНК без вероятностей. Зато с матрицами :)
 
@@ -83,14 +83,16 @@ Stachursky, Primer in econometric theory. [Слайды и часть глав](
 
 * Встреча 2. Обсуждение домашки, SVD, постановка задачи PCA.
 
-    - Конспект Марины (бета-версия): [pdf](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_02.pdf), [tex](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_02.tex) 
+    - Конспект Марины Ермоловой: [pdf](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_02.pdf), [tex](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_02.tex)
 
     - Вольное домашнее задание: из [задачника по машинке](https://github.com/bdemeshev/mlearn_pro/raw/master/mlearn_pro.pdf)  5.3, 5.14, 5.8, 5.9, 5.10, 5.13.
 
 * Встреча 3. Эквивалентность PCA и SVD.
 
-    - Конспект Лизы (бета-версия): [pdf](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_03.pdf), [tex](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_03.tex)
+    - Конспект Лизы Вахрамеевой: [pdf](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_03.pdf), [tex](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_03.tex)
 
 * Встреча 4. Работа с ковариационными матрицами, геометрическое доказательство теоремы Гаусса-Маркова, проверка гипотез о коэффициенте и сравнение двух моделей
 
-    - Конспект Ефим Лубошников (бета-версия): [pdf](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_04.pdf), [tex](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_04.tex)
+    - Конспект Ефим Лубошников: [pdf](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_04.pdf), [tex](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_04.tex)
+    
+* Контрольная работа 1: [2018](https://github.com/bdemeshev/em611/raw/master/2018/kr_01/kr_01.pdf), [2017](https://github.com/bdemeshev/em611/raw/master/2017/kr_01/kr_01.pdf)
