@@ -1,0 +1,133 @@
+\documentclass[12pt]{article} % размер шрифта
+
+\usepackage{tikz} % картинки в tikz
+\usepackage{microtype} % свешивание пунктуации
+
+\usepackage{array} % для столбцов фиксированной ширины
+
+\usepackage{url} % для вставки ссылок \url{...}
+
+\usepackage{indentfirst} % отступ в первом параграфе
+
+\usepackage{sectsty} % для центрирования названий частей
+\allsectionsfont{\centering} % приказываем центрировать все sections
+
+\usepackage{amsthm} % теоремы и доказательства
+
+\theoremstyle{definition} % прямой шрифт в условии теорем
+\newtheorem{theorem}{Теорема}[section]
+
+
+\usepackage{amsmath, amssymb} % куча стандартных математических плюшек
+
+\usepackage[top=2cm, left=1.5cm, right=1.5cm, bottom=2cm]{geometry} % размер текста на странице
+
+\usepackage{lastpage} % чтобы узнать номер последней страницы
+
+\usepackage{enumitem} % дополнительные плюшки для списков
+%  например \begin{enumerate}[resume] позволяет продолжить нумерацию в новом списке
+\usepackage{caption} % подписи к картинкам без плавающего окружения figure
+
+
+\usepackage{fancyhdr} % весёлые колонтитулы
+\pagestyle{fancy}
+\lhead{Эконометрика, финтех}
+\chead{}
+\rhead{2017-10-24, Праздник-1}
+\lfoot{}
+\cfoot{}
+\rfoot{\thepage/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+
+
+\usepackage{todonotes} % для вставки в документ заметок о том, что осталось сделать
+% \todo{Здесь надо коэффициенты исправить}
+% \missingfigure{Здесь будет картина Последний день Помпеи}
+% команда \listoftodos — печатает все поставленные \todo'шки
+
+\usepackage{booktabs} % красивые таблицы
+% заповеди из документации:
+% 1. Не используйте вертикальные линии
+% 2. Не используйте двойные линии
+% 3. Единицы измерения помещайте в шапку таблицы
+% 4. Не сокращайте .1 вместо 0.1
+% 5. Повторяющееся значение повторяйте, а не говорите "то же"
+
+\usepackage{fontspec} % поддержка разных шрифтов
+\usepackage{polyglossia} % поддержка разных языков
+
+\setmainlanguage{russian}
+\setotherlanguages{english}
+
+\setmainfont{Linux Libertine O} % выбираем шрифт
+% если Linux Libertine не установлен, то
+% можно также попробовать Helvetica, Arial, Cambria и т.Д.
+
+% чтобы использовать шрифт Linux Libertine на личном компе,
+% его надо предварительно скачать по ссылке
+% http://www.linuxlibertine.org/index.php?id=91&L=1
+
+% на сервисах типа sharelatex.com этот шрифт есть :)
+
+\newfontfamily{\cyrillicfonttt}{Linux Libertine O}
+% пояснение зачем нужно шаманство с \newfontfamily
+% http://tex.stackexchange.com/questions/91507/
+
+\AddEnumerateCounter{\asbuk}{\russian@alph}{щ} % для списков с русскими буквами
+\setlist[enumerate, 2]{label=\asbuk\cdot),ref=\asbuk\cdot} % списки уровня 2 будут буквами а) б) ...
+
+%% эконометрические и вероятностные сокращения
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Corr}{Corr}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\E}{E}
+\def \hb{\hat{\beta}}
+\def \hs{\hat{\sigma}}
+\def \htheta{\hat{\theta}}
+\def \s{\sigma}
+\def \hy{\hat{y}}
+\def \hY{\hat{Y}}
+\def \v1{\vec{1}}
+\def \e{\varepsilon}
+\def \he{\hat{\e}}
+\def \z{z}
+\def \hVar{\widehat{\Var}}
+\def \hCorr{\widehat{\Corr}}
+\def \hCov{\widehat{\Cov}}
+\def \cN{\mathcal{N}}
+
+
+\begin{document}
+
+\begin{enumerate}
+  \item Найдите SVD-разложение матрицы
+  $\begin{pmatrix}
+   0 & 2 & 0 \\
+   1 & 1 & 1 \\
+  \end{pmatrix}$.
+  \item В каких границах могут лежать диагональные элементы матрицы-шляпницы $H$?
+  Чему равно их среднее значение?
+  \item Найдите дифференциал $d \frac{r^T Ar}{r^Tr}$, где $A^T=A$ — это матрица констант.
+  \item Постройте регрессию вектора $y = (4,2,-2)^T$ на вектора $x=(1,0,-1)^T$ и $z=(0,1,2)^T$
+  без константы. Найдите $RSS$, $TSS$, $ESS$. Верно ли в данной регрессии, что $TSS=ESS+RSS$ и почему?
+  \item Известно, что $y=x+2z$. Храбрый исследователь Василий построил парные регрессии
+  $y$ на $x$ и $x$ на $y$. Нам частично известны результаты этих регрессий, $\hat y_i = \hat\alpha_1 + 16 x_i$,
+  $\hat x_i = \hat \beta_1 + 0.01 y_i$.
+
+  Найдите коэффициент $\hat\gamma_2$ в регрессии $\hat x_i = \hat \gamma_1 + \hat\gamma_2 z_i$.
+  \item Докажите, что в методе главных компонент с масштабированием переменных средняя величина $R^2$ по всем парным
+  регрессиям исходных переменных на первую главную компоненту равна наибольшему сингулярному значению
+  матрицы исходных переменных. 
+
+  \item Поделим выборку на обучающую $(X, y)$ и тестовую $(X_{test}, y_{test})$.
+  Регрессоры $X$ и $X_{test}$ будем считать нестохастическими, а предпосылки
+  теоремы Гаусса-Маркова — выполненными на всей исходной выборке.
+
+  Найдите $\Var(\hat y_{test})$, $\Cov(\hat \beta, \hat y_{test})$.
+\end{enumerate}
+
+
+
+\end{document}
