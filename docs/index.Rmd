@@ -96,3 +96,16 @@ Stachursky, Primer in econometric theory. [Слайды и часть глав](
     - Конспект Ефим Лубошников: [pdf](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_04.pdf), [tex](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_04.tex)
     
 * Контрольная работа 1: [2018](https://github.com/bdemeshev/em611/raw/master/2018/kr_01/kr_01.pdf), [2017](https://github.com/bdemeshev/em611/raw/master/2017/kr_01/kr_01.pdf)
+
+
+* Встреча 5. Птички, дифференциальные формы, экспоненциальное, бета и гамма распределения.
+
+    - Конспект (бета) Ярослав Романов: [pdf](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_05.pdf), [tex](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_05.tex)
+
+* Встреча 6. Аксиомы Хершела-Максвелла, нормальное распределение, хи-квадрат, t, F-распределения.
+
+<!--
+    - Конспект (бета) : [pdf](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_06.pdf), [tex](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_06.tex)
+-->
+
+
