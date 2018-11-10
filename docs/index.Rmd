@@ -57,7 +57,7 @@ lang: ru-RU
 
 ### Ссылки:
 
-* [оценки-2018]()
+* [оценки-2018](https://docs.google.com/spreadsheets/d/1Da3y6Tq-GEtGftxtjGG-iQ77-mtY4W9HfN8Wewqxv7U/edit?usp=sharing)
 
 * [github-репозиторий](https://github.com/bdemeshev/em611) курса EM611: свалка файлов
 * [Курс EM301](http://bdemeshev.github.io/em301/): бакалавриат факультета экономики вшэ
