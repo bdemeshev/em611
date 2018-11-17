@@ -102,10 +102,13 @@ Stachursky, Primer in econometric theory. [Слайды и часть глав](
 
     - Конспект (бета) Ярослав Романов: [pdf](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_05.pdf), [tex](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_05.tex)
 
-* Встреча 6. Аксиомы Хершела-Максвелла, нормальное распределение, хи-квадрат, t, F-распределения.
+* Встреча 6. Аксиомы Хершела-Максвелла, нормальное распределение, хи-квадрат.
+
+    - Конспект (бета) Мария Щеголева: [pdf](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_06.pdf), [tex](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_06.tex)
+
+
+* Встреча 7. t, F-распределения, Матрица-Мать Всех Регрессий.
 
 <!--
-    - Конспект (бета) : [pdf](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_06.pdf), [tex](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_06.tex)
+    - Конспект (бета) : [pdf](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_07.pdf), [tex](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_07.tex)
 -->
-
-
