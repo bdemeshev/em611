@@ -169,10 +169,124 @@
 \[ \Corr(y_1, y_2) = \frac{\Cov(y_1, y_2)}
 {\sqrt{\Var(y_1)} \sqrt{\Var(y_2)} }. \]
 
+
+%добавим графики
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt    
+\begin{center}
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,427); %set diagram left start at 0, and has height of 427
+
+%Straight Lines [id:da7046667171619407] 
+\draw    (148.22,324.57) -- (266.34,159.63) ;
+\draw [shift={(267.5,158)}, rotate = 485.61] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Straight Lines [id:da244021284098491] 
+\draw  [dash pattern={on 0.84pt off 2.51pt}]  (267.5,158) -- (146.5,159) ;
+
+
+%Straight Lines [id:da1929269067918925] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ]   (265.5,321.06) -- (148.22,324.57) ;
+
+\draw [shift={(267.5,321)}, rotate = 178.29] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da8194662510474527] 
+\draw    (148.22,324.57) -- (147.51,99) ;
+\draw [shift={(147.5,97)}, rotate = 449.82] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Straight Lines [id:da738015664982508] 
+\draw  [dash pattern={on 0.84pt off 2.51pt}]  (267.5,158) -- (267.5,321) ;
+
+
+%Shape: Ellipse [id:dp038430448292362196] 
+\draw   (81,302.5) .. controls (81,255.28) and (163.04,217) .. (264.25,217) .. controls (365.46,217) and (447.5,255.28) .. (447.5,302.5) .. controls (447.5,349.72) and (365.46,388) .. (264.25,388) .. controls (163.04,388) and (81,349.72) .. (81,302.5) -- cycle ;
+
+% Text Node
+\draw (282.61,149.18) node [scale=1]  {$a\ $};
+% Text Node
+\draw (170.61,87.18) node [scale=0.9]  {$1^{\trianglelefteq } =\left(\begin{matrix}
+1\\
+1\\
+..\\
+..\\
+1
+\end{matrix}\right) \ $};
+% Text Node
+\draw (268.61,338.18) node [scale=1]  {$a\ -\ \overline{a} \cdot 1^{\trianglelefteq } \ $};
+% Text Node
+\draw (351,195) node   {$\mathbb{R}^{n}$};
+% Text Node
+\draw (127.61,165.18) node [scale=1]  {$\overline{a} \cdot 1^{\trianglelefteq } \ $};
+% Text Node
+\draw (365,270) node   {$Col^{\perp } 1^{\trianglelefteq }$};
+% Text Node
+\draw (389,291) node [scale=0.7]  {$\dim Col^{\perp } 1^{\trianglelefteq } =n-1$};
+
+
+\end{tikzpicture}
+\end{center}
+
 Выборочная корреляция двух столбцов чисел:
 \[ \sCorr(a, b) = \frac{\sCov(a, b)}
 {\sqrt{\sVar(a)} \sqrt{\sVar(b)} } =
-\cos (a - \bar{a}, b - \bar{b}). \]
+\cos (a - \bar{a}, b - \bar{b}) = \cos\alpha. \]
+
+%добавим графики
+\begin{center}
+ \begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,427); %set diagram left start at 0, and has height of 427
+
+%Straight Lines [id:da7715012207873877] 
+\draw    (148.22,324.57) -- (266.34,159.63) ;
+\draw [shift={(267.5,158)}, rotate = 485.61] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Straight Lines [id:da3628821017661845] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ]   (265.5,321.06) -- (148.22,324.57) ;
+
+\draw [shift={(267.5,321)}, rotate = 178.29] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da30792962820259984] 
+\draw    (148.22,324.57) -- (147.51,99) ;
+\draw [shift={(147.5,97)}, rotate = 449.82] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Straight Lines [id:da9947601288924183] 
+\draw  [dash pattern={on 0.84pt off 2.51pt}]  (267.5,158) -- (267.5,321) ;
+
+
+%Shape: Ellipse [id:dp6156140101536083] 
+\draw   (74,302.5) .. controls (74,255.28) and (156.04,217) .. (257.25,217) .. controls (358.46,217) and (440.5,255.28) .. (440.5,302.5) .. controls (440.5,349.72) and (358.46,388) .. (257.25,388) .. controls (156.04,388) and (74,349.72) .. (74,302.5) -- cycle ;
+%Straight Lines [id:da39060742340628074] 
+\draw    (148.22,324.57) -- (207.96,111.93) ;
+\draw [shift={(208.5,110)}, rotate = 465.69] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Straight Lines [id:da007539771018415964] 
+\draw  [dash pattern={on 0.84pt off 2.51pt}]  (208.5,110) -- (208.5,273) ;
+
+
+%Straight Lines [id:da6877394213991674] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ]   (206.98,274.3) -- (148.22,324.57) ;
+
+\draw [shift={(208.5,273)}, rotate = 139.45] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Shape: Arc [id:dp5154040953447191] 
+\draw  [draw opacity=0][line width=2.25]  (177.99,322.77) .. controls (186.62,322.49) and (193.5,317.23) .. (193.5,310.78) .. controls (193.5,304.48) and (186.92,299.31) .. (178.56,298.82) -- (177.27,310.78) -- cycle ; \draw  [color={rgb, 255:red, 208; green, 2; blue, 27 }  ,draw opacity=1 ][line width=2.25]  (177.99,322.77) .. controls (186.62,322.49) and (193.5,317.23) .. (193.5,310.78) .. controls (193.5,304.48) and (186.92,299.31) .. (178.56,298.82) ;
+
+% Text Node
+\draw (282.61,149.18) node [scale=1]  {$a\ $};
+% Text Node
+\draw (136.61,97.18) node [scale=0.9]  {$1^{\trianglelefteq }$};
+% Text Node
+\draw (268.61,338.18) node [scale=1]  {$a\ -\ \overline{a} \cdot 1^{\trianglelefteq } \ $};
+% Text Node
+\draw (351,195) node   {$\mathbb{R}^{n}$};
+% Text Node
+\draw (369,336) node   {$Col^{\perp } 1^{\trianglelefteq }$};
+% Text Node
+\draw (214.61,96.18) node [scale=1]  {$b\ $};
+% Text Node
+\draw (217.61,258.18) node [scale=1]  {$b\ -\ \overline{b} \cdot 1^{\trianglelefteq } \ $};
+% Text Node
+\draw (205.03,303.57) node [color={rgb, 255:red, 208; green, 2; blue, 27 }  ,opacity=1 ]  {$\alpha $};
+
+
+\end{tikzpicture}
+\end{center}
 
 \textbf{Упражнение:}
 Записать выборочную ковариационную матрицу для \(X\) в предположении, что переменные уже центрированы. Запишем матрицу \(X\) по строкам и по столбцам:

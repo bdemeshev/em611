@@ -1,0 +1,973 @@
+\documentclass[12pt]{article} % размер шрифта
+\usepackage{tikz} % картинки в tikz
+\usepackage{graphicx}
+\usepackage{amssymb}
+\graphicspath{{images/}}
+\usepackage{microtype} % свешивание пунктуации
+\usepackage{array} % для столбцов фиксированной ширины
+\usepackage{url} % для вставки ссылок \url{...}
+\usepackage{indentfirst} % отступ в первом параграфе
+\usepackage{sectsty} % для центрирования названий частей
+\allsectionsfont{\centering} % приказываем центрировать все sections
+\usepackage{amsthm} % теоремы и доказательства
+\theoremstyle{definition} % прямой шрифт в условии теорем
+\newtheorem{theorem}{Теорема}[section]
+\usepackage{amsmath} % куча стандартных математических плюшек
+\usepackage[top=2cm, left=1.5cm, right=1.5cm, bottom=2cm]{geometry} % размер текста на странице
+\usepackage{lastpage} % чтобы узнать номер последней страницы
+\usepackage{enumitem} % дополнительные плюшки для списков
+%  например \begin{enumerate}[resume] позволяет продолжить нумерацию в новом списке
+\usepackage{caption} % подписи к картинкам без плавающего окружения figure
+
+
+\usepackage{fancyhdr} % весёлые колонтитулы
+\pagestyle{fancy}
+\lhead{Эконометрика, финтех}
+\chead{}
+\rhead{2018-11-17, встреча 7}
+\lfoot{}
+\cfoot{}
+\rfoot{\thepage/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+
+
+\usepackage{todonotes} % для вставки в документ заметок о том, что осталось сделать
+% \todo{Здесь надо коэффициенты исправить}
+% \missingfigure{Здесь будет картина Последний день Помпеи}
+% команда \listoftodos — печатает все поставленные \todo'шки
+
+\usepackage{booktabs} % красивые таблицы
+% заповеди из документации:
+% 1. Не используйте вертикальные линии
+% 2. Не используйте двойные линии
+% 3. Единицы измерения помещайте в шапку таблицы
+% 4. Не сокращайте .1 вместо 0.1
+% 5. Повторяющееся значение повторяйте, а не говорите "то же"
+
+\usepackage{fontspec} % поддержка разных шрифтов
+\usepackage{polyglossia} % поддержка разных языков
+
+\setmainlanguage{russian}
+\setotherlanguages{english}
+
+\setmainfont{Linux Libertine O} % выбираем шрифт
+% если Linux Libertine не установлен, то
+% можно также попробовать Helvetica, Arial, Cambria и т.Д.
+
+% чтобы использовать шрифт Linux Libertine на личном компе,
+% его надо предварительно скачать по ссылке
+% http://www.linuxlibertine.org/index.php?id=91&L=1
+
+% на сервисах типа sharelatex.com этот шрифт есть :)
+
+\newfontfamily{\cyrillicfonttt}{Linux Libertine O}
+% пояснение зачем нужно шаманство с \newfontfamily
+% http://tex.stackexchange.com/questions/91507/
+
+\AddEnumerateCounter{\asbuk}{\russian@alph}{щ} % для списков с русскими буквами
+\setlist[enumerate, 2]{label=\asbuk*),ref=\asbuk*} % списки уровня 2 будут буквами а) б) ...
+
+%% эконометрические и вероятностные сокращения
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\sCov}{sCov}
+\DeclareMathOperator{\sVar}{sVar}
+\DeclareMathOperator{\sCorr}{sCorr}
+\DeclareMathOperator{\Corr}{Corr}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\tr}{trace}
+\DeclareMathOperator{\trace}{trace}
+\DeclareMathOperator{\Lin}{Lin}
+\DeclareMathOperator{\Linp}{Lin^{\perp}}
+\DeclareMathOperator{\Col}{Col}
+\DeclareMathOperator{\Colp}{Col^{\perp}}
+
+
+\def \hb{\hat{\beta}}
+\def \hs{\hat{\sigma}}
+\def \htheta{\hat{\theta}}
+\def \s{\sigma}
+\def \hy{\hat{y}}
+\def \hY{\hat{Y}}
+\def \v1{\vec{1}}
+\def \e{\varepsilon}
+\def \he{\hat{\e}}
+\def \z{z}
+\def \hVar{\widehat{\Var}}
+\def \hCorr{\widehat{\Corr}}
+\def \hCov{\widehat{\Cov}}
+\def \cN{\mathcal{N}}
+\def \RR{\mathbb{R}}
+\def \hu{\hat{u}}
+
+\makeatletter
+\def\MT@warn@unknown{}
+\makeatother
+
+
+
+\begin{document}
+Конспектировали: Ирина Долгалева и Дарья Краснова
+
+\section{Свойства многомерного нормального распределения}
+    Случайный вектор $u$ имеет многомерное нормальное стандартное распределение 
+    \[
+        u = \begin{pmatrix} u_1 \\ u_2 \\ \vdots \\ \vdots \\ \vdots \\ \vdots \\ u_n \end{pmatrix} \sim \mathcal{N}(0, I)
+    \]
+    каждое $u_i \sim\cN(0, 1)$ и независимы.
+Такой вектор удовлетворяет ряду аксиом.
+\newtheorem*{axiom}{Аксиомы:}
+\begin{axiom}
+    \begin{enumerate}
+        \item В любом ортонормальном базисе закон распределения $u$ одинаковый
+        \item $u_i$  — независимы
+        \item $Var(u_i) = 1$
+    \end{enumerate} 
+\end{axiom}    
+\par
+$\Downarrow$ Из этих аксиом следует два важных текстовых свойства нормального распределения.    
+
+\newtheorem*{prop}{Свойства:}
+\begin{prop}    
+    \begin{enumerate}    
+        \item Квадрат длины проекции $u$ на $V (dim(V) = d)$ имеет $\sim\mathcal{\chi}_{d}^2$ распределение
+        \item Квадраты длин проекции на $V$ и $W$ независимы, если  $V \perp W$
+    \end{enumerate}
+\end{prop}
+ 
+
+
+\section{t — распределение}
+\newtheorem*{classic_def}{Классическое определение}
+\begin{classic_def}\hspace{2cm} \par
+\smallskip
+    Случайная величина $T$
+    \[
+        T = \cfrac{z}{\sqrt{\cfrac{\gamma_k}{k}}}
+    \]
+    где $z \sim \cN(0,1), \gamma_k \sim \mathcal{\chi}_k^2$,
+    имеет $t$-распределение с $k$ степенями свободы, где $z, \gamma_k$  — независимы.
+\end{classic_def}
+
+\newtheorem*{geom_def}{Геометрическое определение}
+\begin{geom_def}\hspace{2cm} \par
+    \smallskip
+    Рассмотрим $V$ — одномерное линейное подпространство, задаваемое вектором единичной длины $v$ и ортогональное ему подпространство $W$ размерности $k$:
+    \[
+        V = \underset{\lVert v \rVert = 1}{\Lin(v)},  dim(V) = 1 \]\[
+        W = \Col(X), dim(W) = k \]\[
+        V \perp W 
+    \]
+    
+    Пусть $u$ вектор пространства $\RR^n$, 
+        $\hu_V = z\cdot v$ — проекция $u$ на 
+        $V, \hu_W$ — проекция $u$ на 
+        $W, \hu_{W+V}$ — проекция $u$ на $W \oplus V$. 
+
+\begin{center}
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,417); %set diagram left start at 0, and has height of 417
+
+%Straight Lines [id:da6234176842495026] 
+\draw    (126.55,302.81) -- (321.42,45.77) ;
+\draw [shift={(322.63,44.18)}, rotate = 487.17] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Straight Lines [id:da21359802122959137] 
+\draw    (126.55,302.81) -- (202.87,279.65) -- (211,277.28) -- (317.19,245.76) ;
+\draw [shift={(319.11,245.19)}, rotate = 523.47] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Curve Lines [id:da22374821167538117] 
+\draw    (324.98,187.76) .. controls (343.76,173.4) and (444.74,137.5) .. (430.65,174.83) .. controls (416.56,212.16) and (465.87,192.06) .. (483.48,203.55) .. controls (501.1,215.04) and (485.83,236.57) .. (454.13,248.06) .. controls (422.43,259.54) and (494.05,259.54) .. (477.61,288.26) .. controls (461.18,316.98) and (397.77,316.98) .. (367.25,316.98) ;
+
+
+%Straight Lines [id:da8220743011451278] 
+\draw [color={rgb, 255:red, 65; green, 116; blue, 4 }  ,draw opacity=1 ][line width=2.25]    (65.5,299.75) -- (128.22,302.51) -- (185.26,305.49) -- (211.09,306.93) -- (247.73,309.74) -- (367.25,316.98) ;
+
+
+%Straight Lines [id:da8134143730308454] 
+\draw    (126.55,302.81) -- (324.98,187.76) ;
+
+
+%Straight Lines [id:da7528690883484771] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] [dash pattern={on 0.84pt off 2.51pt}]  (322.63,44.18) -- (319.11,245.19) ;
+
+
+%Straight Lines [id:da11553418629470913] 
+\draw [color={rgb, 255:red, 12; green, 87; blue, 223 }  ,draw opacity=1 ][line width=2.25]    (81.94,329.9) -- (126.55,302.81) -- (343.76,177.71) ;
+
+
+%Straight Lines [id:da11400275333624355] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ]   (196.46,262) -- (128.22,302.51) ;
+
+\draw [shift={(198.17,260.98)}, rotate = 149.3] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da5250657247248992] 
+\draw  [dash pattern={on 0.84pt off 2.51pt}]  (292.1,206.42) -- (322.63,44.18) ;
+
+
+%Straight Lines [id:da7128385525326205] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ]   (290.38,207.43) -- (128.22,302.51) ;
+
+\draw [shift={(292.1,206.42)}, rotate = 149.61] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da5664246698100189] 
+\draw  [dash pattern={on 0.84pt off 2.51pt}]  (247.73,309.74) -- (322.63,44.18) ;
+
+
+%Shape: Arc [id:dp9383806795280881] 
+\draw  [draw opacity=0][line width=2.25]  (208.72,308.32) .. controls (220.23,307.93) and (229.41,300.7) .. (229.41,291.84) .. controls (229.41,283.18) and (220.65,276.08) .. (209.5,275.39) -- (207.73,291.84) -- cycle ; \draw  [color={rgb, 255:red, 208; green, 2; blue, 27 }  ,draw opacity=1 ][line width=2.25]  (208.72,308.32) .. controls (220.23,307.93) and (229.41,300.7) .. (229.41,291.84) .. controls (229.41,283.18) and (220.65,276.08) .. (209.5,275.39) ;
+%Shape: Arc [id:dp9272428099298939] 
+\draw  [draw opacity=0][line width=2.25]  (201.16,306.83) .. controls (206.75,306.03) and (211.09,300.24) .. (211.09,293.21) .. controls (211.09,286.36) and (206.96,280.68) .. (201.57,279.66) -- (199.82,293.21) -- cycle ; \draw  [color={rgb, 255:red, 208; green, 2; blue, 27 }  ,draw opacity=1 ][line width=2.25]  (201.16,306.83) .. controls (206.75,306.03) and (211.09,300.24) .. (211.09,293.21) .. controls (211.09,286.36) and (206.96,280.68) .. (201.57,279.66) ;
+%Straight Lines [id:da7023540189464316] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ]   (245.74,309.62) -- (128.22,302.51) ;
+
+\draw [shift={(247.73,309.74)}, rotate = 183.46] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+% Text Node
+\draw (332.61,34.13) node [scale=1]  {$u\ $};
+% Text Node
+\draw (196.41,245.6) node   {$v$};
+% Text Node
+\draw (380.05,151.88) node [color={rgb, 255:red, 15; green, 86; blue, 168 }  ,opacity=1 ,rotate=-343.3]  {$\dim V=1$};
+% Text Node
+\draw (318.61,210.68) node [rotate=-338.23]  {$\hat{u}_{V} =z\cdot v$};
+% Text Node
+\draw (330.26,334.95) node [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,opacity=1 ]  {$\dim W=k$};
+% Text Node
+\draw (249.25,326) node   {$\hat{u}_{W}$};
+% Text Node
+\draw (529.86,186.32) node [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,opacity=1 ]  {$\dim( V+W) =1+k$};
+% Text Node
+\draw (344.35,259.96) node   {$\hat{u}_{V+W}$};
+% Text Node
+\draw (241.03,282.52) node [color={rgb, 255:red, 208; green, 2; blue, 27 }  ,opacity=1 ]  {$\alpha $};
+
+
+\end{tikzpicture}
+\end{center}
+Тогда, случайная величина $T$
+    \[
+        T = \cfrac{z}{\sqrt{\cfrac{\lVert \hat u_W \rVert ^2}{dim(W)}}} =  \tg\alpha\cdot \sqrt{dim(W)}\sim t(k)
+    \]
+    имеет $t$-распределение с $k$ степенями свободы, где $\alpha$ — угол между $\hat u_W \text{ и } \hat u_{W+V}$. 
+\end{geom_def}
+Рассмотрим подпространство $V+W$:
+\begin{center}
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,417); %set diagram left start at 0, and has height of 417
+
+%Straight Lines [id:da7529409074982417] 
+\draw    (156.04,277.61) -- (284.88,87.16) ;
+\draw [shift={(286,85.5)}, rotate = 484.08] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Curve Lines [id:da3340045899752353] 
+\draw    (157,31.5) .. controls (171.39,8.5) and (332.44,-15.77) .. (327,25.5) .. controls (321.56,66.77) and (409,56.5) .. (438,64.5) .. controls (467,72.5) and (492.55,97.08) .. (461,149.5) .. controls (429.45,201.92) and (558.13,187.49) .. (545.54,233.49) .. controls (532.94,279.5) and (484.38,279.5) .. (461,279.5) ;
+
+
+%Straight Lines [id:da5025070445497966] 
+\draw [color={rgb, 255:red, 65; green, 116; blue, 4 }  ,draw opacity=1 ][line width=2.25]    (134,277.5) -- (156.04,277.61) -- (461,279.5) ;
+
+
+%Straight Lines [id:da8177192802984294] 
+\draw  [dash pattern={on 4.5pt off 4.5pt}]  (286,278.5) -- (286,85.5) ;
+
+
+%Straight Lines [id:da6371549517423754] 
+\draw [color={rgb, 255:red, 12; green, 87; blue, 223 }  ,draw opacity=1 ][line width=2.25]    (156,300.5) -- (157,31.5) ;
+
+
+%Straight Lines [id:da3558996449585804] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ]   (156.51,191.05) -- (156.04,277.61) ;
+
+\draw [shift={(156.52,189.05)}, rotate = 90.31] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da2221076511122586] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ]   (156.99,89.5) -- (156.04,277.61) ;
+
+\draw [shift={(157,87.5)}, rotate = 90.29] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Shape: Arc [id:dp08308426316402184] 
+\draw  [draw opacity=0][line width=2.25]  (198.7,275.74) .. controls (206.58,273.22) and (211.63,261.09) .. (210.2,247.17) .. controls (208.83,233.73) and (201.89,223.15) .. (194.02,221.64) -- (193.86,248.84) -- cycle ; \draw  [color={rgb, 255:red, 208; green, 2; blue, 27 }  ,draw opacity=1 ][line width=2.25]  (198.7,275.74) .. controls (206.58,273.22) and (211.63,261.09) .. (210.2,247.17) .. controls (208.83,233.73) and (201.89,223.15) .. (194.02,221.64) ;
+%Shape: Arc [id:dp7454442863185026] 
+\draw  [draw opacity=0][line width=2.25]  (183.97,276.31) .. controls (187.73,273.93) and (190.51,265.29) .. (190.51,254.99) .. controls (190.51,245.25) and (188.02,236.99) .. (184.57,234.11) -- (181.88,254.99) -- cycle ; \draw  [color={rgb, 255:red, 208; green, 2; blue, 27 }  ,draw opacity=1 ][line width=2.25]  (183.97,276.31) .. controls (187.73,273.93) and (190.51,265.29) .. (190.51,254.99) .. controls (190.51,245.25) and (188.02,236.99) .. (184.57,234.11) ;
+%Straight Lines [id:da8594801018667132] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ]   (284,278.49) -- (156.04,277.61) ;
+
+\draw [shift={(286,278.5)}, rotate = 180.39] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da7402128209416369] 
+\draw  [dash pattern={on 4.5pt off 4.5pt}]  (157,87.5) -- (286,85.5) ;
+
+
+
+% Text Node
+\draw (145.27,204.7) node   {$v$};
+% Text Node
+\draw (105.93,58.56) node [color={rgb, 255:red, 15; green, 86; blue, 168 }  ,opacity=1 ]  {$\dim V=1$};
+% Text Node
+\draw (194.87,104.76) node   {$\hat{u}_{V} =z\cdot v$};
+% Text Node
+\draw (416.79,294.87) node [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,opacity=1 ]  {$\dim W=k$};
+% Text Node
+\draw (275.74,290.52) node   {$\hat{u}_{W}$};
+% Text Node
+\draw (430.68,108.73) node [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,opacity=1 ]  {$V+W$};
+% Text Node
+\draw (307.59,75.71) node   {$\hat{u}_{V+W}$};
+% Text Node
+\draw (223.45,230.85) node [color={rgb, 255:red, 208; green, 2; blue, 27 }  ,opacity=1 ]  {$\alpha $};
+
+
+\end{tikzpicture}
+\end{center}
+
+   
+
+ $v$ — нормаль (единичной длины) к $W \hspace{0.2cm} \Rightarrow \hspace{0.2cm} v \perp W$ \par
+ $\hat u_W$ - проекция $u$ на $W$; dim($W$) $=k \hspace{0.2cm} \Rightarrow \hspace{0.2cm} \lVert \hat u_W \rVert ^2 \sim \mathcal{\chi}_k^2 \hspace{0.2cm}$ \par
+ Получаем эквивалентные определения.
+
+
+\section{$\mathcal{F}$ — распределение}
+\begin{classic_def}\hspace{2cm} \par
+    \smallskip
+    Случайная величина $F$
+    \[
+        F = \cfrac{\cfrac{\gamma_a}{a}}{\cfrac{\gamma_b}{b}} \sim \mathcal{F}_{a,b}, 
+    \]
+    имеет $\mathcal{F}$ — распределение с $(a,b)$ степенями свободы, где $\gamma_a \sim \mathcal{\chi}_{a}^2, \gamma_b \sim \mathcal{\chi}_{b}^2$ и $\gamma_a, \gamma_b$ независимы.
+    \end{classic_def}
+
+\begin{geom_def}\hspace{2cm} \par
+    \smallskip
+    Рассмотрим $V$ — линейное подпространство размерности $a$ и ортогональное ему подпространство $W$ размерности $b$: 
+    \[
+        dim(V) = a, \hspace{0.2cm} dim(W) = b\]\[
+        V \perp W\]\[
+        dim(V)+dim(W)\leq n \text{ все в } \mathbb{R}^n
+    \]
+     Пусть $u$ —  вектор пространства $\mathbb{R}^n, u \sim \mathcal{N}(0, I).\hspace{0.2cm} \hat u_V$ — проекция $u$ на $V$, $\hat u_W$ — проекция $u$ на $W$
+    $\hat u_{W+V}$ — проекция $u$ на на $W\oplus V$. 
+\begin{center}
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,443); %set diagram left start at 0, and has height of 443
+
+%Straight Lines [id:da4391999798490194] 
+\draw    (124.55,331.86) -- (319.42,74.82) ;
+\draw [shift={(320.63,73.23)}, rotate = 487.17] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Straight Lines [id:da3073128181280119] 
+\draw    (124.55,331.86) -- (200.87,308.7) -- (209,306.33) -- (315.19,274.81) ;
+\draw [shift={(317.11,274.24)}, rotate = 523.47] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Curve Lines [id:da4671112522245505] 
+\draw    (322.98,216.81) .. controls (341.76,202.45) and (442.74,166.56) .. (428.65,203.89) .. controls (414.56,241.22) and (463.87,221.12) .. (481.48,232.6) .. controls (499.1,244.09) and (483.83,265.62) .. (452.13,277.11) .. controls (420.43,288.6) and (492.05,288.6) .. (475.61,317.31) .. controls (459.18,346.03) and (395.77,346.03) .. (365.25,346.03) ;
+
+
+%Straight Lines [id:da4614907792789066] 
+\draw [color={rgb, 255:red, 65; green, 116; blue, 4 }  ,draw opacity=1 ][line width=2.25]    (63.5,328.8) -- (126.22,331.57) -- (183.26,334.54) -- (209.09,335.98) -- (245.73,338.8) -- (365.25,346.03) ;
+
+
+%Straight Lines [id:da048044516976213814] 
+\draw    (124.55,331.86) -- (322.98,216.81) ;
+
+
+%Straight Lines [id:da5354776441913051] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ] [dash pattern={on 0.84pt off 2.51pt}]  (320.63,73.23) -- (317.11,274.24) ;
+
+
+%Straight Lines [id:da8567090605447191] 
+\draw [color={rgb, 255:red, 12; green, 87; blue, 223 }  ,draw opacity=1 ][line width=2.25]    (79.94,358.95) -- (124.55,331.86) -- (341.76,206.76) ;
+
+
+%Straight Lines [id:da10943359672046349] 
+\draw  [dash pattern={on 0.84pt off 2.51pt}]  (290.1,235.47) -- (320.63,73.23) ;
+
+
+%Straight Lines [id:da7162625239394705] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ]   (288.38,236.48) -- (126.22,331.57) ;
+
+\draw [shift={(290.1,235.47)}, rotate = 149.61] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da05288518371564643] 
+\draw  [dash pattern={on 0.84pt off 2.51pt}]  (245.73,338.8) -- (320.63,73.23) ;
+
+
+%Shape: Arc [id:dp372418209674221] 
+\draw  [draw opacity=0][line width=2.25]  (206.72,337.37) .. controls (218.23,336.98) and (227.41,329.75) .. (227.41,320.89) .. controls (227.41,312.23) and (218.65,305.13) .. (207.5,304.44) -- (205.73,320.89) -- cycle ; \draw  [color={rgb, 255:red, 208; green, 2; blue, 27 }  ,draw opacity=1 ][line width=2.25]  (206.72,337.37) .. controls (218.23,336.98) and (227.41,329.75) .. (227.41,320.89) .. controls (227.41,312.23) and (218.65,305.13) .. (207.5,304.44) ;
+%Shape: Arc [id:dp493123386299117] 
+\draw  [draw opacity=0][line width=2.25]  (199.16,335.88) .. controls (204.75,335.08) and (209.09,329.29) .. (209.09,322.26) .. controls (209.09,315.41) and (204.96,309.74) .. (199.57,308.72) -- (197.82,322.26) -- cycle ; \draw  [color={rgb, 255:red, 208; green, 2; blue, 27 }  ,draw opacity=1 ][line width=2.25]  (199.16,335.88) .. controls (204.75,335.08) and (209.09,329.29) .. (209.09,322.26) .. controls (209.09,315.41) and (204.96,309.74) .. (199.57,308.72) ;
+%Straight Lines [id:da7427759746518777] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ]   (243.74,338.68) -- (126.22,331.57) ;
+
+\draw [shift={(245.73,338.8)}, rotate = 183.46] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+% Text Node
+\draw (330.61,63.18) node [scale=1]  {$u\ $};
+% Text Node
+\draw (378.05,180.94) node [color={rgb, 255:red, 15; green, 86; blue, 168 }  ,opacity=1 ,rotate=-343.3]  {$\dim V=a$};
+% Text Node
+\draw (293.61,249.73) node [rotate=-338.23]  {$\hat{u}_{V}$};
+% Text Node
+\draw (328.26,364) node [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,opacity=1 ]  {$\dim W=b$};
+% Text Node
+\draw (247.25,355.05) node   {$\hat{u}_{W}$};
+% Text Node
+\draw (459.86,215.37) node [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,opacity=1 ]  {$V+W$};
+% Text Node
+\draw (342.35,289.01) node   {$\hat{u}_{V+W}$};
+% Text Node
+\draw (239.03,311.57) node [color={rgb, 255:red, 208; green, 2; blue, 27 }  ,opacity=1 ]  {$\alpha $};
+
+
+\end{tikzpicture}
+\end{center}
+Тогда, случайная величина $F$ \[
+        F = \cfrac{\cfrac{\lVert \hat u_V \rVert ^2}{dim(V)}}{{\cfrac{\lVert \hat u_W \rVert ^2}{dim(W)}}} =  {\tg}^2\alpha \cdot \cfrac{dim(W)}{dim(V)}\sim \mathcal{F}\left(dim(V), dim(W)\right) = \mathcal{F}\left(a, b\right)
+    \]
+    имеет $\mathcal{F}$ — распределение с $\left(dim(V), dim(W)\right)$ степенями свободы, где $\alpha$ — угол между $\hat u_W$  и $\hat u_{W+V}$.
+\end{geom_def}  
+
+\par\par\par
+$\hat u_V$ - проекция $u$ на $V$; dim($V$) $=a \hspace{0.2cm} \Rightarrow \hspace{0.2cm} \lVert \hat u_V \rVert ^2 \sim \mathcal{\chi}_a^2 \hspace{0.2cm}$\par
+$\hat u_W$ - проекция $u$ на $W$; dim($W$) $=b \hspace{0.2cm} \Rightarrow \hspace{0.2cm} \lVert \hat u_W \rVert ^2 \sim \mathcal{\chi}_b^2 \hspace{0.2cm}$\par
+Получаем эквивалентные определения.
+\[\]
+Заметим, что $t$-статистика  — это частный случай $\mathcal{F}$-статистики:
+\[T^2 = F, \\ dim(V) = a = 1\]
+
+\section{Связь $\mathcal{F}$ распределения и эконометрических моделей}
+\newtheorem*{theo_n}{Теорема}
+\begin{theo_n}
+    Рассмотрим задачу регрессии  и предположим:
+    \begin{enumerate}
+        \item Предполагаем $y=X\beta+u$.
+        \item Оцениваем:
+        \begin{enumerate}
+            \item длинную модель $\hy^L = X\hb^L$ (верная модель)
+            \[
+                \underset{\hb^L}{\min}\sum_{i=1}^n \left(y_i - {\hy_i}^L \right)^2
+            \]
+            \item короткую модель $\hy^S = X\hb^S$ (считаем, что последние $d$ коэффициента - нулевые)
+            \[
+                \underset{\hb_k=\hb_{k-1}=...=\hb_{k-d+1}=0}{\underset{\hb^S}{\min}\sum_{i=1}^n\left(y_i - {\hy_i}^S \right)^2}
+            \] 
+        \end{enumerate} 
+        \item Стандартные предпосылки
+        \begin{enumerate}
+            \item $X$ — полного ранга, неслучайная
+            \item  $u \sim \cN(0, \s^2I) \quad \equiv \quad u_i \sim \cN(0,\s^2), u_i$ — независимы
+        \end{enumerate}
+        \item Проверяем гипотезу
+         \begin{center}
+            $H_0$: Верна короткая модель \\
+            \hspace{0.5cm}$H_A$: Короткая модель не верна
+        \end{center}
+    \end{enumerate}
+    То,
+    \begin{enumerate}
+        \item $\cfrac{RSS_L}{\s^2}\sim \mathcal{\chi}_{n-k_L}^2$\par
+        Если верна $H_0$:
+        \item $\cfrac{RSS_S - RSS_L}{\s^2}\sim \mathcal{\chi}_{k_L - k_S}^2$ 
+        \item $RSS_L \text{ и } (RSS_S - RSS_L)$ — независимы
+        \item $\cfrac{\cfrac{RSS_S - RSS_L}{k_L - k_S}}{{\cfrac{RSS_L}{n-k_L}}}\sim \mathcal{F}_{k_L - k_S, n-k_L}$
+    \end{enumerate}
+\end{theo_n}
+
+\begin{proof} \hspace{1cm} \par
+    \begin{enumerate}
+        \item $\hu = (I-H)y = (I-H)(X\beta+u) = \left[(I-H)X\beta = 0\right]= (I-H)u \Rightarrow$\par
+        $\hu_L$ — проекция $u$ на $\Colp(X_L),\hspace{0.2cm} dim(\Colp(X_L))=n-k_L \Rightarrow$
+        \par
+        $RSS_L=\lVert \hat u_L \rVert ^2$ — квадрат длины проекции $u$ на $(n-k_L)$-мерное подпространство
+
+\begin{center}
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,244); %set diagram left start at 0, and has height of 244
+
+%Straight Lines [id:da8619727534017806] 
+\draw    (97.5,197.13) -- (259.95,65.26) ;
+\draw [shift={(261.5,64)}, rotate = 500.93] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Straight Lines [id:da8712357819606156] 
+\draw    (97.5,197.13) -- (259.56,157.48) ;
+\draw [shift={(261.5,157)}, rotate = 526.25] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Curve Lines [id:da2935306500155759] 
+\draw    (266.5,117) .. controls (282.5,107) and (368.5,82) .. (356.5,108) .. controls (344.5,134) and (386.5,120) .. (401.5,128) .. controls (416.5,136) and (403.5,151) .. (376.5,159) .. controls (349.5,167) and (410.5,167) .. (396.5,187) .. controls (382.5,207) and (328.5,207) .. (302.5,207) ;
+
+
+%Straight Lines [id:da9778750370816449] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]    (97.5,197.13) -- (302.5,207) ;
+
+
+%Straight Lines [id:da19088802004887384] 
+\draw    (97.5,197.13) -- (266.5,117) ;
+
+
+%Straight Lines [id:da8544684481972323] 
+\draw [color={rgb, 255:red, 10; green, 19; blue, 233 }  ,draw opacity=1 ] [dash pattern={on 4.5pt off 4.5pt}]  (261.5,64) -- (261.5,157) ;
+
+
+%Straight Lines [id:da08351213848509254] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]    (28.88,97.93) -- (98.92,196.93) ;
+
+
+%Curve Lines [id:da558895059328545] 
+\draw    (123.25,93.52) .. controls (128.44,81.21) and (129.23,23.21) .. (107.9,37.73) .. controls (86.57,52.25) and (88.64,23.42) .. (77.12,16.83) .. controls (65.61,10.24) and (54.91,22.21) .. (54.52,40.46) .. controls (54.14,58.71) and (37.98,22.64) .. (22.83,36.63) .. controls (7.69,50.62) and (17.01,83.39) .. (28.88,97.93) ;
+
+
+%Straight Lines [id:da399596597461527] 
+\draw    (98.92,196.93) -- (123.25,93.52) ;
+
+
+%Straight Lines [id:da809002216237071] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ]   (92.62,94) -- (98.92,196.93) ;
+
+\draw [shift={(92.5,92)}, rotate = 86.5] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+%Straight Lines [id:da24627088036305278] 
+\draw  [dash pattern={on 0.84pt off 2.51pt}]  (92.5,92) -- (261.5,64) ;
+
+
+
+% Text Node
+\draw (307,88) node [color={rgb, 255:red, 18; green, 59; blue, 218 }  ,opacity=1 ,rotate=-348.06]  {$\hat{u} =( I-H) y$};
+% Text Node
+\draw (295,163) node   {$\hat{y}^{L} =\ X\hat{\beta }^{L}$};
+% Text Node
+\draw (304,51) node [scale=1]  {$y\ =\ X\beta +u$};
+% Text Node
+\draw (328,193) node   {$ColX_{L}$};
+% Text Node
+\draw (84,119.29) node   {$\hat{u}_{L}$};
+% Text Node
+\draw (65,57) node   {$Col^{\perp } X_{L}$};
+
+
+\end{tikzpicture}
+\end{center}
+        \item Теперь дополнительно предположим, что еще верна короткая модель (опускаем регрессоры, отвечающие за нулевые компоненты)\par
+        \[
+        X =  \begin{bmatrix}
+           1 & x_1 & z_1 & q_1 & w_1\\
+           1 & x_2 & z_2 & q_2 & w_2 \\
+           \vdots & \vdots & \vdots & \vdots & \vdots \\
+           1 & x_n &  z_n & q_n & w_n \\
+         \end{bmatrix} \Rightarrow
+         X_S =  \begin{bmatrix}
+           1 & x_1 & z_1 \\
+           1 & x_2 & z_2  \\
+           \vdots & \vdots & \vdots \\
+           1 & x_n &  z_n \\
+         \end{bmatrix} 
+         \]
+\begin{center}
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,305); %set diagram left start at 0, and has height of 305
+
+%Straight Lines [id:da8387965375839586] 
+\draw    (57.5,244) -- (222.17,59.49) ;
+\draw [shift={(223.5,58)}, rotate = 491.75] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Straight Lines [id:da6219960923226517] 
+\draw    (57.5,244) -- (219.55,206.45) ;
+\draw [shift={(221.5,206)}, rotate = 526.95] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Curve Lines [id:da9865616771901963] 
+\draw    (226.5,166) .. controls (242.5,156) and (328.5,131) .. (316.5,157) .. controls (304.5,183) and (346.5,169) .. (361.5,177) .. controls (376.5,185) and (363.5,200) .. (336.5,208) .. controls (309.5,216) and (370.5,216) .. (356.5,236) .. controls (342.5,256) and (288.5,256) .. (262.5,256) ;
+
+
+%Straight Lines [id:da014103339793642089] 
+\draw [color={rgb, 255:red, 65; green, 117; blue, 5 }  ,draw opacity=1 ][line width=2.25]    (57.5,244) -- (262.5,256) ;
+
+
+%Straight Lines [id:da8429304237494851] 
+\draw    (57.5,244) -- (226.5,166) ;
+
+
+%Straight Lines [id:da24736319274559693] 
+\draw [color={rgb, 255:red, 10; green, 19; blue, 233 }  ,draw opacity=1 ] [dash pattern={on 4.5pt off 4.5pt}]  (223.5,58) -- (221.5,206) ;
+
+
+%Straight Lines [id:da5080350031524146] 
+\draw [color={rgb, 255:red, 253; green, 49; blue, 76 }  ,draw opacity=1 ][line width=1.5]    (221.5,206) -- (183.5,252) ;
+
+
+%Straight Lines [id:da418236867414957] 
+\draw [color={rgb, 255:red, 0; green, 158; blue, 173 }  ,draw opacity=1 ] [dash pattern={on 4.5pt off 4.5pt}]  (223.5,58) -- (183.5,252) ;
+
+
+%Straight Lines [id:da6431551562756683] 
+\draw [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]    (57.5,244) -- (181.5,251.87) ;
+\draw [shift={(183.5,252)}, rotate = 183.63] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ,draw opacity=1 ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+
+% Text Node
+\draw (237,108) node [color={rgb, 255:red, 18; green, 59; blue, 218 }  ,opacity=1 ]  {$\hat{u}^{L}$};
+% Text Node
+\draw (234,200) node   {$\hat{y}^{L}$};
+% Text Node
+\draw (181,267) node   {$\hat{y}^{S}$};
+% Text Node
+\draw (223,40) node   {$y$};
+% Text Node
+\draw (303,135) node   {$ColX^{L}$};
+% Text Node
+\draw (243,245) node [color={rgb, 255:red, 189; green, 16; blue, 224 }  ,opacity=1 ,rotate=-1.1]  {$\textcolor[rgb]{0.25,0.46,0.02}{ColX}\textcolor[rgb]{0.25,0.46,0.02}{^{S}}$};
+% Text Node
+\draw (195,140) node [color={rgb, 255:red, 0; green, 149; blue, 158 }  ,opacity=1 ]  {$\hat{u}^{S}$};
+\end{tikzpicture}
+        \[
+        \textcolor{red}{\hbox{$RSS_S - RSS_L$}}
+        = \lVert \hat u_S \rVert ^2 - \lVert \hat u_L \rVert ^2 
+        = \lVert \hy_S - \hy_L \rVert ^2 
+        = \sum_{i=1}^n \left(\hy_i^S - {\hy_i}^L \right)^2 \]\par
+\end{center} 
+        $(\hy_i^S - {\hy_i}^L)$  — проекция $y$ на $\Col X_L \cap \Colp X_S$ (ортогональное дополнение $X_S$ в подпространстве $X_L$)
+    \par
+        $dim(\Col X_L \cap \Colp X_S) = dim(\Col X_L) - dim(\Colp X_S) = k_L - k_S \Rightarrow$ 
+    \[
+        \cfrac{RSS_S-RSS_L}{\s^2}\sim \mathcal{\chi}_{k_L - k_S}^2
+    \]
+        \item $RSS_L \text{ и } (RSS_S - RSS_L)$ — независимы, поскольку они ортогональны
+        \item $\cfrac{\cfrac{RSS_S - RSS_L}{\s^2\left(k_L - k_S\right)}}{{\cfrac{RSS_L}{\s^2\left(n-k_L\right)}}} = \cfrac{\cfrac{RSS_S - RSS_L}{k_L - k_S}}{{\cfrac{RSS_L}{n-k_L}}} \sim \mathcal{F}_{k_L-k_S, n-k_L}$
+    \end{enumerate}
+\end{proof}
+
+
+\section{Матрица-мать всех матриц}
+Пусть дана матрица $X$:
+\[
+X =  \begin{bmatrix}
+           \vdots & \vdots & \vdots & \vdots \\
+           x_1 & x_2 & \vdots & x_k \\
+           \vdots & \vdots & \vdots & \vdots \\
+         \end{bmatrix}
+         ;
+\]
+
+Она состоит из центрированных векторов-столбцов $x_j$ таких, что $\overline{x}_j = 0$ и $\sum_{i=1}^n x_{ij} = 0$.
+
+Тогда матрицы $W$ и $M$ определяются как: $$W = X^TX; M = W^{-1}$$ 
+
+Что же находится в матрице $M$?
+
+Построим регрессию $x_1$ на $x_1, x_2, \ldots, x_k$. Тогда: 
+\[
+\hat x_1 = \hat \alpha_2 x_2 + \hat \alpha_3 x_3 + \ldots + \hat \alpha_k x_k
+\]
+\[
+\tilde x_1 = x_1 - \left(\hat \alpha_2 x_2 + \hat \alpha_3 x_3 + \ldots + \hat \alpha_k x_k \right)
+\]
+
+
+% Чему равны следующие выражения:
+% \begin{enumerate}
+%     \item $H^2$ = ?
+%     \item $H^{2018}$ = ?
+%     \item $(I-H)^2$ = ?
+% \end{enumerate}
+
+\textbf{Упражнение:} доказать, что:
+
+  \begin{equation*}
+     \begin{cases}
+       \langle \tilde x_1, x_2 \rangle = 0 \\
+       \langle \tilde x_1, x_3 \rangle = 0 \\
+       \quad\vdots \\
+       \langle \tilde x_1, x_k \rangle = 0
+    \end{cases}
+  \end{equation*}
+
+\begin{proof} \hspace{1cm} \par
+Доказательство следует напрямую из картинки:
+% Здесь нужна картинка
+\begin{center}
+    
+
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,398); %set diagram left start at 0, and has height of 398
+
+%Straight Lines [id:da6840946800528697] 
+\draw    (53.5,283.18) -- (200.76,68.09) ;
+\draw [shift={(201.89,66.44)}, rotate = 484.4] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Straight Lines [id:da7896671270296809] 
+\draw    (299.94,172.03) -- (53.5,283.18) ;
+
+
+%Straight Lines [id:da6895366720349778] 
+\draw    (349,350.7) -- (53.5,283.18) ;
+
+
+%Curve Lines [id:da8630866431654602] 
+\draw    (299.94,172.03) .. controls (353.97,151.7) and (279.93,204.29) .. (331.79,194.72) .. controls (383.65,185.15) and (345.66,212.87) .. (340.4,222.14) .. controls (335.13,231.41) and (367.08,225.92) .. (370.52,234.43) .. controls (373.96,242.94) and (364.11,248.14) .. (356.75,259.95) .. controls (349.39,271.76) and (374.15,271.84) .. (381.71,276.02) .. controls (389.27,280.21) and (361.91,290.2) .. (365.36,298.71) .. controls (368.8,307.22) and (381.82,307.93) .. (383.43,313.84) .. controls (385.05,319.74) and (357.61,321.4) .. (367.08,331.8) .. controls (376.55,342.2) and (372.24,356.38) .. (349,350.7) ;
+
+
+%Straight Lines [id:da487142713705352] 
+\draw  [dash pattern={on 4.5pt off 4.5pt}]  (201.89,66.44) -- (200.46,269.69) ;
+\draw [shift={(200.45,271.69)}, rotate = 270.4] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+%Straight Lines [id:da7547503784370643] 
+\draw    (53.5,283.18) -- (198.45,271.84) ;
+\draw [shift={(200.45,271.69)}, rotate = 535.53] [color={rgb, 255:red, 0; green, 0; blue, 0 }  ][line width=0.75]    (10.93,-3.29) .. controls (6.95,-1.4) and (3.31,-0.3) .. (0,0) .. controls (3.31,0.3) and (6.95,1.4) .. (10.93,3.29)   ;
+
+
+% Text Node
+\draw (294.92,304.62) node [scale=0.9] [align=left] {$\displaystyle lin\begin{pmatrix}
+x_{2} ,...,x_{k}
+\end{pmatrix}$};
+% Text Node
+\draw (168.67,59.51) node [scale=1] [align=left] {$\displaystyle x_{1}$};
+% Text Node
+\draw (219.34,150.37) node [scale=1] [align=left] {$\displaystyle \tilde{x}_{1}$};
+% Text Node
+\draw (215.66,275.41) node [scale=1] [align=left] {$\displaystyle \hat{x}_{1}$};
+
+
+\end{tikzpicture}
+
+
+
+\end{center}
+
+Вектор $\tilde x_1$ ортогонален линейной оболочке $lin \left(x_2, ..., x_k \right)$, а значит ортогонален всем векторам, лежащим в ней. Получаем требуемое.
+
+
+
+\end{proof}
+
+Пользуясь этим знанием, посчитаем, чему равно $\langle \tilde x_1, x_1 \rangle$:
+
+\[
+\langle \tilde x_1, x_1 \rangle = \langle \tilde x_1, \tilde x_1 + \left(\hat \alpha_2 x_2 + \hat \alpha_3 x_3 + \ldots + \hat \alpha_k x_k \right) \rangle = \langle \tilde x_1, \tilde x_1 \rangle = \| \tilde x_1 \|^2
+\]
+
+Введем неожиданную нормировку:
+\[
+\check x_1 = \frac{\tilde x_1}{\| \tilde x_1 \|^2},
+\]
+
+где $\tilde x_1$ — остаток от регрессии $x_1$ на $x_2, x_3, \dots, x_k$, $\| \tilde x_1 \|^2$ — квадрат длины вектора остатков $\tilde x_1$.
+
+
+Почему была выбранна именно такая нормировка? Потому что хотели подобрать такую нормировку, двукратное применение которой к вектору $v$ давало бы сам вектор $v$:
+
+\[
+v \xrightarrow{\text{g}} \frac{v}{\| v \|^2};
+g \left(g \left(v \right) \right) = v
+\]
+
+Например,
+\[
+\begin{pmatrix} 0 \\ 5 \end{pmatrix} \xrightarrow{\text{g}} \begin{pmatrix} 0 \\ \frac{1}{5} \end{pmatrix} \xrightarrow{\text{g}} \begin{pmatrix} 0 \\ 5 \end{pmatrix}
+\]
+
+Покажем, что нормировка действительно удовлетворяет приведенному выше свойству для любого вектора $v$:
+
+\[
+g \left(g \left(v \right) \right) = 
+\cfrac
+    {\cfrac{v}{\lVert v \rVert^2}}
+    {\Big\lVert \cfrac{v}{\lVert v \rVert^2}\Big\rVert^2} 
+= \cfrac
+    {\cfrac{v}{\lVert v \rVert^2}}
+    {\cfrac{1}{\lVert v \rVert^2} \cdot \lVert v \rVert^2}
+= v
+\]
+
+Аналогично, запишем формулу неожиданной нормировки для вектора остатков $\tilde x_2$:
+
+\[
+\check x_2 = \cfrac{\tilde x_2}{\lVert \tilde x_2 \rVert^2},
+\]
+
+где $\tilde x_2$ — остаток от регрессии $x_2$ на $x_1, x_3, \dots, x_k$, $\| \tilde x_2 \|^2$ — квадрат длины вектора остатков $\tilde x_2$.
+
+Из векторов $\check x_1, \check x_2, \dots, \check x_k$ можно составить матрицу $\check X$:
+
+\[
+\check X = 
+        \begin{bmatrix}
+           \vdots & \vdots & \vdots & \vdots \\
+           \check x_1 & \check x_2 & \dots & \check x_k  \\
+           \vdots & \vdots & \vdots & \vdots \\
+         \end{bmatrix} \\
+\]
+
+Таким обраом, матрица $\check X$ — это матрица странным образом отнормированных остатков в $k$ регрессиях.
+
+Как выглядит ковариационная матрица этих остатков? Для этого поймем, чему равна матрица $\check X^T \check X$. 
+
+Пусть $c_{11}$ —  $(1, 1)$ элемент матрицы $\check X^T \check X$, а $c_{12}$ — $(1,2)$ элемент. Тогда:
+
+\[ 
+c_{11} = \langle \check x_1, \check x_1 \rangle = \lVert \check x_1 \rVert^2 = \Big\lVert \cfrac{\tilde x_1}{\lVert \tilde x_1 \rVert^2}  \Big\rVert^2 = \cfrac{1}{\lVert \tilde x_1 \rVert^2} = \cfrac{1}{RSS_1} 
+\] 
+
+\[
+ c_{12} = \langle \check x_1, \check x_2 \rangle = \cfrac{1}{\lVert \tilde x_1 \rVert^2} \cdot \cfrac{1}{\lVert \tilde x_2 \rVert^2} \langle \tilde x_1, \tilde x_2 \rangle
+\] 
+
+Для того, чтобы найти $\langle \tilde x_1, \tilde x_2 \rangle $, выпишем, чему они равны в явном виде:
+
+\[ 
+\tilde x_1 = x_1 - (\hat \alpha_2 x_2 + \hat \alpha_3 x_3 + \ldots + \hat \alpha_k x_k) 
+\]
+
+\[ 
+\tilde x_2 = x_2 - (\hat \beta_1 x_1 + \hat \beta_3 x_3 + \ldots + \hat \beta_k x_k) 
+\]
+
+Тогда $\langle \tilde x_1, \tilde x_2 \rangle $ можно представить двумя способами (заменяя $\tilde x_1$ или $\tilde x_2$):
+
+\begin{enumerate}
+
+\item $ \langle \tilde x_1, \tilde x_2 \rangle = \langle x_1 - (\hat \alpha_2 x_2 + \hat \alpha_3 x_3 + \ldots + \hat \alpha_k x_k) , \tilde x_2  \rangle = -\hat \alpha_2 \langle \tilde x_2 \rangle = -\hat \alpha_2 \lVert \tilde x_2 \rVert^2 $
+
+\item $ \langle \tilde x_1, \tilde x_2 \rangle = \langle \tilde x_1, x_2 - (\hat \beta_1 x_1 + \hat \beta_3 x_3 + \ldots + \hat \beta_k x_k) \rangle =  -\hat \beta_1 \langle \tilde x_1 , \tilde x_1 \rangle =  -\hat \beta_1 \lVert \tilde x_1 \rVert^2 $
+
+\end{enumerate}
+
+При этом мы пользовались тем, что:
+
+\[ 
+\tilde x_1 \perp  x_2,x_3, \dots, x_k 
+\]
+
+\[ 
+ \tilde x_2 \perp x_1,x_3, \dots, x_k 
+\]
+
+
+Вернемся к нахождению $c_{12}$:
+
+\[
+ c_{12} = \langle \check x_1, \check x_2 \rangle = \cfrac{1}{\lVert \tilde x_1 \rVert^2} \cdot \cfrac{1}{\lVert \tilde x_2 \rVert^2} \langle \tilde x_1, \tilde x_2 \rangle =  \cfrac{-\hat \beta_1}{\lVert \tilde x_2 \rVert^2} =  \cfrac{-\hat \alpha_2}{\lVert \tilde x_1 \rVert^2}
+\] 
+
+
+Таким образом, бесплатно получили следующее:
+\[
+    \cfrac{\text{ (коэффициент при }  x_2  \text{ в регрессии }  x_1  \text{ на ост.)}}{RSS_1} =
+    \cfrac{\text{(коэффициент при }  x_1  \text{ в регрессии } x_2 \text{ на ост.)}}{RSS_2}
+\]
+
+
+\textbf{Упражнение:} доказать, что $\check X^T X = I $.
+
+\begin{proof} \hspace{1cm} \par
+
+Для этого найдем $(1,1)$ и $(1,2)$ элементы матрицы $\check X^T X = I $:
+
+\[
+b_{11} = \langle \check x_1, x_1 \rangle = \Big\langle \cfrac{\tilde x_1}{\lVert \tilde x_1 \rVert^2}, x_1 \Big\rangle = \langle \tilde x_1, x_1 \rangle \cdot \cfrac{1}{\lVert \tilde x_1 \rVert^2} = \langle \tilde x_1, \tilde x_1 \rangle \cdot   \cfrac{1}{{\lVert \tilde x_1 \rVert}^2} = 1
+\]
+
+\[
+b_{12} = \langle \check x_1, x_2 \rangle = \langle \tilde x_1, x_2 \rangle \cdot \cfrac{1}{\lVert \tilde x_1 \rVert^2} = 0
+\]
+
+\end{proof} 
+
+
+\textbf{Упражнение}: пусть 
+
+\[
+W = X^T X
+\]
+
+\[
+M = \check X^T \check X
+\]
+
+Доказать, что $ M \cdot W = I $ (то есть $M = W^{-1}$).
+
+\begin{proof} \hspace{1cm} \par
+
+Из предыдущей части лекции известно, чему равны матрицы $M$ и $W$:
+
+\[
+    M =
+    \begin{bmatrix}
+       \cfrac{1}{\langle \tilde x_1,\tilde x_1 \rangle} &
+       \cfrac{-\hat \alpha_2 }{\langle \tilde x_1,\tilde x_1 \rangle} &
+       \cfrac{-\hat \alpha_3 }{\langle \tilde x_1,\tilde x_1 \rangle} & \ldots \\
+     \cfrac{-\hat\beta_1}{\langle \tilde x_2,\tilde x_2 \rangle} & \cfrac{1}{\langle \tilde x_2,\tilde x_2 \rangle} & \cfrac{-\hat\beta_3}{\langle \tilde x_2,\tilde x_2 \rangle}  & \vdots \\
+        \cfrac{-\hat\gamma_1}{\langle \tilde x_3,\tilde x_3 \rangle} & \cfrac{-\hat\gamma_2}{\langle \tilde x_3,\tilde x_3 \rangle} & \ddots & \vdots \\
+        \vdots & \vdots & \ldots & \cfrac{1}{\langle \tilde x_k,\tilde x_k \rangle} \\
+     \end{bmatrix} \\
+ \]
+
+ \[   
+     W=
+     \begin{bmatrix}
+       \langle x_1, x_1 \rangle & \langle x_2, x_1 \rangle & \ldots \\
+       \langle x_1, x_2 \rangle & \ldots & \ldots \\
+       \vdots & \ddots & \vdots \\
+       \langle x_1, x_k \rangle & \ldots & \ldots \\
+     \end{bmatrix} \\
+\]
+
+Найдем элтемент $a_{11}$ и $a_{12}$  —  $(1,1)$ и $(1,2)$ элементы матрицы $ M \cdot W $:
+
+\[  
+    a_{11} = 
+    \cfrac{\langle x_1, x_1 \rangle}{\langle\tilde x_1,\tilde x_1 \rangle} -
+    \cfrac{\hat \alpha_2 \langle x_1, x_2 \rangle}{\langle\tilde x_1,\tilde x_1 \rangle} - \ldots 
+     - \cfrac{\hat \alpha_k \langle x_1, x_k \rangle}{\langle\tilde x_1,\tilde x_1 \rangle}
+    =\\
+    \cfrac{1}{\langle\tilde x_1,\tilde x_1 \rangle} \Big ( \langle x_1, x_1 \rangle - \hat \alpha_2  \langle x_1, x_2 \rangle - \ldots 
+    - \hat \alpha_k  \langle x_1, x_k \rangle   \Big )     
+\]
+
+Воспользуемся двумя равенствами:
+
+\begin{enumerate}
+    \item $x_1 - (\hat \alpha_2 x_2 + \hat \alpha_3 x_3 + \ldots + \hat \alpha_k x_k) = \tilde x_1$
+    \item $\langle \tilde x_i, x_i \rangle = \langle \tilde x_i, \tilde x_i \rangle $
+\end{enumerate}
+
+Поэтому:
+
+\[
+    a_{11} = \cfrac{\langle x_1,\tilde x_1 \rangle}{\langle\tilde x_1,\tilde x_1 \rangle} = 1 
+\]  
+
+Находим $a_{12}$:
+
+\[   
+    a_{12} =
+    \cfrac{1}{\langle\tilde x_1,\tilde x_1 \rangle} \Big ( \langle x_2, x_1 \rangle - \hat \alpha_2  \langle x_2, x_2 \rangle  
+    - \ldots -  \hat \alpha_k  \langle x_2, x_k \rangle   \Big ) = \\
+    \cfrac{\langle x_2,\tilde x_1 \rangle}{\langle\tilde x_1,\tilde x_1 \rangle} = 0,
+\]
+
+так как $\langle x_2,\tilde x_1 \rangle = 0$, потому что остаток от регрессии $x_1$ на $x_2,x_3, \dots, x_k$  ортогонатен $x_2,x_3, \dots, x_k$.
+
+Аналогично можно найти все элементы этой матрицы. Таким образом, получили, что $ M \cdot W = I $.
+
+\end{proof}
+
+ \textbf{Итог}: если $W \cdot (n-1)$  — выборочная ковариационная матрица $X$, то $W^{-1} = M$.
+ 
+ \[ 
+ M = W^{-1} = \\
+    \begin{bmatrix}
+        \cfrac{1}{RSS_1} & \cfrac{-\hat\alpha_2}{RSS_1} & \ldots &  \cfrac{- \hat\alpha_k}{RSS_1} \\
+        \cfrac{-\hat\beta_1}{RSS_2} & \cfrac{1}{RSS_2} & \cfrac{-\hat\beta_3}{RSS_2}  & \vdots \\
+        \cfrac{-\hat\gamma_1}{RSS_3} & \cfrac{-\hat\gamma_2}{RSS_3} & \ddots & \vdots \\
+        \vdots & \vdots & \ldots & \cfrac{1}{RSS_k} \\
+     \end{bmatrix}
+     = \\
+    \begin{bmatrix}
+        \cfrac{1}{RSS_1} & \cfrac{-\hat\beta_1}{RSS_2} & \cfrac{-\hat\gamma_1}{RSS_3} & \ldots \\
+        \cfrac{-\hat\alpha_2}{RSS_1} & \cfrac{1}{RSS_2} & \cfrac{-\hat\gamma_2}{RSS_3}  & \vdots \\
+        \cfrac{-\hat\alpha_3}{RSS_3} & \cfrac{-\hat\beta_3}{RSS_2} & \ddots & \vdots \\
+        \vdots & \vdots & \ldots & \cfrac{1}{RSS_k} \\
+     \end{bmatrix}
+ \]
+
+
+
+
+\end{document}
