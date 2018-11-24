@@ -109,6 +109,5 @@ Stachursky, Primer in econometric theory. [Слайды и часть глав](
 
 * Встреча 7. t, F-распределения, Матрица-Мать Всех Регрессий.
 
-<!--
-    - Конспект (бета) : [pdf](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_07.pdf), [tex](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_07.tex)
--->
+    - Конспект (бета) Ирина Долгалева и Дарья Краснова: [pdf](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_07.pdf), [tex](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_07.tex)
+
