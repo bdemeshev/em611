@@ -111,3 +111,8 @@ Stachursky, Primer in econometric theory. [Слайды и часть глав](
 
     - Конспект (бета) Ирина Долгалева и Дарья Краснова: [pdf](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_07.pdf), [tex](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_07.tex)
 
+* Встреча 8. Гетероскедастичность и корректировки HC.
+
+    - Конспект (бета) Марк Любимов и Галим Бикбов:
+[pdf](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_08.pdf), [tex](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_08.tex)
+
