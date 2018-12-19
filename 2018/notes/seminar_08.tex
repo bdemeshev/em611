@@ -128,7 +128,7 @@
            \ x_{n} & \ y_{n} &\ z_{n}\\
          \end{pmatrix}
          \]\\
-$\widetilde{X}$ - центрированная матрица для X.\\
+$\widetilde{X}$ ~--- центрированная матрица для X.\\
 Дана ковариационная матрица:
 \[\frac{\widetilde{X}^T\cdot\widetilde{X}}{(n-1)} = \begin{pmatrix}
             \ 28 & 110 & 844\\
@@ -216,8 +216,8 @@ TSS известно из матрицы $W$:
 Таким обращом гипотеза не отвергается. Решение для $\hat{\beta}_z$ аналогично.\\
 
 \textbf{Утверждение}: Выразить \[\Var(\hat{\beta}_x^{множественная})\] 
-Пусть даная центрированная матрица $X$. Рассмотрим регрессию
-\[\hat{y} = X\cdot{\hat\beta}\]
+Пусть даная центрированная матрица $X_y$. Рассмотрим регрессию
+\[\hat{y} = X_y\cdot{\hat\beta}\]
 Выведем формулу для частного случая: 7-го коэффциента.
 \[ \Var(\hat{\beta}_7) = \sigma^2\cdot(X^{T}_y \cdot X_y)^{-1} = \dfrac{\sigma^2}{RSS_7} = \dfrac{\sigma^2}{\sum\limits_{i=1}^n(x_i - \bar{x})^2}\cdot\dfrac{1}{\frac{RSS_7}{\sum\limits_{i=1}^n(x_i - \bar{x})^2}} = \dfrac{\sigma^2}{\sum\limits_{i=1}^n(x_i - \bar{x})^2}\cdot\dfrac{1}{1-R^2_7}\]
 то есть
@@ -252,7 +252,7 @@ TSS известно из матрицы $W$:
 
 Среди условий теоремы Гаусса-Маркова есть предпосылка $\Var(u_i(x)) = \sigma ^2 $ . Теперь  $\Var(u_i | x)) = h(x_i)$ 
 
-Теорма Гаусса-Маркова неприменима, тогда что случится с оценкой $\hat{\beta}  = (X^T X)^{-1} X^{-1} Y$   ? 
+Теорма Гаусса-Маркова неприменима, тогда что случится с оценкой $\hat{\beta}  = (X^T X)^{-1} X^{-1} y$   ? 
   
 \textbf{Сохраняется:}
 
@@ -299,12 +299,14 @@ TSS известно из матрицы $W$:
 \[\Var(\hat{\beta} |x) =  \Var ((X^T X)^{-1} X^{-1} y |X ) = X^T X^{-1} X^T \Var(y|X) X (X^T X)^{-1} =\] 
 \[ =  (X^T X) ^{-1} X^T \Omega X (X^T X)^ {-1}\]
 
-раньше $ \Omega_{ii} = {\sigma_{i}} ^2$,  
+Раньше, в случае гомоскедастичности, мы предполагали, что $ \Omega_{ii} = {\sigma} ^2$,  
 $\Var (\hat{\beta} |x) = \frac {RSS}{n-k} (X^T X)^{-1}$
 \end{enumerate}
 \par
 Как оценить ${\sigma_i}^2$ ? 
 \[{\sigma_i}^2 = \Var(u_i |X) = E({u_i}^2 |X) \]
+\par
+Оценки стандартных ошибок, полученные в предположении гомоскедатичности, в случае гетероскедатичности становятся несостоятельны. Для того, чтобы получить состоятельные оценки, используются  различные корректировки.
 \par
 \textbf{Корректировка Уайта, $HC_0$}
 \[E({u_i}^2|x) \approx {u_i}^2 \approx {\hat{u_i}^2}\]
@@ -323,17 +325,18 @@ $\Var (\hat{\beta} |x) = \frac {RSS}{n-k} (X^T X)^{-1}$
 \textbf{То :}
 \[ \frac{ \hat{\beta} - \beta }{se_{HC}(\hat{\beta})}  \:\xrightarrow[n\longrightarrow \infty]\: N(0;1)\]
 
-\textbf{Упр. $HC_1$}
 
-\[ \Omega E(  {u_i}^2     | X        )  = n \cdot {\sigma}^2\]
-\[ \Omega E(  {{\hat{u}}_i}^2     | X        )  = E(RSS|X) = (n-k) \cdot  {\sigma}^2\]
+\textbf{$HC_1$ :}
+
+\[ \sum_{i=1}^n E(  {u_i}^2     | X        )  = n \cdot {\sigma}^2\]
+\[ \sum_{i=1}^n E(  {{\hat{u}}_i}^2     | X        )  = E(RSS|X) = (n-k) \cdot  {\sigma}^2\]
 
  \[{\hat{\Omega}}_{HC_1} = \frac{n} {n-k} {\hat{\Omega}}_{HC_0}  \]
 
 
-\textbf{Упр. $HC_2$} 
-\[ \Omega E(  {u_i}^2     | X        )  = n \cdot {\sigma}^2\]
-\[ \Omega E(  {{\hat{u}}_i}^2     | X        )  =  \Var( {\hat{u}_i}|X) \]
+\textbf{$HC_2$:} 
+\[ \sum_{i=1}^n E(  {u_i}^2     | X        )  = n \cdot {\sigma}^2\]
+\[ \sum_{i=1}^n E(  {{\hat{u}}_i}^2     | X        )  =  \Var( {\hat{u}_i}|X) \]
 \[\hat{u} = (I-H)y = y - \hat{y} = y-Hy\]
 \[\Var(u_i |X) = (1 - h_{ii}) \cdot {\sigma}^2\]
 
