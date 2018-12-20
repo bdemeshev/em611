@@ -116,3 +116,7 @@ Stachursky, Primer in econometric theory. [Слайды и часть глав](
     - Конспект (бета) Марк Любимов и Галим Бикбов:
 [pdf](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_08.pdf), [tex](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_08.tex)
 
+* Встреча 9. Распределения из мира проекций и из Пуассоновского потока
+
+    - Конспект (бета) Любовь Корж и Кирилл Пак:
+[pdf](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_09.pdf), [tex](https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_09.tex)
