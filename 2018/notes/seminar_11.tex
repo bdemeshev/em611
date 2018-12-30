@@ -1,0 +1,512 @@
+\documentclass[12pt]{article} % размер шрифта
+\usepackage{tikz} % картинки в tikz
+\usepackage{graphicx}
+\usepackage{amssymb}
+\graphicspath{{images/}}
+\usepackage{microtype} % свешивание пунктуации
+\usepackage{array} % для столбцов фиксированной ширины
+\usepackage{url} % для вставки ссылок \url{...}
+\usepackage{indentfirst} % отступ в первом параграфе
+\usepackage{sectsty} % для центрирования названий частей
+\allsectionsfont{\centering} % приказываем центрировать все sections
+\usepackage{amsthm} % теоремы и доказательства
+\theoremstyle{definition} % прямой шрифт в условии теорем
+\newtheorem{theorem}{Теорема}[section]
+\usepackage{amsmath, amssymb} % куча стандартных математических плюшек
+\usepackage[top=2cm, left=1.5cm, right=1.5cm, bottom=2cm]{geometry} % размер текста на странице
+\usepackage{lastpage} % чтобы узнать номер последней страницы
+\usepackage{enumitem} % дополнительные плюшки для списков
+%  например \begin{enumerate}[resume] позволяет продолжить нумерацию в новом списке
+\usepackage{caption} % подписи к картинкам без плавающего окружения figure
+\usepackage{hyperref}
+
+
+\usepackage{fancyhdr} % весёлые колонтитулы
+\pagestyle{fancy}
+\lhead{Эконометрика, финтех}
+\chead{}
+\rhead{2018-12-15, встреча 11}
+\lfoot{}
+\cfoot{}
+\rfoot{\thepage/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+
+
+\usepackage{todonotes} % для вставки в документ заметок о том, что осталось сделать
+% \todo{Здесь надо коэффициенты исправить}
+% \missingfigure{Здесь будет картина Последний день Помпеи}
+% команда \listoftodos — печатает все поставленные \todo'шки
+
+\usepackage{booktabs} % красивые таблицы
+% заповеди из документации:
+% 1. Не используйте вертикальные линии
+% 2. Не используйте двойные линии
+% 3. Единицы измерения помещайте в шапку таблицы
+% 4. Не сокращайте .1 вместо 0.1
+% 5. Повторяющееся значение повторяйте, а не говорите "то же"
+
+\usepackage{fontspec} % поддержка разных шрифтов
+\usepackage{polyglossia} % поддержка разных языков
+
+\setmainlanguage{russian}
+\setotherlanguages{english}
+
+\setmainfont{Linux Libertine O} % выбираем шрифт
+% если Linux Libertine не установлен, то
+% можно также попробовать Helvetica, Arial, Cambria и т.Д.
+
+% чтобы использовать шрифт Linux Libertine на личном компе,
+% его надо предварительно скачать по ссылке
+% http://www.linuxlibertine.org/index.php?id=91&L=1
+
+% на сервисах типа sharelatex.com этот шрифт есть :)
+
+\newfontfamily{\cyrillicfonttt}{Linux Libertine O}
+% пояснение зачем нужно шаманство с \newfontfamily
+% http://tex.stackexchange.com/questions/91507/
+
+\AddEnumerateCounter{\asbuk}{\russian@alph}{щ} % для списков с русскими буквами
+\setlist[enumerate, 2]{label=\asbuk*),ref=\asbuk*} % списки уровня 2 будут буквами а) б) ...
+
+%% эконометрические и вероятностные сокращения
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\sCov}{sCov}
+\DeclareMathOperator{\sVar}{sVar}
+\DeclareMathOperator{\sCorr}{sCorr}
+\DeclareMathOperator{\Corr}{Corr}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\tr}{trace}
+\DeclareMathOperator{\trace}{trace}
+\DeclareMathOperator{\Lin}{Lin}
+\DeclareMathOperator{\Linp}{Lin^{\perp}}
+\DeclareMathOperator{\Col}{Col}
+\DeclareMathOperator{\Colp}{Col^{\perp}}
+
+
+
+\def \hb{\hat{\beta}}
+\def \hs{\hat{\sigma}}
+\def \htheta{\hat{\theta}}
+\def \s{\sigma}
+\def \hy{\hat{y}}
+\def \hY{\hat{Y}}
+\def \v1{\vec{1}}
+\def \e{\varepsilon}
+\def \he{\hat{\e}}
+\def \z{z}
+\def \hVar{\widehat{\Var}}
+\def \hCorr{\widehat{\Corr}}
+\def \hCov{\widehat{\Cov}}
+\def \cN{\mathcal{N}}
+\def \RR{\mathbb{R}}
+\def \hu{\hat{u}}
+\def \ha{\hat{\alpha}}
+\def \hx{\hat{x}}
+\def \hg{\hat{\gamma}}
+
+
+\def \tx{\tilde{x}}
+\def \cx{\check{x}}
+
+\def \cF{\mathcal{F}}
+\def \cChi{\mathcal{\chi}}
+
+%\usepackage{fdsymbol}
+
+\makeatletter
+\def\MT@warn@unknown{}
+\makeatother
+
+
+%\let\mathdollar\relax
+
+\begin{document}
+Конспектировали: Элина Суханов, Сергей Кечин.\\
+
+\section{Энтропия}
+    \textbf{Упражнение 1.}
+    Кот Васька хочет закодировать сообщение. Найти оптимальный бинарный код для кодирования. Вероятности передаваемых букв заданы таблицей.
+    \begin{table}[!hbt]
+		\begin{center}
+		\label{tab:simParameters}
+		\begin{tabular}{ccc}
+			\hline
+			K & O & T \\
+			\hline
+			0.5 & 0.25 & 0.25 \\
+			\hline
+		\end{tabular}
+		\end{center}
+	\end{table}
+
+    \textbf{Решение.}
+    Оптимально закодировать К нулем, Т - 10, О - 11. Тогда ожидаемое количество бит, необходимых для одного сообщения $0.5 \cdot 1 + 0.25 \cdot 2 + 0.25 \cdot 2 = 1.5$
+    
+    \textbf{Упражнение 2.}
+    Подбрасывается правильная монетка. $y_i$ - количество подбрасываний монетки до первого орла в $i$ серии подбрасываний, например, $y_1 = 2, y_2 = 5, y_3 = 1, ...$ Придумать оптимальный двоичный код для $y_i$.
+    
+    \textbf{Решение.}
+    С увеличением количества подбрасываний вероятности серий убывают, поэтому оптимальный код выглядит следующим образом
+    \begin{table}[!hbt]
+		\begin{center}
+		\label{tab:simParameters}
+		\begin{tabular}{ccc}
+			\hline
+			Длина серии & Кодировка & Вероятность серии \\
+			\hline
+			1 & 0 & 0.5 \\
+			\hline
+			2 & 10 & 0.25 \\
+			\hline
+			3 & 110 & 0.125 \\
+			\hline
+			... & ... & ... \\
+		    \hline	
+		\end{tabular}
+		\end{center}
+	\end{table}
+    
+    Можно заметить, что длина сообщения ($l$) и его вероятность связаны соотношением $l_i=-\log_2 p_i$. Тогда в общем виде ожидаемое количество бит, необходимых для сообщения в оптимальной кодировке (для дискретных распределений) равно
+    \[
+    -\sum_{i=1}^{n} p_i\cdot\log_2 p_i
+    \]
+    
+    Энтропия (H) - это математическое ожидание длины оптимально закодированного сообщения с информацией о случайной величине $X$, т.е.
+    \[
+    H = -\E(\log_2 p(X))
+    \]
+    
+    \textbf{Пример.}
+    Сравним энтропию для двух распределений
+    
+    \begin{table}[!hbt]
+		\begin{center}
+		\label{tab:simParameters}
+		\begin{tabular}{ccc}
+			\hline
+			Значения & A & B \\
+			\hline
+			Вероятность & 1/2 & 1/2 \\
+			\hline
+			Длина & 1 & 1 \\
+			\hline
+		\end{tabular}
+		\end{center}
+	\end{table}
+
+    \begin{table}[!hbt]
+		\begin{center}
+		\label{tab:simParameters}
+		\begin{tabular}{ccc}
+			\hline
+			Значения & A & B \\
+			\hline
+			Вероятность & 15/16 & 1/16 \\
+			\hline
+			Длина & $\log_2 16/15$ & 4 \\
+			\hline
+		\end{tabular}
+		\end{center}
+	\end{table}
+    
+    \[
+    H_1 = 0.5\cdot1 + 0.5\cdot1 = 1 
+    \]
+    \[
+    H_2 = \dfrac{15}{16}\cdot\log_2 \dfrac{16}{15} + \dfrac{1}{16}\cdot4 \approx0.34
+    \]
+    
+        В первом случае оптимальная кодировка: А - 1, B - 0. Во втором случае в передаваемом сообщении будет часто встречаться несколько А подряд, за счет этого можно сократить объем сообщения, например, так: ААА - 1, АА - 01, А - 001, В - 0001. Поэтому $H_2 < H_1$.
+    
+\section{Кросс-энтропия}
+    Кросс-энтропия - это энтропия для не оптимальной длины сообщения (используем истиные вероятности, а длины не оптимальные)
+    \[
+    CE_p (q) = -E_p (\log_2 q)
+    \]
+    где $p$ - это истиные вероятности, а $q$ - ошибочные вероятности.
+    
+    \textbf{Пример.}
+    Распределение букв истиного сообщения, которое хочет передать кот Васька задано в таблице. К сожалению, кот закодировал сообщение не оптимально.
+    \begin{table}[!hbt]
+		\begin{center}
+		\label{tab:simParameters}
+		\begin{tabular}{cccc}
+			\hline
+			Значения & K & O & T \\
+			\hline
+			Истиные вероятности & 1/2 & 1/4 & 1/4 \\
+			\hline
+			Ошибочные вероятности & 1/4 & 1/2 & 1/4 \\
+			\hline
+		\end{tabular}
+		\end{center}
+	\end{table}
+    
+    Тогда кросс-энтропия равна
+    \[
+    CE_p (q) = 1/2\cdot2 + 1/4\cdot1 + 1/4\cdot2 = 1.75
+    \]
+    
+    KL-дивергенция - это разница между энтропией и кросс-энтропией. KL-дивергенция показывает, сколько в среднем бит мы теряем, при использовании не оптимального кода.
+    \[
+    KL_p (q) = CE_p (q) - H_p
+    \]
+    
+    В примере с котом Василием $KL_p (q) = 1.75 - 1.5 = 0.25$
+
+\section{Правдоподобие}
+    Имеем выборку: $y_1,..., y_n$
+    
+    Известная модель мира: $L(y_1,..., y_n | \Theta)$
+    
+    где $\Theta$ - неизвестные параметры модели 
+    
+    Тогда: 
+    
+    $L(y_1,..., y_n | \Theta)$ - вероятность получения данной выборки. 
+    
+    $-\log_2 L(y_1,..., y_n | \Theta)$ - длина оптимального кода для передачи сообщения о данной выборке (при известной модели мира).
+    
+    \textbf{Две интерпретации метода максимального правдоподобия.} 
+    
+    1. $\log_2 L(y_1,..., y_n | \Theta) \rightarrow \max_\Theta $ - находим такое $\Theta$, при которм данная выборка должна выпадать чаще всего 
+    
+    2. $ -\log_2 L(y_1,..., y_n | \Theta) \rightarrow \min_\Theta $ - находим такое $\Theta$, при которм в оптимальной системе кодирования имеющаяся выборка получит самый короткий код.
+    
+    \textit{Мини-упражнение}:
+    
+    Обычно величина $l_i=-\log_2 p_i$ показывает нам, сколько бит потребуется, чтобы закодировать сообщение оптимальным образом. По какому основанию следует брать логарифм $-\log_? p_i$, чтобы получить величину $l_i$ не в битах, а в байтах?
+    
+    $$-\log_2x = 8 \text{ бит}$$
+    $$-\dfrac{1}{8}\log_2x = 1 \text{ байт}$$
+    $$-\log_{256}x = 1 \text{ байт}$$
+    
+    \textbf{Упражнение 3.} В озере водятся караси, щуки и крокодилы. Распределение вероятностей задано таблицей. Поклевки независисы. Найти $\Theta$ методом максимального правдоподобия для выборки карась, карась, щука, крокодил.
+    
+    \begin{table}[!hbt]
+		\begin{center}
+		\label{tab:simParameters}
+		\begin{tabular}{cccc}
+			\hline
+			В озере & Карась & Щука & Крокодил \\
+			\hline
+			Вероятности & $2\Theta$ & $\Theta$ & $1 - 3\Theta$ \\
+			\hline
+		\end{tabular}
+		\end{center}
+	\end{table}
+
+    \textbf{Решение.}
+    $L = (2\Theta)^{2}\cdot\Theta\cdot(1 - 3\Theta) = 4\Theta^{3}\cdot(1 - 3\Theta)$ 
+    
+    $\ln L = \ln 4 + 3\ln \Theta + \ln (1 - 3\Theta) \rightarrow \max_\Theta$ 
+    
+    $\dfrac{\partial\ln L}{\partial\Theta} = \dfrac{3-12\Theta}{\Theta\cdot(1 - 3\Theta)} = 0 \Rightarrow \hat{\Theta} = 1/4$
+    
+\section{Теоретические свойства правдоподобия}
+    Score function - это случайная величина, равная градиенту логарифма правдоподобия:
+    
+    \[
+    s(\Theta) = grad \ln L
+    \]
+    
+    Score function зависит от выборки и параметров $\Theta$. 
+    
+    Интерпретация: насколько сократится длина передаваемого сообщения о имеющейся выборке, если чуть чуть изменить $\Theta$ 
+    
+    \textbf{Как найти $\E(s(\Theta))$.}
+    Введем обозначения: 
+    
+    $s(\Theta)$ - градиент логарифма правдоподобия в произвольной точке $\Theta$ 
+    
+    $s(\Theta_0)$ - градиент логарифма правдоподобия в точке минимума $\Theta_0$ 
+    
+    Тогда: 
+    
+    \[
+    \E_{\Theta_0}(s(\Theta)) = \E_{\Theta_0}(grad\mid_{\Theta=\Theta_0}\ln L(\Theta)) = grad\mid_{\Theta=\Theta_0} E_{\Theta_0}(\ln L(\Theta)) = -grad\mid_{\Theta=\Theta_0} CE_{\Theta_0}(\ln L(\Theta)) = 0
+    \]
+    
+    $\E_{\Theta_0}(\ln L(\Theta))$ - это минус кросс-энтропия, а градиент кросс-энтропии в точке истиного параметра $\Theta_0$ равен нулю (в точке $\Theta_0$ мы имеем оптимальный код и не можем больше уменьшать длину сообщения). 
+    
+    
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Shape: Axis 2D [id:dp6763213655643872] 
+\draw  (188,221.8) -- (479.5,221.8)(217.15,31) -- (217.15,243) (472.5,216.8) -- (479.5,221.8) -- (472.5,226.8) (212.15,38) -- (217.15,31) -- (222.15,38)  ;
+%Shape: Parabola [id:dp8256336789206606] 
+\draw   (264,92) .. controls (315.5,190.67) and (367,190.67) .. (418.5,92) ;
+%Straight Lines [id:da37881581411992493] 
+\draw  [dash pattern={on 0.84pt off 2.51pt}]  (341.25,166) -- (341.5,222) ;
+
+
+
+% Text Node
+\draw (341,239) node  [align=left] {$\displaystyle \Theta _{0}$};
+% Text Node
+\draw (477,236) node  [align=left] {$\displaystyle \Theta $};
+% Text Node
+\draw (180,37) node  [align=left] {$\displaystyle CE_{\Theta _{0}}( \Theta )$};
+
+
+\end{tikzpicture}
+
+    
+    \textbf{Пример.} Выборка из озера размера 1.
+    
+    \begin{table}[!hbt]
+		\begin{center}
+		\label{tab:simParameters}
+		\begin{tabular}{cccc}
+			\hline
+			В озере & Карась & Щука & Крокодил \\
+			\hline
+			Правдоподобие выборки (p) & $2\Theta$ & $\Theta$ & $1 - 3\Theta$ \\
+			\hline
+			$\ln p$ & $\ln 2\Theta$ & $\ln \Theta$ & $\ln (1 - 3\Theta)$ \\
+			\hline
+			$s(\Theta)$ & $\dfrac{1}{\Theta}$ & $\dfrac{1}{\Theta}$ & $ -\dfrac{3}{(1 - 3\Theta)}$ \\
+			\hline
+		\end{tabular}
+		\end{center}
+	\end{table}
+	
+	Интуитивно можем предположить, что $E(s(\Theta)) = 0$, потому что когда-то производная окажется меньше 0, когда-то больше, а в среднем ожидаем, что мы получим 0.
+	
+
+\tikzset{every picture/.style={line width=0.75pt}} %set default line width to 0.75pt        
+
+\begin{tikzpicture}[x=0.75pt,y=0.75pt,yscale=-1,xscale=1]
+%uncomment if require: \path (0,300); %set diagram left start at 0, and has height of 300
+
+%Shape: Axis 2D [id:dp9158881222600133] 
+\draw  (180,235.9) -- (515.5,235.9)(213.55,19) -- (213.55,260) (508.5,230.9) -- (515.5,235.9) -- (508.5,240.9) (208.55,26) -- (213.55,19) -- (218.55,26)  ;
+%Shape: Parabola [id:dp4084880350282787] 
+\draw  [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ] (471.5,253) .. controls (401.5,61) and (331.5,61) .. (261.5,253) ;
+%Shape: Parabola [id:dp721152613361302] 
+\draw  [color={rgb, 255:red, 208; green, 2; blue, 27 }  ,draw opacity=1 ] (333.5,254) .. controls (301.17,-3.33) and (268.83,-3.33) .. (236.5,254) ;
+%Straight Lines [id:da3209705853363276] 
+\draw  [dash pattern={on 0.84pt off 2.51pt}]  (285,61) -- (286.5,236) ;
+
+
+%Straight Lines [id:da5465368416901417] 
+\draw  [dash pattern={on 0.84pt off 2.51pt}]  (300.5,80) -- (303.5,236) ;
+
+
+%Straight Lines [id:da23095629642411364] 
+\draw  [dash pattern={on 0.84pt off 2.51pt}]  (366.5,109) -- (366.5,238) ;
+
+
+%Straight Lines [id:da43542682480895345] 
+\draw    (285.5,48) -- (317.5,114) ;
+
+
+%Straight Lines [id:da2720773948081283] 
+\draw    (319.5,133) -- (282.5,194) ;
+
+
+%Straight Lines [id:da11292141404818978] 
+\draw [color={rgb, 255:red, 208; green, 2; blue, 27 }  ,draw opacity=1 ]   (428,42) -- (450.5,42) ;
+
+
+%Straight Lines [id:da7196844018732873] 
+\draw [color={rgb, 255:red, 74; green, 144; blue, 226 }  ,draw opacity=1 ]   (429,71) -- (451.5,71) ;
+
+
+
+% Text Node
+\draw (194,24) node  [align=left] {l($\displaystyle \Theta $)};
+% Text Node
+\draw (510,250) node  [align=left] {$\displaystyle \Theta $};
+% Text Node
+\draw (286,247) node  [align=left] {$\displaystyle \textcolor[rgb]{0.82,0.01,0.11}{\hat{\Theta }}$};
+% Text Node
+\draw (304,250) node  [align=left] {$\displaystyle \Theta _{0}$};
+% Text Node
+\draw (367,248) node  [align=left] {$\displaystyle \textcolor[rgb]{0.29,0.56,0.89}{\hat{\Theta }}$};
+% Text Node
+\draw (515,40) node  [align=right] {Карась};
+% Text Node
+\draw (515,72) node  [align=right] {Щука};
+
+
+\end{tikzpicture}
+
+Докажем формально:
+
+    \[
+    \E(s(\Theta)) = 2\Theta\cdot\dfrac{1}{\Theta} + \Theta\cdot\dfrac{1}{\Theta} + (1 - 3\Theta)\cdot\dfrac{-3}{(1 - 3\Theta)} = 0
+    \]
+
+\textbf{Пример.} Найдем $CE$ для $X \sim Beta(\Theta, 1)$.
+
+$f(x) = const*x^{\Theta-1}(1-x)^{1-1} = const*x^{\Theta-1}$
+
+Найдем константу:
+$$\int\limits_0^1x^{\Theta-1}dx = \dfrac{1}{\Theta} \Longrightarrow const = \Theta$$
+
+Тогда:
+$$f(x) = \Theta*x^{\Theta-1}$$
+
+Предположим, что $\Theta_0=7$, $\Theta = 8$. Тогда:
+$$CE_{\Theta_0=7}(f(x, \Theta=8)) = -\E_{\Theta_0}(\ln(8*x^{8-1}) = -\E_{\Theta_0}(\ln8 + 7\ln{x}) = -\ln8 - 7*\int\limits_0^1\ln{x}*7*x^6dx$$
+
+\textbf{Как найти} $\Var(s(\Theta))$.
+
+\[
+s(\Theta) = 
+\begin{bmatrix}
+    \dfrac{\delta l}{\delta \Theta_{1}}\\
+    \vdots\\
+    \dfrac{\delta l}{\delta \Theta_{k}}\\
+\end{bmatrix}
+\]
+
+\[
+\E(s(\Theta)) = 
+\begin{pmatrix}
+    0\\
+    \vdots\\
+    0\\
+\end{pmatrix}
+\]
+
+\[
+\Var(s(\Theta)) = 
+\begin{bmatrix}
+    \Var(\dfrac{\delta l}{\delta \Theta_{1}}) & \\
+    \Cov(\dfrac{\delta l}{\delta \Theta_{1}}, \dfrac{\delta l}{\delta \Theta_{2}}) 
+    & \ddots\\
+\end{bmatrix}
+\]
+
+Утверждение:
+
+$$\Var(s(\Theta)) = -\E\left(\dfrac{\delta^2l}{\delta\Theta\delta\Theta^T}\right)$$
+
+Сравним для $\Theta_1$:
+$$\Var\left(\dfrac{\delta l}{\delta \Theta_1}\right) = \E\left(\left(\dfrac{\delta l}{\delta \Theta_1}\right)^2\right) \vee -\E\left(\dfrac{\delta^2l}{\delta\Theta_1^2}\right)$$
+
+$$\left(\dfrac{\delta^2l}{\delta\Theta_1^2}\right) = \left(\dfrac{\delta \ln L(\Theta)}{\delta \Theta_1}\right)^2 = \left(\dfrac{1}{L(\Theta)}*\dfrac{\delta L}{\delta \Theta_1}\right)^2$$
+
+$$\left(\dfrac{\delta l}{\delta \Theta_1}\right)^2 + \dfrac{\delta^2l}{\delta \Theta_1^2} = \dfrac{1}{L}*\dfrac{\delta^2L}{\delta \Theta_1^2}$$
+$$\E\left(\left(\dfrac{\delta l}{\delta \Theta_1}\right)^2 + \dfrac{\delta^2l}{\delta \Theta_1^2}\right) = \E\left(\dfrac{1}{L}*\dfrac{\delta^2L}{\delta \Theta_1^2}\right) = \int\limits_\Theta \dfrac{1}{L}*\dfrac{\delta^2 L}{\delta \Theta_1^2}*L ~d\Theta = \int\limits_\Theta \dfrac{\delta^2 L}{\delta \Theta_1^2} d\Theta = \dfrac{\delta^2 \int\limits_\Theta d\Theta}{\delta \Theta_1^2} = \dfrac{\delta^2 1}{\delta \Theta_1^2} = 0$$
+
+Получили, что:
+$$\E\left(\left(\dfrac{\delta l}{\delta \Theta_1}\right)^2 + \dfrac{\delta^2l}{\delta \Theta_1^2}\right) = 0$$
+
+\section*{Домашнее задание}
+Аналогично доказать:
+\begin{enumerate}
+    \item $\E\left(\dfrac{\delta l}{\delta \Theta_1}*\dfrac{\delta l}{\delta \Theta_2} + \dfrac{\delta^2 l}{\delta \Theta_1 \delta \Theta_2}\right) = 0$
+    \item $\E\left(\dfrac{\Theta l}{\delta \Theta_1}\right) = 0$
+\end{enumerate}
+
+\end{document}

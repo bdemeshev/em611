@@ -1,0 +1,501 @@
+\documentclass[12pt]{article} % размер шрифта
+\usepackage{varwidth}
+\usepackage{tikz} % картинки в tikz
+\usepackage{microtype} % свешивание пунктуации
+
+\usepackage{array} % для столбцов фиксированной ширины
+
+\usepackage{url} % для вставки ссылок \url{...}
+
+\usepackage{indentfirst} % отступ в первом параграфе
+
+\usepackage{sectsty} % для центрирования названий частей
+\allsectionsfont{\centering} % приказываем центрировать все sections
+
+\usepackage{amsthm} % теоремы и доказательства
+
+\theoremstyle{definition} % прямой шрифт в условии теорем
+\newtheorem{theorem}{Теорема}[section]
+
+
+\usepackage{amsmath, amssymb} % куча стандартных математических плюшек
+
+\usepackage[top=2cm, left=1.5cm, right=1.5cm, bottom=2cm]{geometry} % размер текста на странице
+
+\usepackage{lastpage} % чтобы узнать номер последней страницы
+
+\usepackage{enumitem} % дополнительные плюшки для списков
+%  например \begin{enumerate}[resume] позволяет продолжить нумерацию в новом списке
+\usepackage{caption} % подписи к картинкам без плавающего окружения figure
+
+\usepackage{hyperref} % гиперссылки
+
+\usepackage{verbatim} % побуквенный вывод
+
+\usepackage{fancyhdr} % весёлые колонтитулы
+\pagestyle{fancy}
+\lhead{Эконометрика, финтех}
+\chead{}
+\rhead{2018-12-18, встреча 12}
+\lfoot{}
+\cfoot{}
+\rfoot{\thepage/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+
+
+\usepackage{todonotes} % для вставки в документ заметок о том, что осталось сделать
+% \todo{Здесь надо коэффициенты исправить}
+% \missingfigure{Здесь будет картина Последний день Помпеи}
+% команда \listoftodos — печатает все поставленные \todo'шки
+
+\usepackage{booktabs} % красивые таблицы
+% заповеди из документации:
+% 1. Не используйте вертикальные линии
+% 2. Не используйте двойные линии
+% 3. Единицы измерения помещайте в шапку таблицы
+% 4. Не сокращайте .1 вместо 0.1
+% 5. Повторяющееся значение повторяйте, а не говорите "то же"
+
+\usepackage{fontspec} % поддержка разных шрифтов
+\usepackage{polyglossia} % поддержка разных языков
+
+\setmainlanguage{russian}
+\setotherlanguages{english}
+
+\setmainfont{Linux Libertine O} % выбираем шрифт
+% если Linux Libertine не установлен, то
+% можно также попробовать Helvetica, Arial, Cambria и т.Д.
+
+% чтобы использовать шрифт \Linux Libertine на личном компе,
+% его надо предварительно скачать по ссылке
+% http://www.\Linuxlibertine.org/index.php?id=91&L=1
+
+% на сервисах типа sharelatex.com этот шрифт есть :)
+
+\newfontfamily{\cyrillicfonttt}{Linux Libertine O}
+% пояснение зачем нужно шаманство с \newfontfamily
+% http://tex.stackexchange.com/questions/91507/
+
+\AddEnumerateCounter{\asbuk}{\russian@alph}{щ} % для списков с русскими буквами
+\setlist[enumerate, 2]{label=\asbuk*),ref=\asbuk*} % списки уровня 2 будут буквами а) б) ...
+
+%% эконометрические и вероятностные сокращения
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\sCov}{sCov}
+\DeclareMathOperator{\sVar}{sVar}
+\DeclareMathOperator{\sCorr}{sCorr}
+\DeclareMathOperator{\Corr}{Corr}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\N}{N}
+\DeclareMathOperator{\tr}{trace}
+\DeclareMathOperator{\trace}{trace}
+\DeclareMathOperator{\Lin}{Lin}
+\DeclareMathOperator{\Linp}{Lin^{\perp}}
+\DeclareMathOperator{\col}{col}
+\DeclareMathOperator{\colp}{col^{\perp}}
+\DeclareMathOperator{\grad}{grad}
+
+\def \hb{\hat{\beta}}
+\def \hs{\hat{\sigma}}
+\def \htheta{\hat{\theta}}
+\def \s{\sigma}
+\def \hy{\hat{y}}
+\def \hlambda{\hat{\lambda}}
+\def \hbeta{\hat{\beta}}
+\def \ha{\hat{a}}
+\def \hY{\hat{Y}}
+\def \hu{\hat{u}}
+\def \v1{\vec{1}}
+\def \e{\varepsilon}
+\def \he{\hat{\e}}
+\def \z{z}
+\def \hVar{\widehat{\Var}}
+\def \hCorr{\widehat{\Corr}}
+\def \hCov{\widehat{\Cov}}
+\def \cN{\mathcal{N}}
+\def \RR{\mathbb{R}}
+
+\makeatletter
+\def\MT@warn@unknown{}
+\makeatother
+
+\newcommand{\tvect}[3]{%
+   \ensuremath{\Bigl(\negthinspace\begin{smallmatrix}#1\\#2\\#3\end{smallmatrix}\Bigr)}}
+
+
+
+\begin{document}
+
+Конспектировал: Антон Захаренков.
+\bigskip
+
+\smallskip
+
+\textbf{Вспомним обозначения}
+
+
+\begin{itemize}[label={$\bullet$}]
+        \item $\theta_0$ --- истинное значение параметра
+        \item $\theta$ --- произвольное значение параметра
+        \item $\htheta$ --- оценка ML
+\end{itemize}
+
+Производная логарифмической функции потерь:
+$s(\theta) = \grad l(\theta) = \grad \ln L(\theta)$
+
+\begin{equation}
+    \Var s(\theta_0)=
+    \begin{cases}
+      \E ( s(\theta_0) - s(\theta_0)^T ) \\[5pt]
+      \E \Big(-\dfrac{\partial^2 l}{\partial \theta \: \partial \theta^T}\Big\rvert_{\theta_0} \Big)
+    \end{cases}
+  \end{equation}
+
+
+\smallskip
+\textbf{Утверждение.} $\Var s(\theta_0)$ и $\Var (\htheta)$ --- взаимообратны.
+
+
+
+\bigskip
+\textbf{Пример}
+
+    $y_1, y_2, ..., y_n$ --- выборка независимых случайных величин из распределения Exp($\lambda$)
+    
+\medskip    
+\begin{enumerate}
+%\setlength\itemsep{0.1em}
+    \item Найдите $\hlambda$ 
+    \item Найдите $\Var(\hlambda)$ 
+    \item Найдите $\Var(s(\lambda_0))$ 
+    \item Найдите $\Var(\hlambda) \cdot \Var(s(\lambda_0))$
+\end{enumerate}
+    
+\medskip    
+\emph{Решение}
+
+Экспоненциальное распределение: \begin{equation}
+    f(y_0)=
+    \begin{cases}
+      \lambda e^{-\lambda y_i},\quad y_i \geq 0\\[5pt]
+      0,\quad y_i < 0
+    \end{cases}
+  \end{equation} 
+  
+Функция правдоподобия: \begin{equation}
+    L(y_1, ..., y_n, \theta)=
+    \lambda^n e^{-\lambda (y_1 +  ... + y_n)}
+  \end{equation}
+
+Логарифмируем: \begin{equation}
+    l(y_1, ..., y_n, \theta)=
+    n\ln\lambda - \lambda (y_1 +  ... + y_n)
+  \end{equation}
+  
+Дифференцируем:  \begin{equation}
+    s(\lambda)=
+    \dfrac{n}{\lambda} - (y_1 +  ... + y_n)
+  \end{equation}
+  
+  \begin{equation}
+    \hlambda=
+    \dfrac{n}{\sum y_i}
+  \end{equation}
+  
+  \begin{equation}
+    \Var s(\lambda_0) =
+    \E \Big(-\dfrac{\partial^2 l}{\partial \lambda \: \partial \lambda^T}\Big\rvert_{\lambda_0} \Big) = 
+    \E \Big(\dfrac{n}{\lambda_0^2}\Big)=\dfrac{n}{\lambda_0^2}
+  \end{equation}
+  
+  Примерно найдем $\Var (\hlambda)$ с помощью дельта-метода.
+  
+  \medskip
+  
+ По ЦПТ:\begin{equation}
+    \dfrac{\sum y_i}{n} \stackrel{acc}{\sim} \N \Big(\dfrac{1}{\lambda_0};\dfrac{1}{n\lambda_0^2}\Big)
+  \end{equation}
+  
+ Но:\begin{equation}
+    \hlambda = \dfrac{1}{\Big(\dfrac{\sum y_i}{n}\Big)} = h\Big(\dfrac{\sum y_i}{n}\Big)
+  \end{equation}
+   
+ Разложим h(t) в ряд Тейлора в окрестности $\dfrac{1}{\lambda}$:
+ \begin{equation}
+    h(t) = \dfrac{1}{t} = \dfrac{1}{t_0} - \dfrac{1}{t_0^2}(t-t_0)
+  \end{equation}
+ 
+ Тогда:
+ \begin{equation}
+    \hlambda \approx \lambda_0 - \lambda_0^2 \Big(\dfrac{\sum y_i}{n} - \dfrac{1}{\lambda_0} \Big)
+\end{equation}
+
+Дисперсия:
+\begin{equation}
+    \Var (\hlambda) = \lambda_0^4 \cdot \dfrac{1}{n\lambda_0^2} = \dfrac{\lambda_0^2}{n}
+  \end{equation}
+  
+Видим, что:
+\begin{equation}
+    \Var (\hlambda) \cdot \Var (s(\lambda_0)) \approx \dfrac{\lambda_0^2}{n} \cdot \dfrac{n}{\lambda_0^2} \to 1
+  \end{equation}
+  
+\bigskip
+\textbf{Упражнение}
+
+Рассмотрим модель множественной регрессии, $y=X\beta + u$, где регрессоры детерминистические, а $u \sim \cN(0; \sigma^2 \cdot I)$.
+Величина $\sigma^2$ известна. 
+
+\begin{enumerate}
+\item Найдите $\hbeta_{ML}$.
+\item Найдите $\Var (\hbeta_{ML})$.
+\item Найдите $s(\beta_0)$.
+\item Найдите $\Var (s(\beta_0))$.
+\item Найдите $\Var (\hbeta) \cdot \Var (s(\beta_0))$.
+\end{enumerate}
+
+\medskip    
+\emph{Решение}
+
+По условию:
+ \begin{equation}
+    y \sim \cN(X\beta; \sigma^2 \cdot I) 
+\end{equation}
+
+Функция правдоподобия:
+\begin{equation}
+    L (y, \beta) = \dfrac{1}{(2\pi \sigma^2)^{\frac{n}{2}}} \cdot exp(-\dfrac{1}{2}(y-X\beta)^{T} (\sigma^2 \cdot I)^{-1} (y-X\beta))
+  \end{equation}
+  
+Логарифмируем:
+\begin{equation}
+    l (y, \beta) = -\dfrac{n}{2} \: \ln(2\pi \sigma^2) -\dfrac{1}{2}(y-X\beta)^{T} \dfrac{1}{\sigma^2} (y-X\beta) \to \underset{\beta}{max}
+  \end{equation}
+  
+Оценка ML совпадает с оценкой МНК:
+\begin{equation}
+    \hbeta_{ML} = \hbeta_{MHK} = (X^T X)^{-1} X^{T} y
+  \end{equation}
+\begin{equation}
+    \Var (\hbeta_{ML}) = \sigma^2 (X^T X)^{-1}
+  \end{equation}
+  
+Посчитаем дифференциал dl:
+\begin{equation}
+   dl = -\dfrac{1}{2\sigma^2} [-(X d\beta)^T (y-X\beta) + (y-X\beta)^T (-X d\beta)] = \dfrac{(y-X\beta)^T X d\beta}{\sigma^2} = s(\beta)^T d\beta
+  \end{equation}
+  
+Отсюда:
+\begin{equation}
+   s(\beta_0) = \dfrac{1}{\sigma^2} X^T(y-X\beta_0)
+  \end{equation} 
+\begin{equation}
+   \Var (s(\beta_0)) = \dfrac{1}{\sigma^4} X^T \Var(y-X\beta_0) X = \dfrac{X^T X}{\sigma^2}
+  \end{equation} 
+  
+Видим, что:
+\begin{equation}
+   \Var (\hbeta) \cdot \Var (s(\beta_0) = 1
+  \end{equation} 
+
+
+\bigskip
+\textbf{Замечание}
+
+При [некоторые условия регулярности]:
+\begin{enumerate}
+    \item plim $\htheta_{ML} = \theta_0$
+    \item $\htheta_{ML} \sim \cN(\theta;  \Var(s(\theta_0))^{-1})$
+    \item $\sqrt{n} \: (\htheta_{ML} - \theta_0) \stackrel{d}{\to} \cN(0; n \cdot \Var(s(\theta_0))^{-1})$
+\end{enumerate}
+
+Откуда:
+
+\begin{center}
+\fbox{\begin{varwidth}{\dimexpr\textwidth-10\fboxsep-10\fboxrule\relax}
+Если $\ha \sim \cN(a; \Var(\ha)$, то \qquad
+
+\[
+ (\ha - a)^T \Var(\ha)^{-1} (\ha - a) \sim \chi_k^2
+\]
+\end{varwidth}}
+\end{center}
+
+\bigskip
+\textbf{Проверка гипотезы о равенстве параметров заданным значениям}
+
+\begin{itemize}
+    \item $H_0: \theta = \theta_0$
+    \item $H_A: $ хотя бы одно из равенств нарушено
+\end{itemize}
+
+Если $H_0$:
+\begin{equation}
+  W = (\htheta_{UR} - \theta_0)^T \Var (\htheta_{UR})^{-1} (\htheta_{UR} - \theta_0) \sim \chi_k^2
+  \end{equation} 
+\begin{equation}
+   LM = (\htheta_{R})^T \Var (s(\htheta_{R}))^{-1}  (\htheta_{R}) \sim \chi_k^2
+  \end{equation} 
+\begin{equation}
+   LR = 2\cdot (l(\htheta_{UR}) - l(\htheta_{R})) \sim \chi_k^2
+  \end{equation} 
+  
+\newpage
+Как состоятельно оценить $\Var (s(\theta_0) ? =\E \Big(-\dfrac{\partial^2 l}{\partial \theta \: \partial \theta^T}\Big\rvert_{\theta_0} \Big)$
+\begin{enumerate}
+    \item Подставить $\htheta$ вместо $\theta_0$
+    \item Можно даже не брать E
+\end{enumerate}
+
+\bigskip
+\textbf{Пример}
+
+    $y_1, ..., y_n$ --- выборка независимых случайных величин из распределения Exp($\lambda$), n=100, $\sum y_i = 400$
+\medskip    
+\begin{itemize}
+    \item $H_0: \lambda = 0.3$
+    \item $H_A: \lambda \neq 0.3$
+\end{itemize}
+
+Проверить с помощью:
+\medskip    
+\begin{enumerate}
+
+    \item Wald
+    \item LM
+    \item LR
+\end{enumerate}
+
+\medskip    
+\emph{Решение}
+
+\begin{equation}
+   \hlambda_{ML} = \dfrac{n}{\sum y_i} = \dfrac{100}{400} = 0.25
+  \end{equation} 
+\begin{equation}
+   \Var (\hlambda_{ML})^{-1} \approx \Var (s(\lambda_0)) = \dfrac{4}{\lambda_0^2} = \dfrac{100}{0.25^2} = 1600
+  \end{equation} 
+  
+\begin{equation}
+   s(\lambda_0) = \dfrac{n}{\lambda_0} - \sum y_i = {100}{0.3} - 400 = -\dfrac{200}{3}
+  \end{equation} 
+
+\begin{equation}
+   \Var s(\lambda_0) = \dfrac{n}{\lambda_0^2} = \dfrac{100}{0.3^2}
+  \end{equation}   
+  
+
+\begin{equation}
+   W = (0.25-0.3)\cdot 1600 \cdot (0.25-03) = 4 < \chi_1^2 = 6.63 \Rightarrow H_0 - not rejected
+  \end{equation}
+  
+\begin{equation}
+   LM = (-\dfrac{200}{3}) \cdot \dfrac{1}{\frac{100}{0.3^2}} \cdot (-\dfrac{200}{3}) = 4 < \chi_1^2 = 6.63 \Rightarrow H_0 - not rejected
+  \end{equation}
+  
+\newpage
+
+\bigskip
+\textbf{Упражнение}
+
+В пруду водятся
+
+\begin{table}[htb]
+\centering
+\begin{tabular}{l|l|l|}
+\cline{2-3}
+                              & \begin{tabular}[c]{@{}l@{}}Вероятность \\ обнаружения\end{tabular} & Было выловлено \\ \hline
+\multicolumn{1}{|l|}{щуки}    & p                                                                  & 10             \\ \hline
+\multicolumn{1}{|l|}{русалки} & r                                                                  & 30             \\ \hline
+\multicolumn{1}{|l|}{водяные} & v                                                                  & 20             \\ \hline
+\multicolumn{1}{|l|}{караси}  & 1-p-r-v                                                            & 140            \\ \hline
+\end{tabular}
+\end{table}
+   
+причем каждое выловленное животное не влияет на распределение последующих.
+
+Проверяется гипотеза:
+\medskip    
+\begin{itemize}
+    \item $H_0: $  \begin{cases}
+      r = v \\[2pt]
+      p = 0.1
+    \end{cases}
+    \item $H_A: $ хотя бы что-то невыполнено
+\end{itemize}
+
+\medskip    
+\emph{Решение}
+
+Пусть
+\begin{equation}
+    H_0 =  \begin{cases}
+      r - v = \alpha = 0 \\[2pt]
+      p - 0.1 = \beta = 0
+    \end{cases}
+\end{equation}
+
+Правдоподобие:
+\begin{equation}
+    L = const \cdot (0.1 + \beta)^{10} \cdot (v+\alpha)^{30} \cdot v^{20} \cdot (0.9 - \beta - 2v - \alpha)^{140}
+\end{equation}
+
+\begin{equation}
+    l = const + 10 \ln (0.1 + \beta) + 30 \ln (v+\alpha) + 20 \ln v +  140 \ln (0.9 - \beta - 2v - \alpha)
+\end{equation}
+
+\bigskip
+Пусть $\theta = \tvect{\alpha}{\beta}{v}$: 
+
+\begin{align}
+    s (\theta) &=  \begin{pmatrix}
+           30\dfrac{1}{v+\alpha} - 140\dfrac{1}{0.9-\beta-2v-\alpha} \\
+           \hdots \\
+           \hdots \\
+         \end{pmatrix}
+  \end{align}
+
+\begin{align}
+    \hat{\begin{pmatrix}
+           p \\
+           r \\
+           v \\
+         \end{pmatrix}}_{UR} = \begin{pmatrix}
+           0.1 + \hbeta \\
+           \hat{v} + \hlambda \\
+           \hat{v} \\
+         \end{pmatrix} = \begin{pmatrix}
+           \frac{10}{200} \\
+           \frac{30}{100} \\
+           \frac{20}{200} \\
+         \end{pmatrix} = \begin{pmatrix}
+           0.05 \\
+           -0.05 \\
+           0.1 \\
+         \end{pmatrix}
+  \end{align}
+
+
+\begin{align}
+    \hat{\begin{pmatrix}
+           p \\
+           r \\
+           v \\
+         \end{pmatrix}}_{R} = \begin{pmatrix}
+           0.1  \\
+           \hat{v} \\
+           \hat{v} \\
+         \end{pmatrix} =\begin{pmatrix}
+           0.1 \\
+           \frac{45}{380} \\
+           \frac{45}{380} \\
+         \end{pmatrix}
+  \end{align}
+
+
+
+
+\end{document}
