@@ -255,9 +255,7 @@ h6 {
 </style>
 
 
-</head>
 
-<body>
 
 <style type="text/css">
 .main-container {
@@ -282,22 +280,92 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
 
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
 });
 </script>
 
 <!-- code folding -->
 
 
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
 
 
 
@@ -307,14 +375,14 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">EM611. Осень-зима 2018.</h1>
-<h4 class="author"><em>Boris Demeshev</em></h4>
+<h4 class="author">Boris Demeshev</h4>
 
 </div>
 
 
 <p>Курс эконометрики для магистерской программы финтех. Продолжительность — один семестр.</p>
-<div class="section level3">
-<h3>Программа</h3>
+<div id="-" class="section level2">
+<h2>Ориентировочная программа</h2>
 <ol style="list-style-type: decimal">
 <li>МНК без вероятностей</li>
 </ol>
@@ -351,31 +419,48 @@ $(document).ready(function () {
 <li>Вольная программа, немного учитывающая пожелания слушателей :</li>
 </ol>
 </div>
-<div id="-" class="section level3">
-<h3>Система оценивания</h3>
+<div id="-" class="section level2">
+<h2>Система оценивания</h2>
 <ul>
 <li>Домашнее задание — 20%</li>
 <li>Письменная контрольная — 30%</li>
 <li>Письменный экзамен — 50%</li>
 </ul>
 </div>
-<div class="section level3">
-<h3>Ссылки:</h3>
+<div class="section level2">
+<h2>Ссылки:</h2>
 <ul>
-<li><p><a href="https://docs.google.com/spreadsheets/d/1Da3y6Tq-GEtGftxtjGG-iQ77-mtY4W9HfN8Wewqxv7U/edit?usp=sharing">оценки-2018</a></p></li>
 <li><a href="https://github.com/bdemeshev/em611">github-репозиторий</a> курса EM611: свалка файлов</li>
 <li><a href="http://bdemeshev.github.io/em301/">Курс EM301</a>: бакалавриат факультета экономики вшэ</li>
 <li><a href="https://github.com/bdemeshev/metrics_hse_exams/raw/master/metrics_hse_exams.pdf">Задачи с кр EM301</a></li>
 <li><a href="https://github.com/bdemeshev/metrics_pro/raw/master/metrics_pro.pdf">Задачи к семинарам</a> EM301</li>
-<li><p>Частичный <a href="https://github.com/bdemeshev/em611/raw/master/2017/metrics_ak.docx">Конспект-2017 by Андрей Коломиец</a>. Есть немного ошибок, будьте бдительны! Частичный <a href="https://bdemeshev.github.io/em611/index_2017_2018.html">лог курса-2017</a></p></li>
 </ul>
 <p>Если нужна одна книжка:</p>
 <p>Stachursky, Primer in econometric theory. <a href="http://johnstachurski.net/emet.html">Слайды и часть глав</a>.</p>
 </div>
-<div class="section level3">
-<h3>Конспекты:</h3>
+<div id="-2019" class="section level2">
+<h2>версия 2019</h2>
 <ul>
-<li><p>Шаблон, <a href="https://github.com/bdemeshev/em611/blob/master/2017/note_template/note_template.tex">tex</a> и <a href="https://github.com/bdemeshev/em611/raw/master/2017/note_template/note_template.pdf">pdf</a> для конспектирования лекций, <a href="https://github.com/olyagnilova/gauss-markov-pythagoras">картинки для МНК</a> из работы Оли Гниловой, их можно свободно использовать.</p></li>
+<li><p><a href="https://docs.google.com/spreadsheets/">оценки-2019</a></p></li>
+<li><p>Неделя 1. Матричный дифференциал. МНК без предпосылок. Геометрический смысл прогнозов МНК — проекция.</p></li>
+</ul>
+<p>Дз: из <a href="https://github.com/bdemeshev/metrics_pro/raw/master/metrics_pro.pdf">задач к семинарам</a>: 1.1 (2), 1.8, 1.10, 1.12-1.15, 2.1, 2.2, 3.2, 3.3.</p>
+<ul>
+<li>Неделя 2. Разбор задачек. Свойства матричных E и Var. Предпосылки на E(u) и Var(u). Следствия: E, Var, Cov для всех случайных величин. Теорема Гаусса-Маркова с геометрическим доказательством.</li>
+</ul>
+<p>Дз: посчитать все возможные ожидания, ковариации для y, y, b, u, u, y.</p>
+<ul>
+<li>Неделя 3. Матрица-шляпница aka проектор и её свойства. Геометрический смысл транспонирования. Ожидание от квадратичной формы: трюк с перестановкой ожидания и следа. Геометрический смысл нормального распределения. Предпосылки Хэршела-Максвелла. Геометрический смысл хи-квадрат распределения. Распределение RSS, TSS, ESS при игреках не зависящих от регрессоров.</li>
+</ul>
+<p>Дз: из <a href="https://github.com/bdemeshev/metrics_pro/raw/master/metrics_pro.pdf">задач к семинарам</a>: листок 3 и листок 4</p>
+<ul>
+<li>Неделя 4. (план) Геометрический смысл t, F-распределений. Проверка гипотез в линейной модели.</li>
+</ul>
+</div>
+<div id="-2018" class="section level2">
+<h2>версия 2018</h2>
+<ul>
+<li><p>Шаблон конспектов, <a href="https://github.com/bdemeshev/em611/blob/master/2017/note_template/note_template.tex">tex</a> и <a href="https://github.com/bdemeshev/em611/raw/master/2017/note_template/note_template.pdf">pdf</a> для конспектирования лекций, <a href="https://github.com/olyagnilova/gauss-markov-pythagoras">картинки для МНК</a> из работы Оли Гниловой, их можно свободно использовать.</p></li>
 <li><p>Встреча 1. МНК без вероятностей. Зато с матрицами :)</p>
 <ul>
 <li><p>Конспект Севы Овечкина: <a href="https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_01.pdf">pdf</a>, <a href="https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_01.tex">tex</a></p></li>
@@ -428,6 +513,12 @@ $(document).ready(function () {
 <li>Конспект (бета) <a href="https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_12.pdf">pdf</a>, <a href="https://github.com/bdemeshev/em611/raw/master/2018/notes/seminar_12.tex">tex</a></li>
 </ul></li>
 <li><p>Экзамен: <a href="https://github.com/bdemeshev/em611/raw/master/2018/exam/exam_18.pdf">pdf</a></p></li>
+</ul>
+</div>
+<div id="-2017" class="section level2">
+<h2>версия 2017</h2>
+<ul>
+<li>Частичный <a href="https://github.com/bdemeshev/em611/raw/master/2017/metrics_ak.docx">Конспект-2017 by Андрей Коломиец</a>. Есть немного ошибок, будьте бдительны! Частичный <a href="https://bdemeshev.github.io/em611/index_2017_2018.html">лог курса-2017</a></li>
 </ul>
 </div>
 

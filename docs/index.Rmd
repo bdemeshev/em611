@@ -8,7 +8,8 @@ lang: ru-RU
 
 Курс эконометрики для магистерской программы финтех. Продолжительность — один семестр.
 
-### Программа
+
+## Ориентировочная программа
 
 1. МНК без вероятностей
 
@@ -49,21 +50,18 @@ lang: ru-RU
 9. Вольная программа, немного учитывающая пожелания слушателей :
 
 
-### Система оценивания
+## Система оценивания
 
 * Домашнее задание — 20%
 * Письменная контрольная — 30%
 * Письменный экзамен — 50%
 
-### Ссылки:
-
-* [оценки-2018](https://docs.google.com/spreadsheets/d/1Da3y6Tq-GEtGftxtjGG-iQ77-mtY4W9HfN8Wewqxv7U/edit?usp=sharing)
+## Ссылки:
 
 * [github-репозиторий](https://github.com/bdemeshev/em611) курса EM611: свалка файлов
 * [Курс EM301](http://bdemeshev.github.io/em301/): бакалавриат факультета экономики вшэ
 * [Задачи с кр EM301](https://github.com/bdemeshev/metrics_hse_exams/raw/master/metrics_hse_exams.pdf)
 * [Задачи к семинарам](https://github.com/bdemeshev/metrics_pro/raw/master/metrics_pro.pdf) EM301
-* Частичный [Конспект-2017 by Андрей Коломиец](https://github.com/bdemeshev/em611/raw/master/2017/metrics_ak.docx). Есть немного ошибок, будьте бдительны! Частичный [лог курса-2017](https://bdemeshev.github.io/em611/index_2017_2018.html)
 
 
 Если нужна одна книжка:
@@ -71,9 +69,37 @@ lang: ru-RU
 Stachursky, Primer in econometric theory. [Слайды и часть глав](http://johnstachurski.net/emet.html).
 
 
-### Конспекты:
 
-* Шаблон, [tex](https://github.com/bdemeshev/em611/blob/master/2017/note_template/note_template.tex) и [pdf](https://github.com/bdemeshev/em611/raw/master/2017/note_template/note_template.pdf) для конспектирования лекций, [картинки для МНК](https://github.com/olyagnilova/gauss-markov-pythagoras) из работы Оли Гниловой, их можно свободно использовать.
+## версия 2019
+
+* [оценки-2019](https://docs.google.com/spreadsheets/)
+
+* Неделя 1. Матричный дифференциал. МНК без предпосылок. Геометрический смысл прогнозов МНК — проекция.
+
+Дз: из [задач к семинарам](https://github.com/bdemeshev/metrics_pro/raw/master/metrics_pro.pdf): 1.1 (2), 1.8, 1.10, 1.12-1.15, 2.1, 2.2, 3.2, 3.3.
+
+* Неделя 2. Разбор задачек. Свойства матричных E и Var. Предпосылки на E(u) и Var(u). 
+Следствия: E, Var, Cov для всех случайных величин.
+Теорема Гаусса-Маркова с геометрическим доказательством. 
+
+Дз: посчитать все возможные ожидания, ковариации для y, \hat y, \hat b, u, \hat u, \bar y.
+
+* Неделя 3. Матрица-шляпница aka проектор и её свойства. Геометрический смысл транспонирования. 
+Ожидание от квадратичной формы: трюк с перестановкой ожидания и следа. 
+Геометрический смысл нормального распределения. Предпосылки Хэршела-Максвелла. 
+Геометрический смысл хи-квадрат распределения. Распределение RSS, TSS, ESS при игреках не зависящих от регрессоров. 
+
+Дз: из [задач к семинарам](https://github.com/bdemeshev/metrics_pro/raw/master/metrics_pro.pdf): листок 3 и листок 4
+
+* Неделя 4. (план) Геометрический смысл t, F-распределений. Проверка гипотез в линейной модели. 
+
+
+
+
+
+## версия 2018
+
+* Шаблон конспектов, [tex](https://github.com/bdemeshev/em611/blob/master/2017/note_template/note_template.tex) и [pdf](https://github.com/bdemeshev/em611/raw/master/2017/note_template/note_template.pdf) для конспектирования лекций, [картинки для МНК](https://github.com/olyagnilova/gauss-markov-pythagoras) из работы Оли Гниловой, их можно свободно использовать.
 
 * Встреча 1. МНК без вероятностей. Зато с матрицами :)
 
@@ -143,3 +169,8 @@ Stachursky, Primer in econometric theory. [Слайды и часть глав](
 
 * Экзамен: [pdf](https://github.com/bdemeshev/em611/raw/master/2018/exam/exam_18.pdf) 
 
+
+## версия 2017
+
+* Частичный [Конспект-2017 by Андрей Коломиец](https://github.com/bdemeshev/em611/raw/master/2017/metrics_ak.docx). 
+Есть немного ошибок, будьте бдительны! Частичный [лог курса-2017](https://bdemeshev.github.io/em611/index_2017_2018.html)
