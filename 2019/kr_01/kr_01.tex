@@ -1,0 +1,191 @@
+\documentclass[12pt]{article} % размер шрифта
+
+\usepackage{tikz} % картинки в tikz
+\usepackage{microtype} % свешивание пунктуации
+
+\usepackage{array} % для столбцов фиксированной ширины
+
+\usepackage{url} % для вставки ссылок \url{...}
+
+\usepackage{indentfirst} % отступ в первом параграфе
+
+\usepackage{sectsty} % для центрирования названий частей
+\allsectionsfont{\centering} % приказываем центрировать все sections
+
+\usepackage{amsthm} % теоремы и доказательства
+
+\theoremstyle{definition} % прямой шрифт в условии теорем
+\newtheorem{theorem}{Теорема}[section]
+
+
+\usepackage{amsmath, amssymb} % куча стандартных математических плюшек
+
+\usepackage[top=2cm, left=1.5cm, right=1.5cm, bottom=2cm]{geometry} % размер текста на странице
+
+\usepackage{lastpage} % чтобы узнать номер последней страницы
+
+\usepackage{enumitem} % дополнительные плюшки для списков
+%  например \begin{enumerate}[resume] позволяет продолжить нумерацию в новом списке
+\usepackage{caption} % подписи к картинкам без плавающего окружения figure
+
+
+\usepackage{fancyhdr} % весёлые колонтитулы
+\pagestyle{fancy}
+\lhead{Эконометрика, финтех}
+\chead{}
+\rhead{2017-10-28, Праздник-1}
+\lfoot{}
+\cfoot{}
+\rfoot{\thepage/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+
+
+\usepackage{todonotes} % для вставки в документ заметок о том, что осталось сделать
+% \todo{Здесь надо коэффициенты исправить}
+% \missingfigure{Здесь будет картина Последний день Помпеи}
+% команда \listoftodos — печатает все поставленные \todo'шки
+
+\usepackage{booktabs} % красивые таблицы
+% заповеди из документации:
+% 1. Не используйте вертикальные линии
+% 2. Не используйте двойные линии
+% 3. Единицы измерения помещайте в шапку таблицы
+% 4. Не сокращайте .1 вместо 0.1
+% 5. Повторяющееся значение повторяйте, а не говорите "то же"
+
+\usepackage{fontspec} % поддержка разных шрифтов
+\usepackage{polyglossia} % поддержка разных языков
+
+\setmainlanguage{russian}
+\setotherlanguages{english}
+
+\setmainfont{Linux Libertine O} % выбираем шрифт
+% если Linux Libertine не установлен, то
+% можно также попробовать Helvetica, Arial, Cambria и т.Д.
+
+% чтобы использовать шрифт Linux Libertine на личном компе,
+% его надо предварительно скачать по ссылке
+% http://www.linuxlibertine.org/index.php?id=91&L=1
+
+% на сервисах типа sharelatex.com этот шрифт есть :)
+
+\newfontfamily{\cyrillicfonttt}{Linux Libertine O}
+% пояснение зачем нужно шаманство с \newfontfamily
+% http://tex.stackexchange.com/questions/91507/
+
+\AddEnumerateCounter{\asbuk}{\russian@alph}{щ} % для списков с русскими буквами
+\setlist[enumerate, 2]{label=\asbuk*),ref=\asbuk*} % списки уровня 2 будут буквами а) б) ...
+
+%% эконометрические и вероятностные сокращения
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\sCov}{sCov}
+\DeclareMathOperator{\sVar}{sVar}
+
+\DeclareMathOperator{\Corr}{Corr}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\E}{E}
+\def \hb{\hat{\beta}}
+\def \hs{\hat{\sigma}}
+\def \htheta{\hat{\theta}}
+\def \s{\sigma}
+\def \hy{\hat{y}}
+\def \hY{\hat{Y}}
+\def \v1{\vec{1}}
+\def \e{\varepsilon}
+\def \he{\hat{\e}}
+\def \z{z}
+\def \hVar{\widehat{\Var}}
+\def \hCorr{\widehat{\Corr}}
+\def \hCov{\widehat{\Cov}}
+\def \cN{\mathcal{N}}
+
+
+\begin{document}
+
+\begin{enumerate}
+  \item Найдите SVD-разложение матрицы
+  $\begin{pmatrix}
+   1 & -1 & 0 & 0 & 0\\
+   1 & -1 & 1 & -1 & 1\\
+  \end{pmatrix}$.
+
+  \item По 200 наблюдениям эконометресса Аглая оценила две модели. 
+  
+  Модель А:
+  \[
+  \hy_i = \underset{(1.2)}{3.4} + \underset{(3.2)}{1.7} x_i, \quad R^2 = 0.8 
+  \]
+  Модель Б:
+  \[
+  \hy_i = \underset{(1.7)}{3.1} + \underset{(3.3)}{1.8} x_i  + \underset{(1.9)}{2.1} z_i + \underset{(2.2)}{3.8} w_i, \quad R^2 = 0.9
+  \]
+
+  В скобках указаны стандартные ошибки оценок коэффициентов. 
+
+  \begin{enumerate}
+    \item Для модели А постройте 99\%-й доверительный интервал для коэффициента $\beta_x$.
+    \item Сравните модель А и модель Б с помощью подходящего теста при уровне значимости 1\%.
+    Аккуратно сформулируйте $H_0$ и $H_a$.
+  \end{enumerate}
+
+
+
+  \item Рассмотрим метод главных компонент с центрированием исходных переменных.
+  Докажите, что  
+  сумма выборочных дисперсий всех главных компонент равна сумме выборочных дисперий всех исходных 
+  переменных. 
+  
+  \item Истинная зависимость имеет вид $y=Z\beta + u$, $\E(u)=0$, $\Var(u) = \sigma^2 \cdot I$. 
+  Эконометресса Аглая не знает, что $y$ зависит от $Z$, 
+  и, по привычке, строит регрессию на $X$, то есть $\hat y = X\hb$.
+  Аглая использует обычный метод наименьших квадратов. 
+  
+  
+  Найдите $\Var(\hb)$, $\E(\hb)$, $\E(RSS)$, $\Var(\hat y)$, $\Cov(\hat u, \hat y)$.
+  
+  \item Все переменные, и предикторы, и зависимая, центрированы. Рассмотрим задачу гребневой регрессии (ridge regression).
+  \[
+  Q(\hb) = (y - X\hb)^T (y - X\hb) + \lambda \hb^T \hb \to \min_{\hb}
+  \]
+  
+\begin{enumerate}
+  \item Найдите $dQ$ и $d^2Q$;
+  \item Найдите явную формулу для $\hb_{ridge}$. Докажите, что это действительно минимум. 
+\end{enumerate}
+
+\newpage
+\item Вспомнив Матрицу-Мать-Всех-Регрессий, докажите, что
+в регрессии
+\[
+\hat y_i = \hat\beta_1 + \hat \beta_x x_i + \hat \beta_z z_i + \hat \beta_w w_i
+\]
+величину $R^2$ можно разложить в сумму:
+\[
+R^2 = \hat \beta_x \frac{\sCov(y, x)}{\sVar(y)} + \hat \beta_z \frac{\sCov(y, z)}{\sVar(y)} + \hat \beta_w \frac{\sCov(y, w)}{\sVar(y)}
+\]
+
+Здесь $\sVar$, $\sCov$ — это выборочная дисперсия и выборочная ковариация. 
+
+\item Внедрённый в глубокий тыл противника майор Пронин хочет оценить коэффициенты 
+в регрессии $\hat y = \hb_1 + \hb_2 x_i + \hb_3 z_i$. 
+Однако, чтобы не привлекать внимания, майор Пронин хочет обойтись построением нескольких 
+парных регрессий и применением теоремы Фриша-Во. 
+
+По соображениям секретности майор Пронин не может выполнять векторных и матричных операций, 
+а также суммирования $n$ слагаемых. 
+Максимум, что майор может незаметно сделать — это посчитать остатки одной регрессии и
+использовать их как регрессор в другой регрессии. 
+
+\begin{enumerate}
+  \item Сколько парных регрессий ему придётся построить, чтобы оценить коэффициенты $\hb_2$ и $\hb_3$? Какие конкретно?
+  \item Возможно ли только с помощью парных регрессий, без дополнительных арифметических действий, оценить $\hb_1$?
+\end{enumerate}
+
+
+\end{enumerate}
+
+
+
+\end{document}
